@@ -1,4 +1,4 @@
-# personal-website
+# personal website
 
 Simple website hosted on GitHub.
 
