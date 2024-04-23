@@ -1,14 +1,14 @@
 name: Build and Deploy
-on:
-  pull_request:
-    types: [closed]
-    branches:
-      - main 
-  workflow_dispatch:
-      branches:
-        - main
-permissions:
-  contents: write
+# on:
+#   pull_request:
+#     types: [closed]
+#     branches:
+#       - main 
+#   workflow_dispatch:
+#       branches:
+#         - main
+# permissions:
+#   contents: write
 
 jobs:
   build-and-deploy:
