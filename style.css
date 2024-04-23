@@ -48,6 +48,14 @@ img {
     animation-delay: 1.0s;
 }
 
+/* This will apply only to screens smaller than 600px (typical breakpoint for mobile devices) */
+@media only screen and (max-width: 600px) {
+    .container a img {
+        width: 150%; /* Increase width */
+        height: 150%; /* Increase height */
+    }
+}
+
 .cloud {
     position: absolute;
     z-index: 2;
@@ -82,7 +90,7 @@ img {
 
 .github-container img {
     animation: fadeInUp 1s ease-out forwards;
-    width: 30px;
-    height: 30px;
+    width: 70px;
+    height: 70px;
     z-index: 10;
 }
