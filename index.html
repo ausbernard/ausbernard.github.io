@@ -1,34 +1,565 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Me</title>
+  <style>
+    /* === Muted Anime Color Palette === */
+    :root{
+      --deep-navy: #2a2d3a;          /* main background - deep muted navy */
+      --soft-purple: #4a4458;        /* containers - muted purple-grey */
+      --dusty-rose: #6b5b73;         /* accents - soft mauve */
+      --sage-green: #5d6b5d;         /* links/interactive - muted sage */
+      --powder-blue: #7a8ba3;        /* highlights - soft blue-grey */
+      --cream-white: #e8e6e1;        /* main text - warm off-white */
+      --soft-pink: #c4a5aa;          /* special accents - dusty pink */
+      --lavender: #9b8db5;           /* hover states - muted lavender */
+      --ink-black: #1a1a1a;          /* borders / contrast */
+    }
+
+    /* ---------- Base ---------- */
+    body{
+      font-family:"Courier New", monospace;
+      background-color: #2a1e1a;
+      background-image:
+        linear-gradient(#463227 1px, transparent 1px),
+        linear-gradient(90deg, #463227 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #e8e6d5;
+      margin:0; padding:20px;
+      cursor:url('assets/glass.cur') 4 4, auto;
+      min-height: 100vh;
+    }
+    .container{
+      position: relative;             /* so ::before positions correctly */
+      max-width: 600px;
+      margin: 0 auto;
+      background: #e8e6d5;            /* flat cream */
+      border: 3px solid #463227;      /* dark brown frame */
+      padding: 20px;
+      color: #2a1e1a;                 /* dark text inside */
+      box-shadow: 4px 4px 0 #1a1a1a;  /* chunky retro shadow */
+    }
+
+    /* ---------- Type ---------- */
+    h1{
+      font-size: 24px;
+      text-align: center;
+      color: #2a1e1a;                /* dark brown text */
+      background: #c4a45a;           /* yellow highlight bar */
+      border: 3px solid #463227;     /* chunky border */
+      margin-bottom: 20px;
+      padding: 6px;
+      box-shadow: 4px 4px 0 #1a1a1a; /* retro offset shadow */
+    }
+    h2{
+      font-size: 18px;
+      color: var(--powder-blue);
+      border-bottom: 2px dotted var(--sage-green);
+      padding-bottom: 5px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      text-shadow: 0 1px 2px rgba(26, 29, 38, 0.25);
+      font-style: italic;
+    }
+    p{ line-height:1.4; margin-bottom:15px; }
+    /* ---------- Nav ---------- */
+    .nav-toggle {
+      position: absolute;
+      top: 35px;
+      left: -20px;
+      background-color: #c4a45a;
+      border: 2px solid #463227;
+      font-family:'Courier New', monospace;
+      font-weight: bold;
+      box-shadow: 2px 2px 0 #1a1a1a;
+      z-index: 3;
+    }
+    .container > nav{
+      position: absolute;
+      top: 28px;                /* inside the border */
+      left: -145px;               /* inside the border */
+      width: 125px;             /* fixed width so padding-left works */
+      max-width: 600px;
+      background: #e8e6d5;
+      border: 3px solid #463227;
+      color: #2a1e1a;
+      box-shadow: 4px 4px 0 #1a1a1a;
+      display: none;
+      padding: 10px;
+      z-index: 2;
+    }
+
+    .container > nav.show {
+      display: block;
+    }
+
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav li {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    nav img {
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    nav a{
+      color:#1a1a1a;
+      margin: 0 10px;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--lavender)
+    }
+    /* ---------- Photo frame ---------- */
+    .photo{
+      float:left; width:120px; height:120px;
+      background: linear-gradient(45deg, var(--dusty-rose), var(--lavender));
+      border:2px solid #463227;
+      border-radius: 6px;
+      margin:0 15px 15px 0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; text-align:center;
+      box-shadow: 0 4px 8px rgba(26, 29, 38, 0.2);
+    }
+    .photo img{ max-width:100%; max-height:100%; object-fit:cover; display:block; border-radius: 4px; }
+
+    /* ---------- Links block (retro style) ---------- */
+    .links{
+      background: #e8e6d5;           /* flat cream panel */
+      border: 3px solid #463227;     /* dark brown chunky border */
+      padding: 12px;
+      margin: 20px 0;
+      box-shadow: 4px 4px 0 #1a1a1a; /* retro offset shadow */
+    }
+    .links h3{
+      margin-top: 0;
+      color: #2a1e1a;                /* dark brown heading */
+      text-transform: uppercase;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .links a{
+      color: #7f7761;                /* muted olive default */
+      text-decoration: underline;
+      display: block;                /* stack like an old link list */
+      margin: 2px 0;
+    }
+    .links a:hover{
+      color: #a67b73;                /* rose highlight */
+      background: #c4a45a;           /* yellow highlight strip */
+      border: 1px solid #463227;     /* tiny border to look buttony */
+      padding: 2px 4px;
+      transition: 0.2s;
+    }
+    .links a:visited{ color: #6d4a35; }
+
+    /* ---------- Counter & misc ---------- */
+    .counter{
+      text-align:center; font-size:12px; margin-top:30px;
+      border:2px solid var(--powder-blue);
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--deep-navy), color-mix(in srgb, var(--deep-navy) 90%, var(--soft-purple)));
+      color:var(--cream-white); padding:12px;
+      box-shadow: 0 2px 8px rgba(26, 29, 38, 0.3);
+    }
+    @keyframes blink{ 0%,50%{opacity:1} 51%,100%{opacity:0.3} }
+    .blink{ animation:blink 1.5s ease-in-out infinite; color: var(--soft-pink); }
+
+    .marquee{
+      background: #c4a45a;
+      color: #2a1e1a;
+      padding:8px; margin:20px 0; white-space:nowrap; overflow:hidden;
+      border-radius: 4px;
+      box-shadow: inset 0 2px 4px rgba(26, 29, 38, 0.2);
+      border: 2px solid #463227;   /* chunky brown frame */
+      font-weight: bold;
+    }
+    .marquee-text{ display:inline-block; animation:scroll 20s linear infinite; }
+    @keyframes scroll{ 0%{transform:translateX(100%)} 100%{transform:translateX(-100%)} }
+
+    hr{
+      border:none; height:2px;
+      background: linear-gradient(90deg, transparent, var(--powder-blue), transparent);
+      margin:25px 0;
+      border-radius: 2px;
+    }
+    .footer{ text-align:center; font-size:10px; margin-top:30px; color:var(--powder-blue); }
+
+    .player-wrap{
+      margin: 20px 0;
+      border: 4px ridge #463227;     /* chunky ridge border */
+      background: #d1c5a5;           /* flat tan panel */
+      padding: 12px;
+    }
+    .player-title{
+      font-family: "Courier New", monospace;
+      font-weight: bold;
+      color: #2a1e1a;                /* dark brown */
+      text-decoration: underline;
+      text-decoration-color: #7f7761;/* muted olive underline */
+      margin: 0 0 10px;
+    }
+    .player-frame{
+      border: 2px solid #463227;
+      padding: 10px;
+      background: #e8e6d5;           /* cream inside */
+      box-shadow: inset 2px 2px 0 #7f7761; /* inset shading for depth */
+    }
+    .player-top{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .player-art{
+      width: 64px;
+      height: 64px;
+      border: 2px solid #463227;
+      background: #c4a45a;           /* muted yellow fallback */
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    .player-art img{
+      width:100%; height:100%; object-fit:cover; display:block; opacity:0;
+      transition:opacity .25s ease-out;
+    }
+    .player-art img.fade-in{ opacity:1; }
+    .player-now{
+      font-weight: bold;
+      color: #2a1e1a;          /* deep brown for strong contrast */
+      background: #c4a45a;     /* muted yellow highlight bar */
+      padding: 2px 4px;
+      border: 1px solid #463227;
+      display: inline-block;   /* so the highlight hugs the text */
+    }
+    .eq{ display:flex; align-items:flex-end; gap:3px; height:18px; }
+    .eq span{
+      width:4px;
+      background: linear-gradient(to top, var(--sage-green), var(--lavender));
+      display:inline-block;
+      animation:eq 1.4s ease-in-out infinite;
+      border-radius: 2px 2px 0 0;
+    }
+    .eq span:nth-child(2){animation-delay:.1s}
+    .eq span:nth-child(3){animation-delay:.2s}
+    .eq span:nth-child(4){animation-delay:.3s}
+    .eq span:nth-child(5){animation-delay:.4s}
+    @keyframes eq{ 0%,100%{height:4px} 50%{height:18px} }
+
+    .player-controls{ margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+    .player-btn{
+      font-family: "Courier New", monospace;
+      background: #c4a45a;         /* muted yellow fill */
+      border: 2px solid #463227;   /* dark brown chunky border */
+      color: #2a1e1a;              /* dark text */
+      padding: 6px 12px;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 #1a1a1a; /* boxy shadow for retro "raised" look */
+      border-radius: 0;            /* no rounded corners */
+      transition: none;            /* keep hover instant, not smooth */
+    }
+    .player-btn:hover{
+      background: #a67b73;         /* rose highlight */
+      color: #fff;                 /* white text pop */
+    }
+    .player-btn:active{
+      background: #7f7761;         /* muted olive pressed */
+      box-shadow: inset 2px 2px 0 #463227; /* pressed-in effect */
+      transform: translate(1px, 1px);
+    }
+
+    .track-list{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px 14px;
+      margin-top: 10px;
+      border-top: 2px solid var(--ink-black);
+      padding-top: 10px;
+    }
+    .track{ margin: 0; }
+    .track a{
+      display: block;               /* makes the whole line clickable */
+      word-break: break-word;       /* prevent overflow if a title is super long */
+    }
+    .track a:hover{
+      color: var(--lavender);
+      text-decoration-color: var(--lavender);
+    }
+    .track.playing a{
+      color: var(--soft-pink);
+      font-weight: bold;
+    }
+    .player-audio{
+      width:100%; margin-top:10px;
+      accent-color:var(--lavender);
+      border-radius: 4px;
+    }
+
+    /* Add some anime-inspired flourishes */
+    .container::before{
+      content: '';
+      position: absolute;
+      top: -5px; right: -5px;
+      width: 20px; height: 20px;
+      background: var(--soft-pink);
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
 </head>
 <body>
-    <div class="parent-container">
-        <div class ="container">
-            <a href="https://github.com/ausbernard" download>
-                <img src="images/me.jpg" alt="Me">
-            </a>
-        </div>
-        <div class="github-container">
-            <a href="https://github.com/ausbernard" download>
-                <img src="images/github.png" alt="github-logo" class="github">
-            </a>
-        </div>
+  <div class="container">
+      <!--
+                        __               __   __              
+    .-----.---.-.--.--.|__|.-----.---.-.|  |_|__|.-----.-----.
+    |     |  _  |  |  ||  ||  _  |  _  ||   _|  ||  _  |     |
+    |__|__|___._|\___/ |__||___  |___._||____|__||_____|__|__|
+                          |_____|                            
+    -->
+    <button class="nav-toggle">☰</button>
+    <nav aria-label="Home Navigation">
+      <ul>
+        <li>
+          <a href="#" aria-label="Photos">
+            <img src="assets/icons/camera.ico" alt="The icon shows an old-school camera body. The camera body is two tone with a grey at the top and light green at the bottom. The lens is in the center and is blue.">Photos
+          </a>
+        </li>
+        <li>
+          <a href="#" aria-label="Logs">
+            <img src="assets/icons/paper-teal.ico" alt="The icon shows an old-school camera body. The camera body is two tone with a grey at the top and light green at the bottom. The lens is in the center and is blue.">Logs
+          </a>
+        </li>
+        <li>
+          <a href="#" aria-label="Photos">
+            <img src="assets/icons/cactus.ico" alt="The icon shows an old-school camera body. The camera body is two tone with a grey at the top and light green at the bottom. The lens is in the center and is blue.">Links
+          </a>
+        </li>
+        <li>
+          <a href="#" aria-label="Music">
+            <img src="assets/icons/speak.ico" alt="The icon shows an old-school camera body. The camera body is two tone with a grey at the top and light green at the bottom. The lens is in the center and is blue.">Music
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!--
+    __                   __             
+    |  |--.-----.---.-.--|  |.-----.----.
+    |     |  -__|  _  |  _  ||  -__|   _|
+    |__|__|_____|___._|_____||_____|__|  
+                                        
+    -->
+    <h1>Welcome to My Space!</h1>
+
+    <div class="marquee">
+      <div class="marquee-text">★ Thanks for visiting! ★ <b>Best Viewed in Browser</b> ★ Please sign my guestbook! ★</div>
     </div>
-    <img src="images/clouds.png" alt="Cloud 1" class="cloud">
-    <img src="images/clouds.png" alt="Cloud 2" class="cloud">
-    <img src="images/clouds.png" alt="Cloud 3" class="cloud">
-    <img src="images/clouds.png" alt="Cloud 4" class="cloud">
-    <img src="images/clouds.png" alt="Cloud 5" class="cloud">
-    <img src="images/rice.png" alt="rice 1" class="rice">
-    <img src="images/rice.png" alt="rice 2" class="rice">
-    <img src="images/rice.png" alt="rice 3" class="rice">
-    <script src="script.js"></script>
+
+    <div class="photo">
+      <img src="assets/pics/me.png" alt="Me">
+    </div>
+
+    <h2>About Me</h2>
+    <p>Hello Moto! I'm <strong>Bernard</strong> and welcome to my little spot online.</p>
+
+    <p>I enjoy learning new things, finding new shows, photography, and cycling at the moment.</p> 
+
+    <p>Myspace was really fun time to me. It was what peaked my interest and love for the web and computers. Fast forward it's my day job, but something about this new internet just isn't the same. S/O neocities. Now watch this Drive.<img src="assets/stickers/bush.png" alt="george w bush jr" width="25" height="25" style="vertical-align:middle; margin-left:8px;"></p>
+
+    <h2>My Music</h2>
+    <div class="player-wrap">
+      <div class="player-frame">
+        <div class="player-top">
+          <div class="player-art">
+            <img id="cover" src="musica/default.jpg" alt="Album art">
+          </div>
+          <div>
+            <div class="player-now"><span class="blink">★</span> Now Playing: <span id="nowTitle">—</span></div>
+            <div class="eq" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+
+        <audio id="audio" class="player-audio" controls preload="metadata" controlslist="noplaybackrate nodownload">
+          <!-- JS will set the src -->
+          Your browser doesn't support the audio tag.
+        </audio>
+
+        <div class="player-controls">
+          <button class="player-btn" id="prev">
+            <img src="assets/icons/previous.ico" alt="Prev" width="15" height="15"> Prev
+          </button>
+          <button class="player-btn" id="play">
+            <img src="assets/icons/play.ico" alt="Play" width="15" height="15"> Play
+          </button>
+          <button class="player-btn" id="pause">
+            <img src="assets/icons/pause.ico" alt="Pause" width="15" height="15"> Pause
+          </button>
+          <button class="player-btn" id="next">
+            <img src="assets/icons/skip.ico" alt="Next" width="15" height="15"> Next
+          </button>
+          <button class="player-btn" id="loop">🔁 Loop: Off</button>
+        </div>
+
+        <div class="track-list" id="trackList">
+          <!-- JS renders clickable tracks -->
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="links">
+      <h3>Cool Links</h3>
+      <a href="photo-journal.html">My Photo Gallery</a><br>
+      <a href="guestbook.html">Guestbook</a><br>
+      <a href="#">My Blog/Journal</a><br>
+      <a href="#">Learn How to Code</a><br>
+      <a href="https://www.rw-designer.com/">RW-Designer</a>
+    </div>
+
+    <h2>What's New</h2>
+    <p><span class="blink">NEW!</span> Just updated my photojournal with some new photos!</p>
+    <p>Added a guestbook addition - check it out!</p>
+
+    <hr>
+
+    <div class="counter">
+      <strong>You are visitor number: <span id="visitorNum"></span></strong><br>
+      <small>Since January 1999</small>
+    </div>
+
+    <div class="footer">
+      Best viewed in Netscape Navigator 4.0+ at 800x600 resolution<br>
+      This page is optimized for Internet Explorer 5.0<br>
+      <em>Hand-coded HTML - No fancy editors here!</em>
+    </div>
+  </div>
+
+  <script>
+
+    const nav = document.querySelector('.container > nav');
+    const toggleBtn = document.querySelector('.nav-toggle');
+
+    toggleBtn.addEventListener('click', () => {
+      nav.classList.toggle('show');
+    });
+    // Generate a random number between 1 and 9000
+    const randomNum = Math.floor(Math.random() * 9000) + 1;
+
+    // Format with leading zeros up to 6 digits
+    const formattedNum = String(randomNum).padStart(6, "0");
+
+    // Inject into the HTML
+    document.getElementById("visitorNum").innerText = formattedNum;
+
+    // 🔊 songs (update filenames & titles)
+    const tracks = [
+      { title: "Palace – Greyhound", file: "musica/palace-greyhound.m4a", cover: "musica/palace-greyhound.jpg" },
+      { title: "Michi – Escondida", file: "musica/michi-escondida.m4a", cover: "musica/michi.jpg" },
+      { title: "Mineo & Phonte – Donuts", file: "musica/andy-mineo_donuts.m4a", cover: "musica/mineo_donuts.jpg" },
+      { title: "Sondae – in the cool of the day", file: "musica/sondae-in_the_cool_of_the_day.m4a", cover: "musica/sondae_cool.jpeg" },
+      { title: "Chance – no more old men", file: "musica/Chance_The_Rapper-No_more_old_men.m4a", cover: "musica/chance.jpg" },
+      { title: "Gambino - Algorythm", file: "musica/Childish_Gambino-Algorhythm.m4a", cover: "musica/childish2.jpg" }
+    ];
+
+    const audio = document.getElementById("audio");
+    const nowTitle = document.getElementById("nowTitle");
+    const trackList = document.getElementById("trackList");
+    const coverImg = document.getElementById("cover");
+
+    let current = 0;
+
+    // (Optional) preload cover images
+    tracks.forEach(t => { const img = new Image(); img.src = t.cover; });
+
+    // Build clickable list
+    function renderList(){
+      trackList.innerHTML = tracks.map((t,i)=>`
+        <div class="track ${i===current ? 'playing':''}">
+          <a href="#" data-idx="${i}">${String(i+1).padStart(2,"0")}. ${t.title}</a>
+        </div>
+      `).join("");
+      trackList.querySelectorAll("a").forEach(a=>{
+        a.onclick = (e)=>{
+          e.preventDefault();
+          current = parseInt(a.dataset.idx,10);
+          loadTrack(current, true);
+        };
+      });
+    }
+
+    function setCover(src, altText){
+      coverImg.classList.remove("fade-in");
+      coverImg.onload = ()=> coverImg.classList.add("fade-in");
+      coverImg.onerror = ()=> {
+        coverImg.src = "musica/default.jpg";
+        coverImg.classList.add("fade-in");
+      };
+      coverImg.alt = altText || "Album art";
+      coverImg.src = src || "musica/default.jpg";
+    }
+
+    function loadTrack(idx, autoplay=false){
+      const t = tracks[idx];
+      audio.src = t.file;
+      nowTitle.textContent = t.title;
+      setCover(t.cover, `${t.title} cover`);
+
+      // Update list highlighting
+      trackList.querySelectorAll(".track").forEach((el,i)=>{
+        el.classList.toggle("playing", i===idx);
+      });
+      if (autoplay) audio.play().catch(()=>{/* user gesture required */});
+    }
+
+    // Controls
+    document.getElementById("play").onclick  = ()=> audio.play();
+    document.getElementById("pause").onclick = ()=> audio.pause();
+    document.getElementById("prev").onclick  = ()=>{
+      current = (current - 1 + tracks.length) % tracks.length;
+      loadTrack(current, true);
+    };
+    document.getElementById("next").onclick  = ()=>{
+      current = (current + 1) % tracks.length;
+      loadTrack(current, true);
+    };
+
+    // Loop toggle
+    const loopBtn = document.getElementById("loop");
+    loopBtn.onclick = ()=>{
+      audio.loop = !audio.loop;
+      loopBtn.textContent = `🔁 Loop: ${audio.loop ? 'On' : 'Off'}`;
+    };
+
+    // Auto-advance on end (only if not looping)
+    audio.addEventListener("ended", ()=>{
+      if (!audio.loop){
+        current = (current + 1) % tracks.length;
+        loadTrack(current, true);
+      }
+    });
+
+    // Start
+    renderList();
+    loadTrack(current, false);
+  </script>
 </body>
 </html>
