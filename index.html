@@ -68,7 +68,7 @@
     .nav-toggle {
       position: absolute;
       top: 35px;
-      left: -20px;
+      left: -45px;
       background-color: #c4a45a;
       border: 2px solid #463227;
       font-family:'Courier New', monospace;
@@ -102,7 +102,7 @@
     }
 
     nav li {
-      margin-top: 10px;
+      margin-top: 15px;
       margin-bottom: 10px;
     }
 
@@ -325,6 +325,14 @@
   </style>
 </head>
 <body>
+  <a href="middle.html">
+    <img src="assets/icons/blonde.ico" alt="Me" width="50" height="50">
+  </a>
+  <div class="real-me">
+    <!-- <img src="assets/icons/blonde.ico" alt="Me" width="50" height="50" href="middle.html"> -->
+    <!-- <img src="assets/stickers/doom.jpg" alt="Me" width="50" height="50">
+    <img src="assets/stickers/fro-brotha.png" alt="Me" width="50" height="50"> -->
+  </div>
   <div class="container">
       <!--
                         __               __   __              
@@ -333,9 +341,15 @@
     |__|__|___._|\___/ |__||___  |___._||____|__||_____|__|__|
                           |_____|                            
     -->
-    <button class="nav-toggle">☰</button>
+    <button class="nav-toggle">MENU</button>
     <nav aria-label="Home Navigation">
       <ul>
+        <li>
+          <a href="/" aria-label="Home">
+            <img src="assets/icons/bmw.ico" alt="The icon shows an old-school camera body. The camera body is two tone with a grey at the top and light green at the bottom. The lens is in the center and is blue.">Home
+          </a>
+        </li>
+        <li>
         <li>
           <a href="#" aria-label="Photos">
             <img src="assets/icons/camera.ico" alt="The icon shows an old-school camera body. The camera body is two tone with a grey at the top and light green at the bottom. The lens is in the center and is blue.">Photos
@@ -353,7 +367,12 @@
         </li>
         <li>
           <a href="#" aria-label="Music">
-            <img src="assets/icons/speak.ico" alt="The icon shows an old-school camera body. The camera body is two tone with a grey at the top and light green at the bottom. The lens is in the center and is blue.">Music
+            <img src="assets/icons/listening.ico" alt="The icon shows an old-school camera body. The camera body is two tone with a grey at the top and light green at the bottom. The lens is in the center and is blue.">Music
+          </a>
+        </li>
+        <li>
+          <a href="#" aria-label="Guestbook">
+            <img src="assets/icons/speak.ico" alt="The icon shows an old-school camera body. The camera body is two tone with a grey at the top and light green at the bottom. The lens is in the center and is blue.">GBook
           </a>
         </li>
       </ul>
@@ -368,7 +387,7 @@
     <h1>Welcome to My Space!</h1>
 
     <div class="marquee">
-      <div class="marquee-text">★ Thanks for visiting! ★ <b>Best Viewed in Browser</b> ★ Please sign my guestbook! ★</div>
+      <div class="marquee-text">★ Thanks for visiting! ★ <b>Best Viewed on Desktop</b> ★ Please sign my guestbook! ★</div>
     </div>
 
     <div class="photo">
@@ -380,7 +399,7 @@
 
     <p>I enjoy learning new things, finding new shows, photography, and cycling at the moment.</p> 
 
-    <p>Myspace was really fun time to me. It was what peaked my interest and love for the web and computers. Fast forward it's my day job, but something about this new internet just isn't the same. S/O neocities. Now watch this Drive.<img src="assets/stickers/bush.png" alt="george w bush jr" width="25" height="25" style="vertical-align:middle; margin-left:8px;"></p>
+    <p>Myspace was really fun time to me. It was what peaked my interest and love for the web and computers. I miss the old internet. So here is my ode to the old way of surfing. S/O neocities. Now watch this Drive.<img src="assets/stickers/bush.png" alt="george w bush jr" width="25" height="25" style="vertical-align:middle; margin-left:8px;"></p>
 
     <h2>My Music</h2>
     <div class="player-wrap">
@@ -472,12 +491,9 @@
 
     // 🔊 songs (update filenames & titles)
     const tracks = [
-      { title: "Palace – Greyhound", file: "musica/palace-greyhound.m4a", cover: "musica/palace-greyhound.jpg" },
-      { title: "Michi – Escondida", file: "musica/michi-escondida.m4a", cover: "musica/michi.jpg" },
-      { title: "Mineo & Phonte – Donuts", file: "musica/andy-mineo_donuts.m4a", cover: "musica/mineo_donuts.jpg" },
-      { title: "Sondae – in the cool of the day", file: "musica/sondae-in_the_cool_of_the_day.m4a", cover: "musica/sondae_cool.jpeg" },
-      { title: "Chance – no more old men", file: "musica/Chance_The_Rapper-No_more_old_men.m4a", cover: "musica/chance.jpg" },
-      { title: "Gambino - Algorythm", file: "musica/Childish_Gambino-Algorhythm.m4a", cover: "musica/childish2.jpg" }
+      { title: "Palace – Greyhound", file: "assets/music/songs/palace-greyhound.m4a", cover: "assets/music/covers/palace-greyhound.jpg" },
+      { title: "Michi – Escondida", file: "assets/music/songs/michi-escondida.m4a", cover: "assets/music/covers/michi-escondida.jpg" },
+      { title: "Gambino - Algorhythmn", file: "assets/music/songs/gambino-algorhythmn.m4a", cover: "assets/music/covers/gambino-algorhythm.jpg" }
     ];
 
     const audio = document.getElementById("audio");
@@ -510,11 +526,11 @@
       coverImg.classList.remove("fade-in");
       coverImg.onload = ()=> coverImg.classList.add("fade-in");
       coverImg.onerror = ()=> {
-        coverImg.src = "musica/default.jpg";
+        coverImg.src = "music/covers/default.png";
         coverImg.classList.add("fade-in");
       };
       coverImg.alt = altText || "Album art";
-      coverImg.src = src || "musica/default.jpg";
+      coverImg.src = src || "music/covers/default.png";
     }
 
     function loadTrack(idx, autoplay=false){

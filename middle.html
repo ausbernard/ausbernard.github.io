@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Me</title>
+  <style>
+    /* === Muted Anime Color Palette === */
+    :root{
+      --ink: #1a1a1a;
+      --cream: #e8e6d5;
+      --frame: #463227;
+      --accent: #c4a45a;
+    }
+
+    /* ---------- Base ---------- */
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+    body{
+      min-height: 100vh;
+      font-family:'Courier New', Courier, monospace;
+      background: url('assets/pics/middle-bg.png') no-repeat center center fixed;
+      background-size: cover;
+      filter: contrast(105%) saturate(95%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+    }
+    /* Center panel */
+    .container{
+      max-width: 640px;
+      margin: 24px;
+      background: color-mix(in srgb, var(--ink) 25%, var(--cream) 75%);
+      border: 3px solid var(--ink);
+      box-shadow:
+        0 0 0 3px var(--cream) inset,
+        6px 6px 0 #000;
+      padding: 18px 22px;
+      border-radius: 8px;
+      backdrop-filter: blur(2px);
+      text-align:center;
+      animation: pop-in 460ms cubic-bezier(.22,.9,.3,1) both;
+    }
+    .container p{ margin:0 0 12px; }
+    .container button {
+        display: inline-block;
+        margin-top: 10px;
+        font: inherit;
+        font-weight: bold;
+        color: var(--ink);
+        background: var(--accent);
+        border: 3px solid var(--frame);
+        padding: 8px 16px;
+        cursor: pointer;
+        box-shadow: 3px 3px 0 #000;
+        text-decoration: none;
+    }
+    .container button:hover { filter: brightness(1.06);}
+    .container button:active {
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0 #000;
+    }
+    /* Entrance animation */
+    @keyframes pop-in {
+      from { opacity: 0; transform: translateY(8px) scale(.995); }
+      to   { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .container { animation: none; }
+    }
+    
+  </style>
+</head>
+<body>
+      <!--
+                        __               __   __              
+    .-----.---.-.--.--.|__|.-----.---.-.|  |_|__|.-----.-----.
+    |     |  _  |  |  ||  ||  _  |  _  ||   _|  ||  _  |     |
+    |__|__|___._|\___/ |__||___  |___._||____|__||_____|__|__|
+                          |_____|                            
+    -->
+    <!--
+    __                   __             
+    |  |--.-----.---.-.--|  |.-----.----.
+    |     |  -__|  _  |  _  ||  -__|   _|
+    |__|__|_____|___._|_____||_____|__|  
+                                        
+    -->
+    <!--
+                    __                __   
+    .----.-----.-----.|  |_.-----.-----.|  |_ 
+    |  __|  _  |     ||   _|  -__|     ||   _|
+    |____|_____|__|__||____|_____|__|__||____|
+                                            
+    -->
+    <div class="container">
+        <p>In 2025 we all find ourselves hiding behind a polished presense to the world showing that we are worthy, smart, and capable humans. But in the background behind the wall we are all just rough, unpolished, trying to figure it out.</p>
+        <a href="sixteen.html">
+            <button>View</button>
+        </a>
+  </div>
+  <script>
+  </script>
+</body>
+</html>
