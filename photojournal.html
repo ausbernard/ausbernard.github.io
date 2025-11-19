@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My Photo Journal</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+  /* ===== Use same root palette as index.html ===== */
+  :root{
+    --deep-navy: #2a2d3a;
+    --soft-purple: #4a4458;
+    --dusty-rose: #6b5b73;
+    --sage-green: #5d6b5d;
+    --powder-blue: #7a8ba3;
+    --cream-white: #e8e6e1;
+    --soft-pink: #c4a5aa;
+    --lavender: #9b8db5;
+    --ink-black: #1a1d26;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Courier New", monospace;
+    background: linear-gradient(
+      135deg,
+      var(--deep-navy) 0%,
+      color-mix(in srgb, var(--deep-navy) 80%, var(--soft-purple)) 100%
+    );
+    padding: 20px;
+    color: var(--ink-black);
+  }
+
+  .journal-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: var(--cream-white);
+    border: 3px solid var(--powder-blue);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(26, 29, 38, 0.4);
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--soft-pink);
+    text-decoration: underline;
+    text-decoration-color: var(--lavender);
+  }
+
+  .entry {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .entry img {
+    width: 100%;
+    max-width: 600px;
+    border: 4px solid var(--dusty-rose);
+    background: #fff;
+    display: block;
+    margin: 0 auto 10px;
+    border-radius: 4px;
+    box-shadow: 4px 4px 0 var(--ink-black);
+  }
+
+  .entry p {
+    font-size: 14px;
+    color: var(--ink-black);
+    margin: 0;
+  }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--sage-green);
+    text-decoration: underline;
+  }
+  .back-link:hover {
+    color: var(--lavender);
+  }
+</style>
+</head>
+<body>
+  <div class="journal-container">
+    
+    <h1>
+      foto jrnl.
+    </h1>
+    <center>Enjoy my photography (っˆڡˆς)</center><br><br>
+
+    <div class="entry">
+      <img src="assets/pics/photo-journal/vienna.JPG" alt="Birds flying over a subway in Vienna. The photo is in black and white.">
+      <p><strong>September 2025:</strong>Birds flying around in Vienna.</p>
+    </div>
+
+    <div class="entry">
+      <img src="assets/pics/photo-journal/atlanta-showcase.jpg" alt="Young women talking on the phone in jeans and white t-shirt talking on the phone.">
+      <p><strong>August 2025:</strong> On a cell phone at sunset in GA.</p>
+    </div>
+
+    <div class="entry">
+      <img src="assets/pics/photo-journal/susto.png" alt="The band Susto working on sound check in their concert. Nashville TN">
+      <p><strong>August 2025:</strong>Susto sound check.</p>
+    </div>
+
+    <div class="entry">
+      <img src="assets/pics/photo-journal/porto-museum.jpg" alt="Young women at a museum in Porto.">
+      <p><strong>August 2025:</strong> Young woman in a museum looking out a window in Porto, PT. on film 🌊</p>
+    </div>
+
+    <div class="entry">
+      <img src="assets/pics/photo-journal/prauge-cambodian-dinner.png" alt="Young man sitting on an Author road bike in Nike trainers high white socks grey sweat pants and a black puffer jacket. Looking slightly at the camera. Shot in Prague, Czech Republic">
+      <p><strong>December 2024:</strong> Young man in Prague, CZ 🌊</p>
+    </div>
+
+    <div class="entry">
+      <img src="assets/pics/photo-journal/zandie.png" alt="Z ripping a guitar solo on stage in Nashville, TN">
+      <p><strong>July 2024:</strong> Shredding in Nashville, TN</p>
+    </div>
+
+    <div class="entry">
+      <img src="assets/pics/photo-journal/night-fish.JPG" alt="Young man holding a bass fish at night in a black shirt with a flash. The picture is in black and white. BLURR">
+      <p><strong>June 2024:</strong> Night fishing is a thing..?</p>
+    </div>
+
+    <a class="back-link" href="index.html">◀ Back to Home</a>
+  </div>
+</body>
+</html>
