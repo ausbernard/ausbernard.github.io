@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing — Ausb</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #F2F2F0;
+      --white:   #FFFFFF;
+      --ink:     #1A1A1A;
+      --muted:   #888;
+      --border:  #E0E0DC;
+      --blue:    #95B1EE;
+      --blue-dk: #364C84;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 52px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-logo {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--ink); background: var(--bg); }
+    .nav-links a.active { color: var(--ink); font-weight: 500; }
+    .nav-links a.nav-secondary { font-size: 0.72rem; opacity: 0.5; }
+    .nav-links a.nav-secondary:hover { opacity: 1; }
+
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-divider { width: 1px; height: 16px; background: var(--border); }
+
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #57BA6A;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .nav-contact {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #3A5020;
+      text-decoration: none;
+      padding: 0.4rem 1.1rem;
+      border: 1px solid #C8D880;
+      border-radius: 4px;
+      background: #E7F1A8;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+    }
+
+    .nav-contact:hover { background: #D8E890; border-color: #A8C040; transform: scale(1.03); }
+
+    /* ─── PAGE ─── */
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 8rem;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.45s ease both 0.05s;
+    }
+
+    .hero-greeting {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      color: var(--ink);
+      margin-bottom: 0.3em;
+    }
+
+    .hero-caveat {
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: var(--muted);
+      display: block;
+      margin-top: 0.6rem;
+      transform: rotate(-1deg);
+      transform-origin: left;
+    }
+
+    .hero-sub {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: #5A5A5A;
+      max-width: 52ch;
+      margin-top: 0.75rem;
+    }
+
+    /* ─── POST LIST ─── */
+    .post-list {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      animation: fadeUp 0.45s ease both 0.1s;
+    }
+
+    .post-row {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+    }
+
+    .post-row:last-child { border-bottom: none; }
+    .post-row:hover { background: #FAFAF8; }
+    .post-row:hover .post-row-title { color: var(--blue-dk); }
+
+    .post-row-date {
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+      padding-top: 0.25rem;
+    }
+
+    .post-row-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.08rem;
+      font-weight: 400;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+      transition: color 0.15s;
+      color: var(--ink);
+    }
+
+    .post-row-excerpt {
+      font-size: 0.8rem;
+      color: #5A5A5A;
+      line-height: 1.65;
+      margin-bottom: 0.6rem;
+    }
+
+    .post-row-tag {
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid;
+      padding: 0.12rem 0.45rem;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .tag-product     { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+    .tag-design      { background: #EDE9FE; color: #5B21B6; border-color: #DDD6FE; }
+    .tag-engineering { background: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
+    .tag-ux          { background: #FCE7F3; color: #9D174D; border-color: #FBCFE8; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── MOBILE NAV ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .nav-burger span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 1px;
+    }
+
+    .nav-mobile-menu {
+      display: none;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0.25rem 2.5rem 0.75rem;
+      flex-direction: column;
+      position: sticky;
+      top: 52px;
+      z-index: 49;
+    }
+
+    .nav-mobile-menu.open { display: flex; }
+
+    .nav-mobile-menu a {
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s;
+    }
+
+    .nav-mobile-menu a:last-child { border-bottom: none; }
+    .nav-mobile-menu a:hover,
+    .nav-mobile-menu a.active { color: var(--ink); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
+      .nav-status { display: none; }
+      .nav-contact { display: none; }
+      .nav-divider { display: none; }
+      .nav-burger { display: flex; }
+      .page { padding: 2.5rem 1.25rem 6rem; }
+      .post-row { grid-template-columns: 1fr; gap: 0.25rem; padding: 1.25rem; }
+      .post-row-date { font-size: 0.62rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Ausb.</a>
+
+  <div class="nav-links">
+    <a href="../index.html#work">Work</a>
+    <a href="index.html" class="active">Writing</a>
+    <a href="../photojournal.html" class="nav-secondary">Photos</a>
+    <a href="../guestbook.html" class="nav-secondary">Guestbook</a>
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-status">
+      <div class="status-dot"></div>
+      Open to work
+    </div>
+    <div class="nav-divider"></div>
+    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Get in touch →</a>
+    <button class="nav-burger" id="navBurger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="nav-mobile-menu" id="navMobileMenu">
+  <a href="../index.html#work">Work</a>
+  <a href="index.html" class="active">Writing</a>
+  <a href="../photojournal.html">Photos</a>
+  <a href="../guestbook.html">Guestbook</a>
+  <a href="mailto:austinbedmonson@gmail.com">Get in touch</a>
+</div>
+
+<script>
+  (function() {
+    var burger = document.getElementById('navBurger');
+    var menu   = document.getElementById('navMobileMenu');
+    burger.addEventListener('click', function() { menu.classList.toggle('open'); });
+    menu.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A') menu.classList.remove('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!burger.contains(e.target) && !menu.contains(e.target)) menu.classList.remove('open');
+    });
+  })();
+</script>
+
+<div class="page">
+
+  <div class="hero">
+    <h1 class="hero-greeting">Writing.</h1>
+    <span class="hero-caveat">thinking out loud since I had to figure it out anyway</span>
+    <p class="hero-sub">Product, design, and engineering — things I learned the hard way or found worth sharing. Sometimes I just talk my stuff.</p>
+  </div>
+
+  <div class="post-list">
+
+    <a href="partida-gap.html" class="post-row">
+      <div class="post-row-date">Apr<br>2026</div>
+      <div>
+        <div class="post-row-title">Why we built Partida: the gap no one was filling in immigration tech</div>
+        <div class="post-row-excerpt">Most immigration software is built for lawyers, not families. Here's what we found when we actually talked to both.</div>
+        <span class="post-row-tag tag-product">Product</span>
+      </div>
+    </a>
+
+    <a href="designing-50-plus.html" class="post-row">
+      <div class="post-row-date">Mar<br>2026</div>
+      <div>
+        <div class="post-row-title">Designing for the 50+ demographic: lessons from building a visa app</div>
+        <div class="post-row-excerpt">Discoverability, trust signals, and why "intuitive" means something different depending on who you ask.</div>
+        <span class="post-row-tag tag-design">Design</span>
+      </div>
+    </a>
+
+    <a href="htmx-production.html" class="post-row">
+      <div class="post-row-date">Feb<br>2026</div>
+      <div>
+        <div class="post-row-title">HTMX in production: what nobody tells you about going hypermedia-first</div>
+        <div class="post-row-excerpt">Six months of FastAPI + HTMX in a real product. The good, the surprising, and the one pattern I'd change.</div>
+        <span class="post-row-tag tag-engineering">Engineering</span>
+      </div>
+    </a>
+
+    <a href="navigation-discoverability.html" class="post-row">
+      <div class="post-row-date">Jan<br>2026</div>
+      <div>
+        <div class="post-row-title">Navigation discoverability: a case study in fixing what users can't find</div>
+        <div class="post-row-excerpt">When users don't use a feature, it's almost never because they don't want it.</div>
+        <span class="post-row-tag tag-ux">UX</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+</body>
+</html>
