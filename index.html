@@ -111,16 +111,16 @@
     .nav-contact {
       font-size: 0.78rem;
       font-weight: 500;
-      color: #3A5020;
+      color: var(--white);
       text-decoration: none;
       padding: 0.4rem 1.1rem;
-      border: 1px solid #C8D880;
+      border: 1px solid var(--ink);
       border-radius: 4px;
-      background: var(--green);
-      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+      background: var(--ink);
+      transition: background 0.15s, transform 0.15s;
     }
 
-    .nav-contact:hover { background: #D8E890; border-color: #A8C040; transform: scale(1.03); }
+    .nav-contact:hover { background: #333; border-color: #333; transform: scale(1.03); }
 
     /* ─── PAGE ─── */
     .page {
@@ -394,10 +394,6 @@
       animation: fadeUp 0.45s ease both 0.08s;
     }
 
-    .about-bio-wrap {
-      padding: 1.75rem 1.75rem 1.4rem;
-    }
-
     .about-bio {
       font-size: 1rem;
       line-height: 1.65;
@@ -430,29 +426,30 @@
       gap: 0.25rem;
     }
 
-    /* ─── TICKER ─── */
-    .ticker-strip {
-      background: var(--green);
-      border-top: 1px solid #C8D880;
-      padding: 0.65rem 0;
-      overflow: hidden;
-    }
-
-    .ticker-track {
+    /* ─── ABOUT LINKS ─── */
+    .about-inner {
       display: flex;
-      align-items: center;
-      width: max-content;
-      animation: ticker 16s linear infinite;
+      align-items: stretch;
     }
 
-    .ticker-track:hover { animation-play-state: paused; }
-
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+    .about-bio-wrap {
+      flex: 1;
+      padding: 1.75rem 1.75rem 1.4rem;
     }
 
-    .ticker-item {
+    .about-links {
+      background: var(--green);
+      border-left: 2px solid #C8D880;
+      padding: 1.5rem 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      justify-content: center;
+      min-width: 120px;
+      flex-shrink: 0;
+    }
+
+    .about-link {
       font-family: 'DM Sans', sans-serif;
       font-size: 0.78rem;
       font-weight: 500;
@@ -460,18 +457,13 @@
       color: #3A5020;
       text-decoration: none;
       white-space: nowrap;
-      padding: 0 1.4rem;
       transition: opacity 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
     }
 
-    .ticker-item:hover { opacity: 0.55; }
-
-    .ticker-sep {
-      color: #3A5020;
-      opacity: 0.35;
-      font-size: 0.65rem;
-      flex-shrink: 0;
-    }
+    .about-link:hover { opacity: 0.55; }
 
     /* ─── MUSIC WIDGET ─── */
     .music-widget {
@@ -503,7 +495,8 @@
       color: #6B3000;
     }
 
-    .music-toggle {
+    .music-toggle,
+    .music-minimize {
       background: none;
       border: none;
       cursor: pointer;
@@ -514,7 +507,14 @@
       transition: color 0.15s;
     }
 
-    .music-toggle:hover { color: var(--ink); }
+    .music-toggle:hover,
+    .music-minimize:hover { color: var(--ink); }
+
+    .music-widget.mini { width: 210px; }
+    .music-widget.mini .music-header { border-bottom: none; }
+    .music-widget.mini .music-main,
+    .music-widget.mini .music-controls,
+    .music-widget.mini .music-tracks { display: none !important; }
 
     .music-main {
       display: flex;
@@ -743,7 +743,10 @@
       .nav-divider { display: none; }
       .nav-burger { display: flex; }
       .about-bio-wrap { padding: 1.25rem; }
+      .about-inner { flex-direction: column; }
+      .about-links { border-left: none; border-top: 2px solid #C8D880; flex-direction: row; flex-wrap: wrap; gap: 0.5rem 1.25rem; padding: 0.85rem 1.25rem; min-width: unset; }
       .music-widget { right: 0.75rem; bottom: 0.75rem; width: calc(100vw - 1.5rem); max-width: 320px; }
+      .music-widget.mini { width: 210px; max-width: 210px; }
       .post-editorial-row { grid-template-columns: 56px 1fr; gap: 0.75rem; padding: 0.9rem 1rem; }
       .post-editorial-tag { display: none; }
     }
@@ -808,27 +811,15 @@
 
   <!-- ABOUT STRIP -->
   <div class="about-strip" id="about">
-    <div class="about-bio-wrap">
-      <p class="about-bio">I build things that are hard to get right and matter when you do. Right now I’m building Partida — immigration case management for families moving to Portugal — while leading platform engineering work focused on CI/CD, deployment systems, security scanning, observability, and internal automation.</p>
-    </div>
-    <div class="ticker-strip">
-      <div class="ticker-track">
-        <a href="https://github.com/ausbernard" class="ticker-item" target="_blank" rel="noopener">GitHub ↗</a>
-        <span class="ticker-sep">✦</span>
-        <a href="photojournal.html" class="ticker-item">Photos ↗</a>
-        <span class="ticker-sep">✦</span>
-        <a href="guestbook.html" class="ticker-item">Guestbook ↗</a>
-        <span class="ticker-sep">✦</span>
-        <a href="mailto:austinbedmonson@gmail.com" class="ticker-item">Email ↗</a>
-        <span class="ticker-sep">✦</span>
-        <a href="https://github.com/ausbernard" class="ticker-item" target="_blank" rel="noopener">GitHub ↗</a>
-        <span class="ticker-sep">✦</span>
-        <a href="photojournal.html" class="ticker-item">Photos ↗</a>
-        <span class="ticker-sep">✦</span>
-        <a href="guestbook.html" class="ticker-item">Guestbook ↗</a>
-        <span class="ticker-sep">✦</span>
-        <a href="mailto:austinbedmonson@gmail.com" class="ticker-item">Email ↗</a>
-        <span class="ticker-sep">✦</span>
+    <div class="about-inner">
+      <div class="about-bio-wrap">
+        <p class="about-bio">I build things that are hard to get right and matter when you do. Right now I’m building Partida — immigration case management for families moving to Portugal — while leading platform engineering work focused on CI/CD, deployment systems, security scanning, observability, and internal automation.</p>
+      </div>
+      <div class="about-links">
+        <a href="https://github.com/ausbernard" class="about-link" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="photojournal.html" class="about-link">Photos ↗</a>
+        <a href="guestbook.html" class="about-link">Guestbook ↗</a>
+        <a href="mailto:austinbedmonson@gmail.com" class="about-link">Email ↗</a>
       </div>
     </div>
   </div>
@@ -938,7 +929,10 @@
 <div class="music-widget">
   <div class="music-header">
     <div class="music-label-tag">Now Playing</div>
-    <button class="music-toggle" id="musicToggle" title="Show track list">▾</button>
+    <div style="display:flex;align-items:center;gap:0.5rem;">
+      <button class="music-toggle" id="musicToggle" title="Show track list">▾</button>
+      <button class="music-minimize" id="musicMinimize" title="Minimize">⊟</button>
+    </div>
   </div>
   <div class="music-main">
     <img id="cover" class="music-art" src="assets/music/covers/palace-greyhound.jpg" alt="Album art">
@@ -1071,6 +1065,20 @@
 
   renderList();
   loadTrack(0, false);
+
+  // Minimize toggle
+  const widget  = document.querySelector('.music-widget');
+  const miniBtn = document.getElementById('musicMinimize');
+
+  function setMini(on) {
+    widget.classList.toggle('mini', on);
+    miniBtn.textContent = on ? '⊞' : '⊟';
+    miniBtn.title = on ? 'Expand' : 'Minimize';
+  }
+
+  miniBtn.addEventListener('click', () => setMini(!widget.classList.contains('mini')));
+
+  if (window.innerWidth <= 600) setMini(true);
 </script>
 </body>
 </html>
