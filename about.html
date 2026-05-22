@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Ausb</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #F2F2F0;
+      --white:   #FFFFFF;
+      --ink:     #1A1A1A;
+      --muted:   #888;
+      --border:  #E0E0DC;
+      --blue:    #95B1EE;
+      --blue-dk: #364C84;
+      --green:   #E7F1A8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 52px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-logo {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--ink); background: var(--bg); }
+    .nav-links a.active { color: var(--ink); font-weight: 500; }
+    .nav-links a.nav-secondary { font-size: 0.72rem; opacity: 0.5; }
+    .nav-links a.nav-secondary:hover { opacity: 1; }
+
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-divider { width: 1px; height: 16px; background: var(--border); }
+    .nav-status { display: flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; color: var(--muted); }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #57BA6A;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .nav-contact {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 0.4rem 1.1rem;
+      border: 1px solid #1A1A1A;
+      border-radius: 4px;
+      background: #1A1A1A;
+      transition: background 0.15s, transform 0.15s;
+    }
+
+    .nav-contact:hover { background: #333; border-color: #333; transform: scale(1.03); }
+
+    /* ─── PAGE ─── */
+    .about-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 8rem;
+      animation: fadeUp 0.45s ease both 0.05s;
+    }
+
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 2.5rem;
+      transition: color 0.15s;
+    }
+
+    .post-back:hover { color: var(--ink); }
+
+    /* ─── HEADER ─── */
+    .about-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+    }
+
+    .about-subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .about-quick-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #3A5020;
+      background: var(--green);
+      border: 1px solid #C8D880;
+      text-decoration: none;
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      transition: opacity 0.15s;
+    }
+
+    .about-quick-link:hover { opacity: 0.7; }
+
+    /* ─── BODY ─── */
+    .about-body {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 300;
+      font-size: 1.05rem;
+      line-height: 1.82;
+      color: #2C2C2C;
+    }
+
+    .about-body p { margin-bottom: 1.6rem; }
+    .about-body p:last-child { margin-bottom: 0; }
+
+    /* ─── FOOTER ─── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .site-footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .site-footer a:hover { color: var(--ink); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── MOBILE NAV ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .nav-burger span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 1px;
+    }
+
+    .nav-mobile-menu {
+      display: none;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0.25rem 2.5rem 0.75rem;
+      flex-direction: column;
+      position: sticky;
+      top: 52px;
+      z-index: 49;
+    }
+
+    .nav-mobile-menu.open { display: flex; }
+
+    .nav-mobile-menu a {
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s;
+    }
+
+    .nav-mobile-menu a:last-child { border-bottom: none; }
+    .nav-mobile-menu a:hover,
+    .nav-mobile-menu a.active { color: var(--ink); }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
+      .nav-status { display: none; }
+      .nav-contact { display: none; }
+      .nav-divider { display: none; }
+      .nav-burger { display: flex; }
+      .about-wrap { padding: 2.5rem 1.25rem 6rem; }
+      .about-body { font-size: 0.98rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Ausb.</a>
+  <div class="nav-links">
+    <a href="index.html#work">Work</a>
+    <a href="writing/index.html">Writing</a>
+    <a href="about.html" class="active">About</a>
+    <a href="photo.html" class="nav-secondary">Photos</a>
+    <a href="guestbook.html" class="nav-secondary">Guestbook</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-status">
+      <div class="status-dot"></div>
+      Open to work
+    </div>
+    <div class="nav-divider"></div>
+    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Get in touch →</a>
+    <button class="nav-burger" id="navBurger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="nav-mobile-menu" id="navMobileMenu">
+  <a href="index.html#work">Work</a>
+  <a href="writing/index.html">Writing</a>
+  <a href="about.html" class="active">About</a>
+  <a href="photo.html">Photos</a>
+  <a href="guestbook.html">Guestbook</a>
+  <a href="mailto:austinbedmonson@gmail.com">Get in touch</a>
+</div>
+
+<script>
+  (function() {
+    var burger = document.getElementById('navBurger');
+    var menu   = document.getElementById('navMobileMenu');
+    burger.addEventListener('click', function() { menu.classList.toggle('open'); });
+    menu.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A') menu.classList.remove('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!burger.contains(e.target) && !menu.contains(e.target)) menu.classList.remove('open');
+    });
+  })();
+</script>
+
+<div class="about-wrap">
+
+  <a href="index.html" class="post-back">← Home</a>
+
+  <div class="about-header">
+    <h1 class="about-title">Austin Edmonson</h1>
+    <p class="about-subtitle">Platform engineer · DevOps · software builder</p>
+    <div class="about-quick-links">
+      <a href="https://github.com/ausbernard" class="about-quick-link" target="_blank" rel="noopener">
+        GitHub
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg>
+      </a>
+      <a href="assets/Austin-Edmonson-CV-EU.pdf" class="about-quick-link" target="_blank" rel="noopener">
+        CV
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg>
+      </a>
+      <a href="photo.html" class="about-quick-link">
+        Photos
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg>
+      </a>
+      <a href="mailto:austinbedmonson@gmail.com" class="about-quick-link">
+        Email
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="about-body">
+    <p>I know most cover letters today are written with generative AI in some form, and honestly, I think that says something important about where engineering is going. I deeply value AI tooling, not because it replaces engineering, but because it sharpens it. It has changed how I learn, how I build, and how quickly I can move from idea to implementation while still staying thoughtful about reliability, security, and maintainability.</p>
+    <p>I use different tools intentionally depending on the problem space. I lean on Claude Code heavily for development workflows and rapid iteration, ChatGPT for documentation, architecture exploration, and learning, Copilot within VS Code for workflow acceleration, and DeepSeek for deep technical explanations and software engineering fundamentals. These tools have made me dramatically more productive, but more importantly, they have helped reinforce strong engineering habits, better design decisions, and faster feedback loops.</p>
+    <p>I bring 6+ years of experience across DevOps, platform engineering, systems administration, and software engineering, with a strong focus on security, secrets management, CI/CD, Kubernetes, observability, and operational reliability. Much of my background has been shaped by learning directly in production environments and building systems alongside the people who depend on them every day. Being self-taught taught me how to understand systems from the ground up—how infrastructure, applications, networking, automation, and developer workflows all connect together.</p>
+    <p>Over the course of my career, I've worked across multiple engineering teams and environments, each with different operational needs and engineering cultures. That exposure taught me not only how to build systems, but how to build systems that teams can realistically operate and maintain.</p>
+    <p>Recently, much of my work has centered around Kubernetes delivery systems and developer enablement at The Home Depot. I own CI/CD workflows responsible for building, scanning, testing, and deploying services into Kubernetes infrastructure. I also led efforts to simplify overly complex Terraform-driven operational workflows by shifting our delivery model toward a more maintainable managed Kubernetes platform and standardized CI-driven deployments. A major part of that work involved designing reusable repository templates, parameterized Kubernetes deployment patterns, and automation pipelines that made service onboarding and deployment dramatically simpler for engineers.</p>
+    <p>I also spend a significant amount of time focused on observability and operational insight using Grafana. I've built dashboards that helped teams struggling with connectivity and visibility issues gain real operational awareness into their services, Kubernetes health, logs, traffic patterns, and platform behavior. I enjoy taking noisy systems and turning them into something engineers can actually reason about.</p>
+    <p>What excites me most about the future of engineering is that we are entering a period where strong engineers will not just write code—they will orchestrate systems, workflows, automation, and intelligence together. I learned DevOps and software engineering before the rise of generative AI, but I've also embraced how these tools can accelerate learning and execution without losing craftsmanship or depth. I believe that balance matters.</p>
+    <p>At the end of the day, I care deeply about building systems that are reliable, understandable, secure, and genuinely useful to the people who rely on them. I enjoy thoughtful engineering, elegant automation, and solving problems in ways that reduce friction for teams. That combination of curiosity, adaptability, and systems thinking is what I would bring to your organization.</p>
+  </div>
+
+  <footer class="site-footer">
+    <span>Austin Edmonson © 2026</span>
+    <a href="mailto:austinbedmonson@gmail.com">austinbedmonson@gmail.com</a>
+  </footer>
+
+</div>
+</body>
+</html>
