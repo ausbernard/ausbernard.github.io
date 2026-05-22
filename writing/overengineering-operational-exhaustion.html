@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Why we built Partida — Ausb</title>
+  <title>We Were Overengineering Ourselves Into Operational Exhaustion — Ausb</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
   <style>
@@ -126,10 +126,7 @@
       margin-bottom: 1rem;
     }
 
-    .tag-product     { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
-    .tag-design      { background: #EDE9FE; color: #5B21B6; border-color: #DDD6FE; }
-    .tag-engineering { background: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
-    .tag-ux          { background: #FCE7F3; color: #9D174D; border-color: #FBCFE8; }
+    .tag-infra { background: #E8EEF8; color: #2D4470; border-color: #B8C8E8; }
 
     .post-title {
       font-family: 'Source Serif 4', serif;
@@ -171,15 +168,6 @@
 
     .post-body em     { font-style: italic; }
     .post-body strong { font-weight: 500; color: var(--ink); }
-
-    .post-body code {
-      font-family: 'Courier New', monospace;
-      font-size: 0.88em;
-      background: var(--border);
-      padding: 0.1em 0.35em;
-      border-radius: 3px;
-      color: var(--blue-dk);
-    }
 
     .post-body ul,
     .post-body ol { margin: 0 0 1.6rem 1.5rem; }
@@ -294,8 +282,8 @@
 
 <div class="nav-mobile-menu" id="navMobileMenu">
   <a href="../index.html#work">Work</a>
-  <a href="../about.html">About</a>
   <a href="index.html" class="active">Writing</a>
+  <a href="../about.html">About</a>
   <a href="../photo.html">Photos</a>
   <a href="../guestbook.html">Guestbook</a>
   <a href="mailto:austinbedmonson@gmail.com">Get in touch</a>
@@ -319,40 +307,135 @@
 
   <a href="index.html" class="post-back">← All posts</a>
 
-  <span class="post-tag tag-product">Product</span>
-  <h1 class="post-title">Why we built Partida: the gap no one was filling in immigration tech</h1>
+  <span class="post-tag tag-infra">Infrastructure</span>
+  <h1 class="post-title">We Were Overengineering Ourselves Into Operational Exhaustion</h1>
   <div class="post-meta">
-    <span>April 2026</span>
+    <span>May 2026</span>
     <span>5 min read</span>
   </div>
 
   <div id="post-content" class="post-body"></div>
 
   <div class="post-nav">
-    <a href="overengineering-operational-exhaustion.html">← Overengineering &amp; Operational Exhaustion</a>
-    <a href="designing-50-plus.html" class="nav-next">Designing for the 50+ demographic →</a>
+    <a href="partida-gap.html" class="nav-next">Why we built Partida →</a>
   </div>
 
 </div>
 
 <script type="text/markdown" id="md">
-Most immigration software is built for lawyers. The dashboards, the document checklists, the case timelines — they're all optimized for the professional managing dozens of cases, not for the family sitting at a kitchen table trying to figure out if they need a notary or what the difference between an NHR and a D7 visa actually means in practice.
+*Your team shouldn't be the emotional support group for your architecture.*
 
-When we started talking to families who had gone through the Portugal immigration process, the same pattern kept coming up. They'd start with a spreadsheet. Then they'd move to a WhatsApp group with other expats. Then they'd hire a lawyer who communicated entirely by email. The information existed — it was just scattered across five different contexts, none of which talked to each other.
+There's a very specific kind of fear that enters a small engineering team when someone says:
 
-## The gap wasn't information — it was continuity
+"Don't worry, Terraform manages it."
 
-There's no shortage of blog posts about moving to Portugal. The forums are active. The Facebook groups are enormous. But when a family is three months into the process and their SEF appointment gets rescheduled, they have nowhere to go that actually knows their situation. They start over, re-explaining to a new person or digging back through old emails.
+At first it feels comforting. Infrastructure as code. Reusable modules. Enterprise workflows. Clean architecture diagrams. Everything versioned. Everything declarative. Everything "scalable."
 
-What they needed wasn't a better search engine. They needed a place that held their case — their documents, their timeline, their outstanding questions — and could surface the right information at the right moment. That's what we set out to build with Partida.
+Then six months later someone needs to rotate a secret and suddenly three engineers are staring at a failed Terraform plan like archaeologists trying to decode an ancient warning tablet.
 
-## What Partida does differently
+I don't say that to knock Terraform. Terraform is powerful. In the right environment, with the right staffing and operational maturity, it solves real problems elegantly.
 
-Partida is case-centric, not task-centric. The family's situation — visa type, family composition, target municipality — shapes everything: which documents they need, which deadlines apply, which steps come next. Instead of a generic checklist, they get a timeline that reflects their actual path.
+But small teams have a dangerous habit of inheriting infrastructure patterns designed for organizations with:
 
-We also built real-time communication directly into the case view. Not because email is broken, but because context-switching is expensive. When your lawyer sends you a message inside the context of your case, both sides already know what you're talking about. There's no "as discussed" or "per my last email" — just the conversation, attached to the moment it matters.
+- dedicated platform divisions
+- infra specialists
+- module governance
+- architecture review boards
+- and at least one engineer whose entire personality is Terraform state management
 
-There's more to build. But the foundation — a place that knows your case and grows with it — is the thing we kept wishing existed when we were talking to families. So we built it.
+We did not have that team.
+
+What I inherited was a small group of engineers who mostly just wanted to support services and ship code safely to production. Before I joined, some deployments were literally happening from engineers' laptops directly into production through Cloud Run jobs. That was the mentality. Keep the services alive. Move fast. Support the business.
+
+Then suddenly those same engineers were expected to operate inside a heavily managed Terraform Enterprise ecosystem layered across Kubernetes, networking modules, secrets management, CI systems, state files, and deployment workflows.
+
+On paper it looked mature.
+
+In reality it felt like introducing a second job.
+
+## Simple things became emotionally expensive
+
+- Rotate a secret? Open Terraform.
+- Need cluster configuration? Open Terraform.
+- Need environment changes? Open Terraform.
+
+And god forbid a staff engineer did a POC six months ago, left some drift behind in state, and now your networking module suddenly wants:
+
+- 7 changes
+- 5 additions
+- resources nobody on your current team has ever touched
+- and a plan output long enough to qualify as weekend reading
+
+Nothing builds confidence before a production deploy quite like: *"Why is Terraform trying to recreate networking resources I didn't even know existed?"*
+
+## The real issue: complexity ownership
+
+At some point I realized the issue wasn't Terraform itself.
+
+The issue was **complexity ownership**.
+
+We had inherited infrastructure patterns designed for teams with dedicated platform bandwidth, but the actual team just needed:
+
+- safe deployments
+- understandable workflows
+- reliable secret management
+- and confidence that deploying an app wouldn't accidentally awaken ancient networking demons
+
+Infrastructure had become "correct" architecturally but exhausting operationally.
+
+## So we changed direction
+
+We moved workloads onto a managed Kubernetes platform and simplified the ownership model dramatically. Instead of routing every operational concern through Terraform workflows, we focused on standardizing application delivery and reducing the amount of infrastructure engineers needed to think about daily.
+
+We centralized secrets into a native secrets management tool instead of threading secrets through multiple Terraform abstractions and deployment layers.
+
+CI/CD became:
+
+- build
+- test
+- scan
+- deploy
+
+Not:
+
+- open four repos
+- investigate state drift
+- update variables
+- re-run plans
+- emotionally recover
+- then finally deploy the actual application
+
+I also built reusable repository templates with parameterized Kubernetes configs and standardized deployment patterns so onboarding new applications became significantly easier. Developers didn't need deep Kubernetes or Terraform knowledge just to ship code anymore.
+
+And honestly, that changed the team dynamic more than the technology itself.
+
+Non-infrastructure engineers could participate in deployments confidently. Operational workflows became understandable. Secrets became manageable. Shipping stopped feeling scary.
+
+We cut deployment workflows from something like 8+ operational steps down to about 3 predictable ones.
+
+Was it less architecturally "pure?" Probably.
+
+Was it dramatically healthier for the team operating it every day? Absolutely.
+
+## Overengineering rarely feels like overengineering while you're building it
+
+It usually feels responsible. Mature. Future-proof.
+
+Until your team becomes the unpaid emotional support group for your architecture.
+
+That experience changed how I think about platform engineering entirely.
+
+Now I care a lot more about:
+
+- cognitive load
+- operational clarity
+- onboarding friction
+- maintainability
+- and whether the system still makes sense to the people supporting it six months later
+
+Sometimes the best infrastructure decision is not adding another abstraction layer.
+
+Sometimes it's removing three of them.
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
