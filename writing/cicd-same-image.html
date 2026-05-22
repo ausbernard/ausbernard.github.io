@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HTMX in production — Ausb</title>
+  <title>We Stopped Trusting Deployments Until We Fixed This — Ausb</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
   <style>
@@ -129,7 +129,10 @@
     .tag-product     { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
     .tag-design      { background: #EDE9FE; color: #5B21B6; border-color: #DDD6FE; }
     .tag-engineering { background: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
+    .tag-platform   { background: #CCFBF1; color: #0F766E; border-color: #99F6E4; }
     .tag-ux          { background: #FCE7F3; color: #9D174D; border-color: #FBCFE8; }
+    .tag-infra       { background: #E8EEF8; color: #2D4470; border-color: #B8C8E8; }
+    .tag-terraform   { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
 
     .post-title {
       font-family: 'Source Serif 4', serif;
@@ -181,9 +184,35 @@
       color: var(--blue-dk);
     }
 
+    .post-body pre {
+      background: #F7F7F5;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.1rem 1.25rem;
+      overflow-x: auto;
+      margin-bottom: 1.6rem;
+    }
+
+    .post-body pre code {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.85em;
+      color: var(--ink);
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--border);
+      padding-left: 1.25rem;
+      margin: 0 0 1.6rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
     .post-body ul,
     .post-body ol { margin: 0 0 1.6rem 1.5rem; }
     .post-body li  { margin-bottom: 0.4rem; }
+    .post-body hr  { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
     .post-nav {
       display: flex;
@@ -294,8 +323,8 @@
 
 <div class="nav-mobile-menu" id="navMobileMenu">
   <a href="../index.html#work">Work</a>
-  <a href="../about.html">About</a>
   <a href="index.html" class="active">Writing</a>
+  <a href="../about.html">About</a>
   <a href="../photo.html">Photos</a>
   <a href="../guestbook.html">Guestbook</a>
   <a href="mailto:austinbedmonson@gmail.com">Get in touch</a>
@@ -319,43 +348,273 @@
 
   <a href="index.html" class="post-back">← All posts</a>
 
-  <span class="post-tag tag-engineering">Engineering</span>
-  <h1 class="post-title">HTMX in production: what nobody tells you about going hypermedia-first</h1>
+  <span class="post-tag tag-platform">Platform</span>
+  <h1 class="post-title">We Stopped Trusting Deployments Until We Fixed This</h1>
   <div class="post-meta">
-    <span>February 2026</span>
+    <span>May 2026</span>
     <span>6 min read</span>
   </div>
 
   <div id="post-content" class="post-body"></div>
 
   <div class="post-nav">
-    <a href="partida-gap.html">← Why we built Partida</a>
+    <a href="terraform-dishwasher.html" class="nav-next">Terraform is Like a Dishwasher →</a>
   </div>
 
 </div>
 
 <div id="md" style="display:none">
-Six months ago I was skeptical. HTMX sounded like a fun experiment — a way to build interactive UIs without writing a full React app. But I'd been burned by "simple" approaches before. Simple usually means "simple until it isn't," and then you're stuck with the wrong tool in the wrong place.
+## The CI/CD lesson that mattered more than branching strategies.
 
-We built Partida on FastAPI and HTMX anyway. Six months in, shipping to real users. Here's what I actually think.
+Nothing destroys trust in deployments faster than realizing staging and production were never actually running the same thing.
 
-## The good
+Every engineering team eventually hears some version of:
 
-The thing nobody talks about enough: **you stop thinking in two layers**. With a React frontend and a REST API, you're constantly making decisions at the boundary — what does the API return? What does the client transform? Who owns that piece of state? With HTMX, the server returns HTML. The client swaps it in. That's it. The cognitive overhead drops considerably.
+> "But it worked in staging."
 
-We also found debugging got easier. When something looks wrong on screen, the answer is almost always in the HTML the server returned — not buried in a chain of state updates. `hx-boost` and `hx-swap` are visible attributes in the DOM. The behavior is inspectable without a browser devtools plugin.
+Which usually translates to:
 
-## The surprising
+- different image
+- different environment variables
+- slightly different dependencies
+- different permissions
+- and now three engineers are trying to determine whether production broke because of the code or because the deployment process quietly changed underneath it
 
-Forms are excellent with HTMX. Server-side validation errors, inline feedback, partial page updates — all clean and fast. Where it gets harder is anything with *shared state across unrelated components*. If a user action on one side of the page needs to update something on the other side that the server doesn't control, you're reaching for `hx-trigger` and custom events, and it starts to feel like patching a hole.
+That realization changed how I think about CI/CD entirely.
 
-The real-time chat feature in Partida — which uses Server-Sent Events — required a thin layer of vanilla JS alongside HTMX. SSE itself is straightforward, but coordinating the incoming event stream with an HTMX-managed DOM took some careful thought. Not a dealbreaker, but worth knowing before you commit.
+Not branches.
 
-## The one pattern I'd change
+Not tooling.
 
-We started by having every endpoint return a full HTML fragment. That works, but it creates tight coupling between route and UI. Halfway through, we moved to a pattern where templates have dedicated partial variants — `_case_row.html` alongside `case_row.html` — and the route decides which to render based on the request headers HTMX sets. Much cleaner to test, much easier to reason about when the page structure changes.
+Not GitHub Actions.
 
-If you're starting fresh: build that convention in from the beginning. You'll thank yourself later.
+Not Kubernetes.
+
+**Artifact trust.**
+
+That became the entire game.
+
+---
+
+## The Problem We Were Actually Solving
+
+Our team ships containerized workloads into Kubernetes environments.
+
+We needed:
+- governance around production releases
+- executive approval before production deployment
+- auditability
+- reliable testing
+- and enough automation that engineers could still move quickly
+
+Like most teams, we started with branching strategies.
+
+```text
+np         → active development
+rc         → release candidate and stabilization
+production → live environment
+```
+
+If we didn't have governance and approval requirements, trunk-based deployment would likely be simpler operationally.
+
+But eventually I realized something important:
+
+Branches themselves do not make deployments safe.
+
+You can have beautiful Git workflows, release candidates, change requests, approvals, and perfectly named branches — and still have completely unreliable deployments if your artifacts drift between environments.
+
+That's the real failure mode.
+
+---
+
+## The Rule That Changed Everything
+
+We adopted one simple rule:
+
+**Build once. Promote the same image everywhere.**
+
+No rebuilding containers between environments.
+No "slightly different" production artifact.
+No environment-specific build process.
+
+The exact same image that runs in np becomes the image that eventually reaches production.
+
+That one decision eliminated an enormous amount of deployment uncertainty.
+
+We started calling this the slingshot pattern.
+
+---
+
+## The Slingshot Pattern
+
+When a PR merges into np, automation kicks off:
+
+1. Run tests
+2. Run vulnerability scans
+3. Build the container image
+4. Run image and manifest scans
+4. Deploy into the np Kubernetes cluster
+5. Promote the exact same image into the rc artifact location
+
+Not deployed yet. Just staged and waiting.
+
+That distinction matters.
+
+A lot of CI/CD systems accidentally rebuild images during promotion between environments. Which means checksums differ, dependencies drift, debugging becomes painful, and "worked in staging" stops meaning anything.
+
+We wanted deployments to feel boring and trustworthy.
+
+Same image. Different clusters.
+
+---
+
+## RC Became Our Confidence Layer
+
+When changes move from np → rc, another workflow triggers:
+
+1. Deploy the exact same image into the rc Kubernetes cluster
+2. Run deployments using production credentials in dry-run mode
+3. Generate a GitHub pre-release
+4. Open an Organizational Change Request for approval
+5. Promote the same image into the production artifact location
+
+That production dry-run step ended up catching an incredible amount of operational weirdness:
+
+- missing permissions
+- IAM problems
+- secret access failures
+- environment mismatches
+- cluster-level surprises
+
+Because nothing is more frustrating than: *"The application worked perfectly but production permissions failed."*
+
+The earlier we caught those issues, the calmer deployments became.
+
+---
+
+## Why We Didn't Deploy Directly From `np`
+
+One fair question is:
+
+> "Why not just deploy directly from `np` using trunk-based workflows?"
+
+And honestly, in a highly mature engineering organization, I probably would lean more in that direction.
+
+But context matters.
+
+The team I inherited was deploying workloads directly from laptops into environments through Cloud Run jobs — without standardized pipelines, release visibility, or strong deployment boundaries between environments.
+
+`np` was effectively development, testing, deployment, and production approval all blended together.
+
+So before we could optimize for deployment velocity, we first needed to establish:
+
+- trust in automation
+- trust in releases
+- repeatable deployment behavior
+- auditability
+- and safer operational patterns
+
+Most of our workloads were not customer-facing frontend applications. They were internal SaaS automations, API integrations, monitoring services, seat provisioning workflows, identity lifecycle tooling, and operational support systems.
+
+Which meant many failures would not immediately surface visually. A deployment could succeed technically while silently failing operationally.
+
+The `rc` layer became less about adding process and more about creating operational trust — confidence, validation, and a real boundary between experimentation and production promotion.
+
+And honestly, it did slow the team down at first.
+
+But that was intentional.
+
+You cannot build trust in automation by moving faster than the automation is capable of validating safely.
+
+The release process was not only technical infrastructure. It was behavioral infrastructure.
+
+Over time, as teams mature operationally, you can absolutely reduce ceremony and move toward more continuous deployment models. But inherited systems rarely start there safely.
+
+---
+
+## The Goal Was Never More Automation
+
+This is where I think a lot of platform engineering discussions go sideways.
+
+People talk about CI/CD like the goal is maximum automation at all costs.
+
+It's not.
+
+The goal is trust.
+
+A release process should make engineers feel more confident deploying software, not less. The automation only matters if it reduces uncertainty.
+
+That's why the slingshot pattern worked so well for us:
+
+- one artifact
+- consistent promotion
+- predictable deployments
+- less drift
+- fewer surprises
+
+It reduced the number of unknowns engineers had to reason about during releases.
+
+---
+
+## The Most Fragile Part: Branch Divergence
+
+The hardest part of the entire system wasn't Kubernetes.
+
+It wasn't GitHub Actions.
+
+It wasn't artifact promotion.
+
+It was humans.
+
+More specifically: hotfixes, release pressure, and branch divergence during stabilization windows.
+
+Eventually rc would drift away from np:
+
+- production fixes landed directly in rc
+- last-minute changes happened under pressure
+- release-specific tweaks appeared
+- and suddenly the branches no longer represented the same reality
+
+At first teams tell themselves: *"We'll remember to merge it back later."*
+
+That works exactly until nobody remembers.
+
+Then six weeks later: *"Why did this production bug come back?"*
+
+We experimented with fully automating the back-merge process, but honestly, automatic conflict generation infrastructure is not as fun as it sounds.
+
+What ended up working best was:
+
+- automatic visibility
+- notifications
+- lightweight tooling
+- and manual ownership when conflicts existed
+
+Enough automation to reduce friction. Not enough automation to create invisible chaos.
+
+---
+
+## What I Learned
+
+The branches themselves don't make you safe. The automation and artifact consistency behind them do.
+
+Once we committed to same image, different clusters — deployments became dramatically easier to reason about.
+
+If production failed, we knew:
+
+- the artifact had not changed
+- the deployment pipeline had not changed
+- only the environment had
+
+That level of confidence matters more than people realize.
+
+Because at the end of the day, most engineers are not afraid of deployments.
+
+They're afraid of uncertainty.
+
+Good CI/CD systems reduce uncertainty.
+
+That's the real job.
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

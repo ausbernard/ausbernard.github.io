@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>We Were Overengineering Ourselves Into Operational Exhaustion — Ausb</title>
+  <title>Terraform is Like a Dishwasher: Great for Daily Loads, Overkill for a Single Cup — Ausb</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
   <style>
@@ -126,7 +126,8 @@
       margin-bottom: 1rem;
     }
 
-    .tag-infra { background: #E8EEF8; color: #2D4470; border-color: #B8C8E8; }
+    .tag-infra       { background: #E8EEF8; color: #2D4470; border-color: #B8C8E8; }
+    .tag-terraform   { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
 
     .post-title {
       font-family: 'Source Serif 4', serif;
@@ -172,6 +173,7 @@
     .post-body ul,
     .post-body ol { margin: 0 0 1.6rem 1.5rem; }
     .post-body li  { margin-bottom: 0.4rem; }
+    .post-body hr  { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
     .post-nav {
       display: flex;
@@ -265,6 +267,7 @@
     <a href="index.html" class="active">Writing</a>
     <a href="../about.html">About</a>
     <a href="../photo.html" class="nav-secondary">Photos</a>
+    <a href="../guestbook.html" class="nav-secondary">Guestbook</a>
   </div>
   <div class="nav-right">
     <div class="nav-status">
@@ -284,6 +287,7 @@
   <a href="index.html" class="active">Writing</a>
   <a href="../about.html">About</a>
   <a href="../photo.html">Photos</a>
+  <a href="../guestbook.html">Guestbook</a>
   <a href="mailto:austinbedmonson@gmail.com">Get in touch</a>
 </div>
 
@@ -305,136 +309,253 @@
 
   <a href="index.html" class="post-back">← All posts</a>
 
-  <span class="post-tag tag-platform">Platform</span>
-  <h1 class="post-title">We Were Overengineering Ourselves Into Operational Exhaustion</h1>
+  <span class="post-tag tag-infra">Infrastructure</span>
+  <h1 class="post-title">Terraform is Like a Dishwasher: Great for Daily Loads, Overkill for a Single Cup</h1>
   <div class="post-meta">
     <span>May 2026</span>
-    <span>5 min read</span>
+    <span>3 min read</span>
   </div>
 
   <div id="post-content" class="post-body"></div>
 
   <div class="post-nav">
-    <a href="terraform-dishwasher.html">← Terraform is Like a Dishwasher</a>
-    <a href="partida-gap.html" class="nav-next">Why we built Partida →</a>
+    <a href="cicd-same-image.html">← Same Image, Different Clusters</a>
+    <a href="overengineering-operational-exhaustion.html" class="nav-next">Our small team was getting burnt out →</a>
   </div>
 
 </div>
 
 <div id="md" style="display:none">
-*Your team shouldn't be the emotional support group for your architecture.*
+## Terraform Demystified: What It Is, When to Use It, and When to Run Away
 
-There's a very specific kind of fear that enters a small engineering team when someone says:
+No jargon avalanche. Just plain English.
 
-"Don't worry, Terraform manages it."
+If you've heard the word “Terraform” thrown around in tech circles and nodded along pretending to know what it means, you’re not alone.
 
-At first it feels comforting. Infrastructure as code. Reusable modules. Enterprise workflows. Clean architecture diagrams. Everything versioned. Everything declarative. Everything "scalable."
+Let’s fix that.
 
-Then six months later someone needs to rotate a secret and suddenly three engineers are staring at a failed Terraform plan like archaeologists trying to decode an ancient warning tablet.
+---
 
-I don't say that to knock Terraform. Terraform is powerful. In the right environment, with the right staffing and operational maturity, it solves real problems elegantly.
+## What Terraform Actually Is
 
-But small teams have a dangerous habit of inheriting infrastructure patterns designed for organizations with:
+Terraform is a tool that lets you manage infrastructure using code instead of manually clicking around cloud dashboards.
 
-- dedicated platform divisions
-- infra specialists
-- module governance
-- architecture review boards
-- and at least one engineer whose entire personality is Terraform state management
+Instead of:
+- opening AWS
+- clicking through 14 menus
+- forgetting which settings you changed last week
+- and praying production still works afterward
 
-We did not have that team.
+You write configuration files that describe what infrastructure you want.
 
-What I inherited was a small group of engineers who mostly just wanted to support services and ship code safely to production. Before I joined, some deployments were literally happening from engineers' laptops directly into production through Cloud Run jobs. That was the mentality. Keep the services alive. Move fast. Support the business.
+For example:
 
-Then suddenly those same engineers were expected to operate inside a heavily managed Terraform Enterprise ecosystem layered across Kubernetes, networking modules, secrets management, CI systems, state files, and deployment workflows.
+> “I want a server, a database, networking rules, and storage.”
 
-On paper it looked mature.
+Terraform reads those files and creates the infrastructure for you.
 
-In reality it felt like introducing a second job.
+That’s the core idea.
 
-## Simple things became emotionally expensive
+Infrastructure as code.
 
-- Rotate a secret? Open Terraform.
-- Need cluster configuration? Open Terraform.
-- Need environment changes? Open Terraform.
+---
 
-And god forbid a staff engineer did a POC six months ago, left some drift behind in state, and now your networking module suddenly wants:
+## Why Engineers Like It
 
-- 7 changes
-- 5 additions
-- resources nobody on your current team has ever touched
-- and a plan output long enough to qualify as weekend reading
+Terraform solves real problems.
 
-Nothing builds confidence before a production deploy quite like: *"Why is Terraform trying to recreate networking resources I didn't even know existed?"*
+And when your infrastructure starts growing, it honestly feels incredible.
 
-## The real issue: complexity ownership
+## Repeatability
 
-At some point I realized the issue wasn't Terraform itself.
+You can create the same environment consistently every time.
 
-The issue was **complexity ownership**.
+No more:
+> “Production works differently because someone manually changed something eight months ago.”
 
-We had inherited infrastructure patterns designed for teams with dedicated platform bandwidth, but the actual team just needed:
+---
 
-- safe deployments
-- understandable workflows
-- reliable secret management
-- and confidence that deploying an app wouldn't accidentally awaken ancient networking demons
+## Version Control
 
-Infrastructure had become "correct" architecturally but exhausting operationally.
+Your infrastructure lives in Git like application code.
 
-## So we changed direction
+You can see:
+- who changed something
+- when they changed it
+- and occasionally who accidentally ruined everyone’s Friday
 
-We moved workloads onto a managed Kubernetes platform and simplified the ownership model dramatically. Instead of routing every operational concern through Terraform workflows, we focused on standardizing application delivery and reducing the amount of infrastructure engineers needed to think about daily.
+---
 
-We centralized secrets into a native secrets management tool instead of threading secrets through multiple Terraform abstractions and deployment layers.
+## Safer Changes
 
-CI/CD became:
+Terraform has a `plan` command that previews changes before they happen.
 
-- build
-- test
-- scan
-- deploy
+That means you can review infrastructure changes before applying them.
 
-Not:
+Which is significantly better than:
+> “I clicked the wrong thing in AWS and now networking is gone.”
 
-- open four repos
-- investigate state drift
-- update variables
-- re-run plans
-- emotionally recover
-- then finally deploy the actual application
+---
 
-I also built reusable repository templates with parameterized Kubernetes configs and standardized deployment patterns so onboarding new applications became significantly easier. Developers didn't need deep Kubernetes or Terraform knowledge just to ship code anymore.
+## Speed at Scale
 
-And honestly, that changed the team dynamic more than the technology itself.
+Once infrastructure grows large enough, manually managing cloud resources becomes exhausting.
 
-Non-infrastructure engineers could participate in deployments confidently. Operational workflows became understandable. Secrets became manageable. Shipping stopped feeling scary.
+Terraform helps automate:
+- environment creation
+- networking
+- databases
+- Kubernetes infrastructure
+- permissions
+- and repetitive setup work
 
-We cut deployment workflows from something like 8+ operational steps down to about 3 predictable ones.
+This is where it shines.
 
-Was it less architecturally "pure?" Probably.
+---
 
-Was it dramatically healthier for the team operating it every day? Absolutely.
+## Where Teams Get Themselves Into Trouble
 
-## Overengineering rarely feels like overengineering while you're building it
+Terraform is powerful.
 
-It usually feels responsible. Mature. Future-proof.
+But sometimes engineers adopt it because:
+> “This is what mature engineering teams do.”
 
-Until your team becomes the unpaid emotional support group for your architecture.
+Not because the problem actually requires it.
 
-That experience changed how I think about platform engineering entirely.
+A small startup with:
+- 3 engineers
+- 2 services
+- and one PostgreSQL database
 
-Now I care a lot more about:
+Probably does not need:
+- reusable networking modules
+- remote state orchestration
+- multi-layer abstractions
+- or 47 Terraform folders named after Greek mythology
 
-- cognitive load
-- operational clarity
-- onboarding friction
-- maintainability
-- and whether the system still makes sense to the people supporting it six months later
+This happens a lot in engineering.
 
-Sometimes the best infrastructure decision is not adding another abstraction layer.
+We see infrastructure patterns built for massive organizations and assume we should copy them immediately.
 
-Sometimes it's removing three of them.
+Then suddenly:
+- onboarding gets harder
+- deployments get slower
+- simple changes become scary
+- and nobody wants to touch production anymore
+
+---
+
+## Terraform State: The Weird Part
+
+Terraform has something called “state.”
+
+State is basically Terraform’s memory of reality.
+
+It keeps track of:
+- what infrastructure exists
+- what Terraform created
+- and what it believes should exist
+
+When state is healthy, everything works beautifully.
+
+When state becomes inconsistent, life gets exciting very quickly.
+
+Suddenly a harmless change becomes:
+- 12 unexpected resource modifications
+- networking updates nobody asked for
+- and a deployment review that feels spiritually exhausting
+
+Terraform state is one of those things that works wonderfully until it absolutely does not.
+
+---
+
+## Sometimes Clicking The Button Is Fine
+
+There’s a strange guilt in engineering where people feel like manually creating infrastructure is somehow morally wrong.
+
+It’s not.
+
+If your infrastructure:
+- rarely changes
+- is very small
+- has low complexity
+- and is managed by a tiny team
+
+Sometimes opening AWS and creating the resource manually is perfectly reasonable.
+
+Not every engineering problem needs industrial-grade automation.
+
+Sometimes building and maintaining the automation costs more than the thing you were automating.
+
+That’s the part people forget.
+
+---
+
+## When Terraform Actually Makes Sense
+
+Terraform becomes extremely valuable when:
+- multiple engineers manage infrastructure
+- environments need consistency
+- infrastructure changes frequently
+- compliance matters
+- disaster recovery matters
+- or infrastructure becomes too large to manage manually
+
+At that point, the investment pays for itself quickly.
+
+Especially in Kubernetes and platform-heavy environments.
+
+---
+
+## The Only Terraform Concepts You Really Need At First
+
+You honestly don’t need to memorize much to start understanding Terraform.
+
+A few concepts matter:
+
+- **Providers** → how Terraform talks to AWS, Azure, Kubernetes, etc.
+- **Resources** → the actual infrastructure being created
+- **State** → Terraform’s memory of what exists
+- **Plan** → preview changes before applying them
+- **Apply** → actually make the changes
+- **Modules** → reusable infrastructure templates
+
+That’s most of the mental model.
+
+The rest usually comes naturally after enough debugging and one emotionally memorable deployment.
+
+---
+
+## The Simple Rule
+
+Use Terraform when:
+- infrastructure changes regularly
+- multiple people manage infrastructure
+- repeatability matters
+- and the team can realistically maintain it
+
+Skip it when:
+- infrastructure is tiny
+- changes are rare
+- and the operational overhead outweighs the value
+
+Think of it like a dishwasher.
+
+Great for daily loads.
+
+Overkill for a single cup.
+
+---
+
+## Final Thoughts
+
+Terraform is a great tool.
+
+But like most infrastructure tooling, its success depends less on the tool itself and more on whether the operational complexity matches the team using it.
+
+The best infrastructure systems are not the most impressive ones.
+
+They’re the ones people can still understand and operate safely six months later.
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

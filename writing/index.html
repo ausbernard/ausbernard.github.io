@@ -211,8 +211,45 @@
     .tag-product     { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
     .tag-design      { background: #EDE9FE; color: #5B21B6; border-color: #DDD6FE; }
     .tag-engineering { background: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
+    .tag-platform   { background: #CCFBF1; color: #0F766E; border-color: #99F6E4; }
     .tag-ux          { background: #FCE7F3; color: #9D174D; border-color: #FBCFE8; }
     .tag-infra       { background: #E8EEF8; color: #2D4470; border-color: #B8C8E8; }
+    .tag-terraform   { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
+
+    /* ─── TAG FILTER ─── */
+    .tag-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .tag-filter-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+    }
+
+    .tag-filter-btn:hover { color: var(--ink); border-color: #C0C0BC; }
+
+    .tag-filter-btn.active[data-tag="all"] { background: var(--ink); color: var(--white); border-color: var(--ink); }
+    .tag-filter-btn.active.tag-terraform   { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
+    .tag-filter-btn.active.tag-infra       { background: #E8EEF8; color: #2D4470; border-color: #B8C8E8; }
+    .tag-filter-btn.active.tag-product     { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+    .tag-filter-btn.active.tag-engineering { background: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
+    .tag-filter-btn.active.tag-design      { background: #EDE9FE; color: #5B21B6; border-color: #DDD6FE; }
+    .tag-filter-btn.active.tag-ux          { background: #FCE7F3; color: #9D174D; border-color: #FBCFE8; }
+
+    .post-row.filtered { display: none; }
 
     /* ─── ANIMATIONS ─── */
     @keyframes fadeUp {
@@ -289,7 +326,6 @@
     <a href="index.html" class="active">Writing</a>
     <a href="../about.html">About</a>
     <a href="../photo.html" class="nav-secondary">Photos</a>
-    <a href="../guestbook.html" class="nav-secondary">Guestbook</a>
   </div>
 
   <div class="nav-right">
@@ -310,7 +346,6 @@
   <a href="../about.html">About</a>
   <a href="index.html" class="active">Writing</a>
   <a href="../photo.html">Photos</a>
-  <a href="../guestbook.html">Guestbook</a>
   <a href="mailto:austinbedmonson@gmail.com">Get in touch</a>
 </div>
 
@@ -336,14 +371,34 @@
     <p class="hero-sub">Product, design, and engineering — things I learned the hard way or found worth sharing. Sometimes I just talk my stuff.</p>
   </div>
 
+  <div id="tagFilter" class="tag-filter"></div>
+
   <div class="post-list">
+
+    <a href="cicd-same-image.html" class="post-row">
+      <div class="post-row-date">May<br>2026</div>
+      <div>
+        <div class="post-row-title">The Most Important CI/CD Rule We Adopted: Same Image, Different Clusters</div>
+        <div class="post-row-excerpt">Nothing destroys trust in deployments faster than realizing staging and production were never actually running the same thing.</div>
+        <span class="post-row-tag tag-platform">Platform</span>
+      </div>
+    </a>
+
+    <a href="terraform-dishwasher.html" class="post-row">
+      <div class="post-row-date">May<br>2026</div>
+      <div>
+        <div class="post-row-title">Terraform is Like a Dishwasher: Great for Daily Loads, Overkill for a Single Cup</div>
+        <div class="post-row-excerpt">If you've heard the word “Terraform” thrown around in tech circles and nodded along pretending to know what it means, you’re not alone.</div>
+        <span class="post-row-tag tag-platform">Platform</span>
+      </div>
+    </a>
 
     <a href="overengineering-operational-exhaustion.html" class="post-row">
       <div class="post-row-date">May<br>2026</div>
       <div>
         <div class="post-row-title">We Were Overengineering Ourselves Into Operational Exhaustion</div>
         <div class="post-row-excerpt">What happens when a small team inherits infrastructure patterns built for a platform org three times its size. A story about Terraform, operational exhaustion, and finding the simpler path.</div>
-        <span class="post-row-tag tag-infra">Infrastructure</span>
+        <span class="post-row-tag tag-platform">Platform</span>
       </div>
     </a>
 
@@ -386,5 +441,43 @@
   </div>
 </div>
 
+<script>
+  (function() {
+    var rows = document.querySelectorAll('.post-row');
+    var tagMap = {};
+    rows.forEach(function(row) {
+      var tagEl = row.querySelector('.post-row-tag');
+      if (!tagEl) return;
+      var cls = Array.from(tagEl.classList).find(function(c) { return c.startsWith('tag-'); });
+      if (cls && !tagMap[cls]) tagMap[cls] = tagEl.textContent.trim();
+    });
+    var filter = document.getElementById('tagFilter');
+    var allBtn = document.createElement('button');
+    allBtn.className = 'tag-filter-btn active';
+    allBtn.textContent = 'All';
+    allBtn.dataset.tag = 'all';
+    filter.appendChild(allBtn);
+    Object.keys(tagMap).forEach(function(cls) {
+      var btn = document.createElement('button');
+      btn.className = 'tag-filter-btn ' + cls;
+      btn.textContent = tagMap[cls];
+      btn.dataset.tag = cls;
+      filter.appendChild(btn);
+    });
+    filter.addEventListener('click', function(e) {
+      var btn = e.target.closest('.tag-filter-btn');
+      if (!btn) return;
+      var current = btn.dataset.tag;
+      filter.querySelectorAll('.tag-filter-btn').forEach(function(b) {
+        b.classList.toggle('active', b === btn);
+      });
+      rows.forEach(function(row) {
+        if (current === 'all') { row.classList.remove('filtered'); return; }
+        var tagEl = row.querySelector('.post-row-tag');
+        row.classList.toggle('filtered', !tagEl || !tagEl.classList.contains(current));
+      });
+    });
+  })();
+</script>
 </body>
 </html>
