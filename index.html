@@ -548,7 +548,7 @@
       <p class="oss-title">Found shared mutable class-level context causing instance data leakage</p>
       <p class="oss-desc">All <code>Confidence</code> instances shared the same class-level <code>context</code> dict — setting context on one silently contaminated all others. Identified the root cause, proposed moving initialization to <code>__init__</code>, and flagged a secondary risk with a shared <code>httpx.AsyncClient</code>.</p>
     </div>
-    <span class="oss-status">Open ↗</span>
+    <span class="oss-status">Closed ↗</span>
   </a>
 
 </section>
