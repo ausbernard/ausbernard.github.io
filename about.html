@@ -23,7 +23,7 @@
       color: var(--ink);
       font-family: 'Questrial', sans-serif;
       -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
+      min-height: 100vh;\n      max-width: 1400px;\n      margin-left: auto;\n      margin-right: auto;
     }
 
     /* ─── NAV ─── */
@@ -73,6 +73,8 @@
     }
 
     .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
+    .nav-linkedin { color: var(--ink); opacity: 0.5; display: flex; align-items: center; transition: opacity 0.15s; }
+    .nav-linkedin:hover { opacity: 1; }
 
     /* ─── BLOB HERO ─── */
     .blob-section {
@@ -193,6 +195,9 @@
     <a href="index.html">Work</a>
     <a href="writing/index.html">Writing</a>
     <a href="about.html" class="active">About</a>
+    <a href="http://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="nav-linkedin" aria-label="LinkedIn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
+    </a>
     <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Contact me</a>
   </div>
 </nav>
