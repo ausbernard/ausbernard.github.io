@@ -5,345 +5,244 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About — Ausb</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Questrial&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:      #F2F2F0;
-      --white:   #FFFFFF;
-      --ink:     #1A1A1A;
-      --muted:   #888;
-      --border:  #E0E0DC;
-      --blue:    #95B1EE;
-      --blue-dk: #364C84;
-      --green:   #E7F1A8;
+      --bg:    #F5F0E6;
+      --ink:   #1E2A5E;
+      --ink-2: #3D4870;
+      --muted: #C0BDB5;
+      --red:   #e40000;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
+      font-family: 'Questrial', sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
     }
 
+    /* ─── NAV ─── */
     nav {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
       display: flex;
-      align-items: center;
+      align-items: baseline;
       justify-content: space-between;
-      padding: 0 2.5rem;
-      height: 52px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      padding: 2.25rem 3rem;
     }
 
     .nav-logo {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 500;
-      letter-spacing: -0.04em;
+      font-family: 'Rozha One', serif;
+      font-size: 1.25rem;
       color: var(--ink);
       text-decoration: none;
+      letter-spacing: -0.01em;
     }
 
-    .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+    .nav-links {
+      display: flex;
+      align-items: baseline;
+      gap: 2.5rem;
+    }
 
     .nav-links a {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.35rem 0.75rem;
-      border-radius: 4px;
-      transition: color 0.15s, background 0.15s;
-    }
-
-    .nav-links a:hover { color: var(--ink); background: var(--bg); }
-    .nav-links a.active { color: var(--ink); font-weight: 500; }
-    .nav-links a.nav-secondary { font-size: 0.72rem; opacity: 0.5; }
-    .nav-links a.nav-secondary:hover { opacity: 1; }
-
-    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
-    .nav-divider { width: 1px; height: 16px; background: var(--border); }
-    .nav-status { display: flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; color: var(--muted); }
-
-    .status-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #57BA6A;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-    .nav-contact {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: #FFFFFF;
-      text-decoration: none;
-      padding: 0.4rem 1.1rem;
-      border: 1px solid #1A1A1A;
-      border-radius: 4px;
-      background: #1A1A1A;
-      transition: background 0.15s, transform 0.15s;
-    }
-
-    .nav-contact:hover { background: #333; border-color: #333; transform: scale(1.03); }
-
-    /* ─── PAGE ─── */
-    .about-wrap {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 3.5rem 2rem 8rem;
-      animation: fadeUp 0.45s ease both 0.05s;
-    }
-
-    .post-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-decoration: none;
-      margin-bottom: 2.5rem;
-      transition: color 0.15s;
-    }
-
-    .post-back:hover { color: var(--ink); }
-
-    /* ─── HEADER ─── */
-    .about-header {
-      margin-bottom: 2.5rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .about-title {
-      font-family: 'Source Serif 4', serif;
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      margin-bottom: 0.35rem;
-    }
-
-    .about-subtitle {
+      font-family: 'Questrial', sans-serif;
       font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-    }
-
-    .about-quick-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .about-quick-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #3A5020;
-      background: var(--green);
-      border: 1px solid #C8D880;
+      color: var(--ink);
       text-decoration: none;
-      padding: 0.3rem 0.75rem;
-      border-radius: 4px;
+      letter-spacing: 0.01em;
+      opacity: 0.7;
       transition: opacity 0.15s;
     }
 
-    .about-quick-link:hover { opacity: 0.7; }
+    .nav-links a:hover  { opacity: 1; }
+    .nav-links a.active { opacity: 1; }
+
+    .nav-contact {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.85rem;
+      color: #1E2A5E;
+      background: #CAFF33;
+      text-decoration: none;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
+
+    /* ─── BLOB HERO ─── */
+    .blob-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 3rem 2.5rem;
+    }
+
+    .blob-svg {
+      width: clamp(220px, 40vw, 360px);
+      height: auto;
+    }
+
+    /* ─── NAME + RULE ─── */
+    .about-identity {
+      padding: 2.5rem 3rem 0;
+      max-width: 760px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .about-name {
+      font-family: 'Rozha One', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.05;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.3em;
+    }
+
+    .about-role {
+      font-family: 'Questrial', sans-serif;
+      font-size: 1rem;
+      color: var(--ink-2);
+      margin-bottom: 2rem;
+    }
+
+    /* ─── DATA STRIP ─── */
+    .about-data {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 3rem 2.5rem;
+      width: 100%;
+    }
+
+    .about-rule {
+      border: none;
+      border-top: 1px solid var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-data-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0 2rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(192, 189, 181, 0.4);
+    }
+
+    .about-data-label {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 0.1rem;
+    }
+
+    .about-data-value {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.88rem;
+      color: var(--ink-2);
+    }
+
+    .about-data-value a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--muted);
+      transition: border-color 0.15s;
+    }
+
+    .about-data-value a:hover { border-color: var(--ink); }
 
     /* ─── BODY ─── */
     .about-body {
-      font-family: 'Source Serif 4', serif;
-      font-weight: 300;
-      font-size: 1.05rem;
-      line-height: 1.82;
-      color: #2C2C2C;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2.5rem 3rem 8rem;
     }
 
-    .about-body p { margin-bottom: 1.6rem; }
+    .about-body p {
+      font-family: 'Questrial', sans-serif;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--ink-2);
+      margin-bottom: 1.75rem;
+    }
+
     .about-body p:last-child { margin-bottom: 0; }
 
-    /* ─── FOOTER ─── */
-    .site-footer {
-      border-top: 1px solid var(--border);
-      padding-top: 2rem;
-      margin-top: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    .site-footer a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .site-footer a:hover { color: var(--ink); }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ─── MOBILE NAV ─── */
-    .nav-burger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.25rem;
-    }
-
-    .nav-burger span {
-      display: block;
-      width: 18px;
-      height: 2px;
-      background: var(--ink);
-      border-radius: 1px;
-    }
-
-    .nav-mobile-menu {
-      display: none;
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 0.25rem 2.5rem 0.75rem;
-      flex-direction: column;
-      position: sticky;
-      top: 52px;
-      z-index: 49;
-    }
-
-    .nav-mobile-menu.open { display: flex; }
-
-    .nav-mobile-menu a {
-      font-size: 0.88rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.65rem 0;
-      border-bottom: 1px solid var(--border);
-      transition: color 0.15s;
-    }
-
-    .nav-mobile-menu a:last-child { border-bottom: none; }
-    .nav-mobile-menu a:hover,
-    .nav-mobile-menu a.active { color: var(--ink); }
-
     @media (max-width: 600px) {
-      nav { padding: 0 1.25rem; }
-      .nav-links { display: none; }
-      .nav-status { display: none; }
-      .nav-contact { display: none; }
-      .nav-divider { display: none; }
-      .nav-burger { display: flex; }
-      .about-wrap { padding: 2.5rem 1.25rem 6rem; }
-      .about-body { font-size: 0.98rem; }
+      nav { padding: 1.75rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .nav-links a { font-size: 0.82rem; }
+      .blob-section { padding: 2rem 1.5rem 1.5rem; }
+      .about-identity { padding: 2rem 1.5rem 0; }
+      .about-data { padding: 0 1.5rem 2rem; }
+      .about-body { padding: 2rem 1.5rem 6rem; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">Ausb.</a>
+  <a href="index.html" class="nav-logo">Ausb</a>
   <div class="nav-links">
-    <a href="index.html#work">Work</a>
+    <a href="index.html">Work</a>
     <a href="writing/index.html">Writing</a>
     <a href="about.html" class="active">About</a>
-    <a href="photo.html" class="nav-secondary">Photos</a>
-  </div>
-  <div class="nav-right">
-    <div class="nav-status">
-      <div class="status-dot"></div>
-      Open to work
-    </div>
-    <div class="nav-divider"></div>
-    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Get in touch →</a>
-    <button class="nav-burger" id="navBurger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Contact me</a>
   </div>
 </nav>
 
-<div class="nav-mobile-menu" id="navMobileMenu">
-  <a href="index.html#work">Work</a>
-  <a href="writing/index.html">Writing</a>
-  <a href="about.html" class="active">About</a>
-  <a href="photo.html">Photos</a>
-  <a href="mailto:austinbedmonson@gmail.com">Get in touch</a>
+<div class="blob-section">
+  <svg class="blob-svg" viewBox="0 0 400 380" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 205,22 C 278,12 358,58 378,138 C 396,210 362,298 285,338 C 208,378 108,362 58,294 C 8,226 28,122 88,66 C 126,32 158,30 205,22 Z" fill="#e40000"/>
+  </svg>
 </div>
 
-<script>
-  (function() {
-    var burger = document.getElementById('navBurger');
-    var menu   = document.getElementById('navMobileMenu');
-    burger.addEventListener('click', function() { menu.classList.toggle('open'); });
-    menu.addEventListener('click', function(e) {
-      if (e.target.tagName === 'A') menu.classList.remove('open');
-    });
-    document.addEventListener('click', function(e) {
-      if (!burger.contains(e.target) && !menu.contains(e.target)) menu.classList.remove('open');
-    });
-  })();
-</script>
-
-<div class="about-wrap">
-
-  <a href="index.html" class="post-back">← Home</a>
-
-  <div class="about-header">
-    <h1 class="about-title">Austin Edmonson</h1>
-    <p class="about-subtitle">Platform engineer · DevOps · software builder</p>
-    <div class="about-quick-links">
-      <a href="https://github.com/ausbernard" class="about-quick-link" target="_blank" rel="noopener">
-        GitHub
-        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg>
-      </a>
-      <a href="assets/Austin-Edmonson-CV-EU.pdf" class="about-quick-link" target="_blank" rel="noopener">
-        CV
-        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg>
-      </a>
-      <a href="photo.html" class="about-quick-link">
-        Photos
-        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg>
-      </a>
-      <a href="mailto:austinbedmonson@gmail.com" class="about-quick-link">
-        Email
-        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg>
-      </a>
-    </div>
-  </div>
-
-  <div class="about-body">
-    <p>I know most about me cover sections today are written with generative AI in some form, and honestly, I think that says something important about where engineering is going. I deeply value AI tooling, not because it replaces engineering, but because it sharpens <b>me</b>. It has changed how I learn, how I build, and how quickly I can move from idea to implementation while still staying thoughtful about reliability, security, and maintainability.</p>
-    <p>I use different tools intentionally depending on the problem space. I lean on Claude Code heavily for development workflows and rapid iteration, ChatGPT for documentation, architecture exploration, and learning, Copilot within VS Code for workflow acceleration, and DeepSeek for deep technical explanations and software engineering fundamentals. These tools have made me dramatically more productive, but more importantly, they have helped reinforce strong engineering habits, better design decisions, and faster feedback loops.</p>
-    <p>I bring 6+ years of experience across DevOps, platform engineering, systems administration, and software engineering, with a strong focus on security, secrets management, CI/CD, Kubernetes, observability, and operational reliability. Much of my background has been shaped by learning directly in production environments and building systems alongside the people who depend on them every day. Being self-taught taught me how to understand systems from the ground up—how infrastructure, applications, networking, automation, and developer workflows all connect together.</p>
-    <p>Over the course of my career, I've worked across multiple engineering teams and environments, each with different operational needs and engineering cultures. That exposure taught me not only how to build systems, but how to build systems that teams can realistically operate and maintain.</p>
-    <p>Recently, much of my work has centered around Kubernetes delivery systems and developer enablement at The Home Depot. I own CI/CD workflows responsible for building, scanning, testing, and deploying services into Kubernetes infrastructure. I also led efforts to simplify overly complex Terraform-driven operational workflows by shifting our delivery model toward a more maintainable managed Kubernetes platform and standardized CI-driven deployments. A major part of that work involved designing reusable repository templates, parameterized Kubernetes deployment patterns, and automation pipelines that made service onboarding and deployment dramatically simpler for engineers.</p>
-    <p>I also spend a significant amount of time focused on observability and operational insight using Grafana. I've built dashboards that helped teams struggling with connectivity and visibility issues gain real operational awareness into their services, Kubernetes health, logs, traffic patterns, and platform behavior. I enjoy taking noisy systems and turning them into something engineers can actually reason about.</p>
-    <p>What excites me most about the future of engineering is that we are entering a period where strong engineers will not just write code—they will orchestrate systems, workflows, automation, and intelligence together. I learned DevOps and software engineering before the rise of generative AI, but I've also embraced how these tools can accelerate learning and execution without losing craftsmanship or depth. I believe that balance matters.</p>
-    <p>At the end of the day, I care deeply about building systems that are reliable, understandable, secure, and genuinely useful to the people who rely on them. I enjoy thoughtful engineering, elegant automation, and solving problems in ways that reduce friction for teams. That combination of curiosity, adaptability, and systems thinking is what I would bring to your organization.</p>
-  </div>
-
-  <footer class="site-footer">
-    <span>Austin Edmonson © 2026</span>
-    <a href="mailto:austinbedmonson@gmail.com">austinbedmonson@gmail.com</a>
-  </footer>
-
+<div class="about-identity">
+  <h1 class="about-name">Austin Edmonson</h1>
+  <p class="about-role">Platform engineer · DevOps · software builder</p>
 </div>
+
+<div class="about-data">
+  <hr class="about-rule"/>
+
+  <div class="about-data-row">
+    <span class="about-data-label">Currently</span>
+    <span class="about-data-value">Platform Engineering · The Home Depot</span>
+  </div>
+
+  <div class="about-data-row">
+    <span class="about-data-label">Building</span>
+    <span class="about-data-value">Partida — immigration tech for families</span>
+  </div>
+
+  <div class="about-data-row">
+    <span class="about-data-label">Stack</span>
+    <span class="about-data-value">K8s · Terraform · Python · Docker · FastAPI</span>
+  </div>
+
+  <div class="about-data-row">
+    <span class="about-data-label">GitHub</span>
+    <span class="about-data-value"><a href="https://github.com/ausbernard" target="_blank" rel="noopener">ausbernard ↗</a></span>
+  </div>
+
+  <div class="about-data-row">
+    <span class="about-data-label">CV</span>
+    <span class="about-data-value"><a href="assets/Austin-Edmonson-CV-EU.pdf" target="_blank" rel="noopener">Download ↗</a></span>
+  </div>
+</div>
+
+<div class="about-body">
+  <p>I grew up on MySpace and fixing my parents' computer. Self-taught from the start — which came with some low confidence early on — but every road I tried eventually curved back to computers and Python.</p>
+  <p>Being self-taught made me good at one thing above everything else: finding the right resource, making sense of it fast, and putting it into practical terms for the people around me. Working mostly on internal-facing tooling teams — SaaS support, identity lifecycle, developer enablement — I pick up problems I don't fully know yet, figure them out to completion, and document them in ways my teammates actually want to read.</p>
+  <p>Over 6+ years across DevOps, platform engineering, and software engineering, I've built CI/CD workflows at The Home Depot responsible for building, scanning, testing, and deploying into Kubernetes infrastructure. I've led efforts to simplify Terraform-heavy operational workflows, and built Grafana dashboards that turned noisy systems into something teams could actually reason about.</p>
+  <p>Whether it's a SaaS integration or my own product, I don't live by "good enough." I want things done quickly, thoroughly, safely — and with some pizzaz. That's the standard I hold for everything I touch.</p>
+</div>
+
 </body>
 </html>
