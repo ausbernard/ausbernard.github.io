@@ -3,1179 +3,554 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ausb — Product Engineer</title>
+  <title>Ausb</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Questrial&family=Bebas+Neue&family=Sigmar&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:       #F2F2F0;
-      --white:    #FFFFFF;
-      --ink:      #1A1A1A;
-      --muted:    #888;
-      --border:   #E0E0DC;
-      --blue:     #95B1EE;
-      --blue-dk:  #364C84;
-      --green:    #E7F1A8;
-      --card-h:   180px;
+      --bg:      #F5F0E6;
+      --ink:     #1E2A5E;
+      --ink-2:   #3D4870;
+      --muted:   #C0BDB5;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
+      font-family: 'Questrial', sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
     }
 
-    /* ─── NAV ─── */
     nav {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
       display: flex;
-      align-items: center;
+      align-items: baseline;
       justify-content: space-between;
-      padding: 0 2.5rem;
-      height: 52px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      padding: 2.25rem 3rem;
     }
 
     .nav-logo {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 500;
-      letter-spacing: -0.04em;
+      font-family: 'Rozha One', serif;
+      font-size: 1.25rem;
       color: var(--ink);
       text-decoration: none;
+      letter-spacing: -0.01em;
     }
 
     .nav-links {
       display: flex;
-      align-items: center;
-      gap: 0.25rem;
+      align-items: baseline;
+      gap: 2.5rem;
     }
 
     .nav-links a {
-      font-size: 0.8rem;
-      color: var(--muted);
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
       text-decoration: none;
-      padding: 0.35rem 0.75rem;
-      border-radius: 4px;
-      transition: color 0.15s, background 0.15s;
+      letter-spacing: 0.01em;
+      opacity: 0.7;
+      transition: opacity 0.15s;
     }
 
-    .nav-links a:hover { color: var(--ink); background: var(--bg); }
-    .nav-links a.active { color: var(--ink); font-weight: 500; }
-
-    .nav-links a.nav-secondary {
-      font-size: 0.72rem;
-      opacity: 0.5;
-    }
-
-    .nav-links a.nav-secondary:hover { opacity: 1; }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .nav-divider {
-      width: 1px;
-      height: 16px;
-      background: var(--border);
-    }
-
-    .nav-status {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
-
-    .status-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #57BA6A;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .nav-links a:hover  { opacity: 1; }
+    .nav-links a.active { opacity: 1; }
 
     .nav-contact {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--white);
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.01em;
+      color: #1E2A5E;
+      background: #CAFF33;
       text-decoration: none;
-      padding: 0.4rem 1.1rem;
-      border: 1px solid var(--ink);
-      border-radius: 4px;
-      background: var(--ink);
-      transition: background 0.15s, transform 0.15s;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      transition: opacity 0.15s, transform 0.15s;
+      opacity: 1;
     }
 
-    .nav-contact:hover { background: #333; border-color: #333; transform: scale(1.03); }
-
-    /* ─── PAGE ─── */
-    .page {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 3.5rem 2rem 8rem;
-    }
+    .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
 
     /* ─── HERO ─── */
     .hero {
-      margin-bottom: 3.5rem;
-      animation: fadeUp 0.45s ease both 0.05s;
+      padding: 5rem 3rem 8rem;
     }
 
-    .hero-box {
-      display: inline-block;
-      padding: 1.5rem 2rem 1.75rem;
-      position: relative;
-    }
-
-    .hero-box::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 3px solid var(--ink);
-      border-radius: 24px;
-      filter: url(#wobbly);
-      pointer-events: none;
-    }
-
-    .hero-name {
-      font-family: 'DM Sans', sans-serif;
-      font-size: clamp(4.5rem, 12vw, 9rem);
-      font-weight: 400;
-      letter-spacing: -0.04em;
-      line-height: 0.92;
+    .hero-h1 {
+      font-family: 'Rozha One', serif;
+      font-size: clamp(3rem, 7.5vw, 6.5rem);
+      line-height: 1.04;
       color: var(--ink);
-      margin-bottom: 0.2em;
-    }
-
-    .hero-sub {
-      font-family: 'DM Sans', sans-serif;
-      font-size: clamp(1.1rem, 2.8vw, 1.8rem);
-      font-weight: 300;
       letter-spacing: -0.02em;
-      line-height: 1.3;
-      color: #5A5A5A;
-      max-width: 28ch;
     }
 
-    /* ─── SECTION ─── */
-    .section { margin-bottom: 3.5rem; animation: fadeUp 0.45s ease both; }
-    .section:nth-child(2) { animation-delay: 0.1s; }
-    .section:nth-child(3) { animation-delay: 0.18s; }
-    .section:nth-child(4) { animation-delay: 0.26s; }
+    .hero-h2 {
+      font-family: 'Rozha One', serif;
+      font-size: clamp(1.9rem, 4.75vw, 4rem);
+      line-height: 1.1;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-top: 0.2em;
+    }
 
-    .section-row {
+    .hero-body {
+      margin-top: 3.5rem;
+      max-width: 54ch;
+    }
+
+    .hero-body {
+      font-family: 'Questrial', sans-serif;
+      font-size: clamp(0.95rem, 1.35vw, 1.1rem);
+      line-height: 1.75;
+      color: var(--ink-2);
+    }
+
+    /* ─── WORK GRID ─── */
+    .work {
+      padding: 0 3rem 8rem;
+    }
+
+    .work-label {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 2rem;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .work-item {
+      border-top: 1px solid var(--muted);
+      padding: 2rem 2rem 2.5rem 0;
+      text-decoration: none;
+      display: block;
+      opacity: 1;
+      transition: opacity 0.15s;
+    }
+
+    .work-item:nth-child(even) {
+      padding-left: 2rem;
+      padding-right: 0;
+      border-left: 1px solid var(--muted);
+    }
+
+    .work-item:hover { opacity: 0.65; }
+
+    .work-item-tag {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    .work-item-title {
+      font-family: 'Rozha One', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      line-height: 1.1;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+    }
+
+    .work-item-desc {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--ink-2);
+    }
+
+    .work-item-link {
+      display: inline-block;
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.78rem;
+      color: var(--ink);
+      margin-top: 1.25rem;
+      letter-spacing: 0.02em;
+    }
+
+
+/* ─── WRITING SECTION ─── */
+    .writing {
+      padding: 0 3rem 10rem;
+    }
+
+    .writing-header {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
-      margin-bottom: 1.25rem;
+      margin-bottom: 2rem;
     }
 
-    .section-name {
-      font-family: 'DM Sans', sans-serif;
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 400;
-      letter-spacing: -0.04em;
-      color: var(--ink);
-      line-height: 1;
-    }
-
-    .section-all {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 400;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: -0.01em;
-      transition: color 0.15s;
-      white-space: nowrap;
-    }
-
-    .section-all:hover { color: var(--ink); }
-
-    /* ─── EDITORIAL POST LIST ─── */
-    .post-list-editorial {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .post-editorial-row {
-      display: grid;
-      grid-template-columns: 72px 1fr auto;
-      gap: 1.25rem;
-      padding: 1.1rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none;
-      color: inherit;
-      align-items: center;
-      transition: background 0.15s;
-    }
-
-    .post-editorial-row:last-child { border-bottom: none; }
-    .post-editorial-row:hover { background: #FAFAF8; }
-
-    .post-editorial-date {
-      font-size: 0.68rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      line-height: 1.4;
-    }
-
-    .post-editorial-title {
-      font-family: 'DM Sans', sans-serif;
+    .writing-label {
+      font-family: 'Questrial', sans-serif;
       font-size: 0.95rem;
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      line-height: 1.3;
-      transition: color 0.15s;
-    }
-
-    .post-editorial-row:hover .post-editorial-title { color: var(--blue-dk); }
-
-    .post-editorial-tag {
-      font-size: 0.58rem;
-      font-weight: 500;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      padding: 0.15rem 0.45rem;
-      border-radius: 3px;
-      white-space: nowrap;
-      border: 1px solid;
+      color: var(--ink);
     }
 
-    .tag-product     { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
-    .tag-design      { background: #EDE9FE; color: #5B21B6; border-color: #DDD6FE; }
-    .tag-engineering { background: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
-    .tag-platform   { background: #CCFBF1; color: #0F766E; border-color: #99F6E4; }
-    .tag-ux          { background: #FCE7F3; color: #9D174D; border-color: #FBCFE8; }
-    .tag-infra       { background: #E8EEF8; color: #2D4470; border-color: #B8C8E8; }
-    .tag-terraform   { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
+    .writing-all {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.75rem;
+      color: var(--ink);
+      text-decoration: none;
+      opacity: 0.5;
+      letter-spacing: 0.02em;
+      transition: opacity 0.15s;
+    }
 
-    /* ─── CARD GRID ─── */
-    .card-grid {
+    .writing-all:hover { opacity: 1; }
+
+    .writing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
     }
 
-    .card {
-      background: var(--white);
-      cursor: pointer;
+    .writing-item {
+      border-radius: 14px;
+      padding: 2rem;
+      aspect-ratio: 4 / 3;
+      text-decoration: none;
       display: flex;
       flex-direction: column;
-      transition: background 0.15s;
+      justify-content: flex-start;
+      gap: 0.75rem;
+      box-shadow: 0 4px 16px rgba(30, 42, 94, 0.12), 0 1px 4px rgba(30, 42, 94, 0.08);
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+
+    .writing-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(30, 42, 94, 0.18), 0 2px 8px rgba(30, 42, 94, 0.1);
+      opacity: 0.95;
+    }
+
+    .writing-item.accent-pea  { background: #6777B6; }
+    .writing-item.accent-gold { background: #B28622; }
+
+    .writing-item-footer {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .writing-item-read {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .writing-item-tag {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .writing-item-title {
+      font-family: 'Rozha One', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.25rem;
+    }
+
+    .accent-pea  .writing-item-title { color: #EFCE7B; }
+    .accent-gold .writing-item-title { color: #F8CABA; }
+
+    .writing-item-snippet {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.78);
+    }
+
+    /* ─── OPEN SOURCE ─── */
+    .oss {
+      padding: 0 3rem 8rem;
+    }
+
+    .oss-label {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 2rem;
+    }
+
+    .oss-row {
+      display: grid;
+      grid-template-columns: 200px 1fr auto;
+      gap: 0 2rem;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--muted);
       text-decoration: none;
-      color: inherit;
-      border: none;
-      font: inherit;
-      text-align: left;
+      align-items: center;
+      transition: opacity 0.15s;
     }
 
-    .card:hover { background: #FAFAF8; }
+    .oss-row:last-child { border-bottom: 1px solid var(--muted); }
+    .oss-row:hover { opacity: 0.65; }
 
-    .card-thumb {
-      height: var(--card-h);
-      overflow: hidden;
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .thumb-blue   { background: linear-gradient(135deg, #95B1EE 0%, #6B8FD4 100%); }
-    .thumb-green  { background: linear-gradient(135deg, #E7F1A8 0%, #C5D96A 100%); }
-    .thumb-navy   { background: linear-gradient(135deg, #364C84 0%, #1A2F5E 100%); }
-    .thumb-peach  { background: linear-gradient(135deg, #F5CBA7 0%, #E8956B 100%); }
-    .thumb-sage   { background: linear-gradient(135deg, #B8D4C8 0%, #7FB5A0 100%); }
-    .thumb-stone  { background: linear-gradient(135deg, #D4CFC8 0%, #B0A89E 100%); }
-    .thumb-yellow { background: linear-gradient(135deg, #F7E28D 0%, #E8C93A 100%); }
-    .thumb-rose   { background: linear-gradient(135deg, #F0B8C8 0%, #D47090 100%); }
-
-    .card-thumb-inner {
-      width: 100%; height: 100%;
+    .oss-repo {
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.3s ease;
     }
 
-    .card:hover .card-thumb-inner { transform: scale(1.03); }
-
-    .thumb-label {
-      font-family: 'Lora', serif;
-      font-size: 1.6rem;
-      opacity: 0.25;
+    .oss-repo img {
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      display: block;
     }
 
-    .thumb-tag {
-      position: absolute;
-      top: 0.65rem;
-      left: 0.65rem;
-      font-size: 0.56rem;
-      font-weight: 500;
+    .oss-title {
+      font-family: 'Rozha One', serif;
+      font-size: 1.1rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+
+    .oss-desc {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: var(--ink-2);
+    }
+
+    .oss-desc code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.82em;
+      background: rgba(30, 42, 94, 0.07);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: var(--ink);
+    }
+
+    .oss-status {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.65rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      background: rgba(255,255,255,0.9);
-      color: var(--ink);
-      padding: 0.18rem 0.45rem;
-      border-radius: 3px;
-    }
-
-    .card-body {
-      padding: 0.85rem 1rem 1rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-title {
-      font-size: 0.88rem;
-      font-weight: 500;
-      line-height: 1.35;
-      color: var(--ink);
-      margin-bottom: 0.3rem;
-      letter-spacing: -0.01em;
-    }
-
-    .card-meta {
-      font-size: 0.72rem;
       color: var(--muted);
-      margin-top: auto;
-      padding-top: 0.5rem;
-    }
-
-    /* ─── WIDE CARD (featured) ─── */
-    .card-wide { grid-column: span 2; }
-    .card-wide .card-thumb { height: calc(var(--card-h) * 1.5); }
-    .card-wide .card-body {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: start;
-      gap: 0.75rem;
-      padding: 1rem 1.25rem;
-    }
-    .card-wide .card-title {
-      font-size: 0.95rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-wide .card-meta {
+      padding-top: 0.2rem;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    .card-badge {
-      font-size: 0.58rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.18rem 0.5rem;
-      border-radius: 3px;
-      white-space: nowrap;
-      align-self: flex-start;
-      justify-self: start;
-      width: fit-content;
-    }
-
-    .badge-active  { background: #D6E8FF; color: var(--blue-dk); }
-    .badge-shipped { background: #E7F1A8; color: #3A5020; }
-    .badge-writing { background: #F0EBE0; color: #6B5030; }
-
-    /* ─── ABOUT STRIP ─── */
-    .about-strip {
-      background: var(--ink);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-      margin-bottom: 3rem;
-      animation: fadeUp 0.45s ease both 0.08s;
-    }
-
-    .about-bio {
-      font-size: 1rem;
-      line-height: 1.65;
-      color: rgba(255,255,255,0.8);
-      letter-spacing: -0.01em;
-      margin-bottom: 0.65rem;
-      max-width: 58ch;
-    }
-
-    .about-stack {
-      font-family: 'Caveat', cursive;
-      font-size: 1.05rem;
-      color: var(--muted);
-    }
-
-    /* ─── CAVEAT ANNOTATIONS ─── */
-    .caveat-note {
-      font-family: 'Caveat', cursive;
-      font-size: 1.05rem;
-      color: var(--muted);
-      display: inline-block;
-      transform: rotate(-1.5deg);
-      margin-left: 0.4rem;
-      vertical-align: middle;
-    }
-
-    .section-row-left {
-      display: flex;
-      align-items: baseline;
-      gap: 0.25rem;
-    }
-
-    /* ─── ABOUT LINKS ─── */
-    .about-inner {
-      display: flex;
-      align-items: stretch;
-    }
-
-    .about-bio-wrap {
-      flex: 1;
-      padding: 1.75rem 1.75rem 1.4rem;
-    }
-
-    .about-links {
-      background: var(--green);
-      border-left: 2px solid #C8D880;
-      padding: 1.5rem 1.35rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-      justify-content: center;
-      min-width: 120px;
-      flex-shrink: 0;
-    }
-
-    .about-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      color: #3A5020;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: opacity 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .about-link:hover { opacity: 0.55; }
-
-    /* ─── MUSIC WIDGET ─── */
-    .music-widget {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      z-index: 100;
-      background: var(--white);
-      border: 2.5px solid var(--ink);
-      border-radius: 16px;
-      box-shadow: 5px 5px 0 var(--ink);
-      width: 280px;
-      overflow: hidden;
-      filter: url(#wobbly);
-    }
-
-    .music-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.45rem 0.75rem;
-      background: #FFB347;
-      border-bottom: 1px solid #E08030;
-      gap: 0.5rem;
-    }
-
-    .music-squiggle-wrap {
-      flex: 1;
-      overflow: hidden;
-      height: 22px;
-      min-width: 0;
-    }
-
-    .music-squiggle {
-      display: block;
-      width: 200%;
-      height: 100%;
-      animation: sq-flow 2.2s linear infinite;
-      animation-play-state: paused;
-    }
-
-    .music-squiggle.playing { animation-play-state: running; }
-
-    @keyframes sq-flow {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    .music-label-tag {
-      font-family: 'Caveat', cursive;
-      font-size: 1rem;
-      color: #6B3000;
-    }
-
-    .music-toggle,
-    .music-minimize {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #6B3000;
-      font-size: 0.7rem;
-      padding: 0;
-      line-height: 1;
-      transition: color 0.15s;
-    }
-
-    .music-toggle:hover,
-    .music-minimize:hover { color: var(--ink); }
-
-    .music-widget.mini { width: 210px; }
-    .music-widget.mini .music-header { border-bottom: none; }
-    .music-widget.mini .music-main,
-    .music-widget.mini .music-controls,
-    .music-widget.mini .music-tracks { display: none !important; }
-
-    .music-main {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      padding: 0.65rem 0.75rem;
-    }
-
-    .music-art {
-      width: 38px;
-      height: 38px;
-      border-radius: 4px;
-      object-fit: cover;
-      flex-shrink: 0;
-      border: 1px solid var(--border);
-    }
-
-    .music-info { flex: 1; min-width: 0; }
-
-    .music-title {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--ink);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .eq-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 2px;
-      height: 16px;
-      flex-shrink: 0;
-    }
-
-    .eq-bar {
-      width: 3px;
-      background: var(--blue-dk);
-      border-radius: 1px;
-      animation: eq 0.8s ease-in-out infinite alternate;
-    }
-
-    .eq-bar.paused { animation-play-state: paused; }
-
-    .eq-bar:nth-child(1) { height: 60%; animation-delay: 0s; }
-    .eq-bar:nth-child(2) { height: 100%; animation-delay: 0.15s; }
-    .eq-bar:nth-child(3) { height: 45%; animation-delay: 0.3s; }
-    .eq-bar:nth-child(4) { height: 80%; animation-delay: 0.1s; }
-    .eq-bar:nth-child(5) { height: 35%; animation-delay: 0.25s; }
-
-    @keyframes eq {
-      from { transform: scaleY(0.3); }
-      to   { transform: scaleY(1); }
-    }
-
-    .music-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0 0.75rem 0.65rem;
-    }
-
-    .music-btn {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      cursor: pointer;
-      color: var(--ink);
-      font-size: 0.7rem;
-      padding: 0.25rem 0.5rem;
-      transition: background 0.15s;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 400;
-    }
-
-    .music-btn:hover { background: var(--border); }
-
-    .music-btn-play {
-      flex: 1;
-      background: #FFB347;
-      color: #6B3000;
-      border-color: #E08030;
-      font-weight: 500;
-    }
-
-    .music-btn-play:hover { background: #FFC060; border-color: #C06020; opacity: 1; }
-
-    .music-btn-loop { opacity: 0.5; }
-    .music-btn-loop.loop-on { opacity: 1; color: var(--blue-dk); border-color: var(--blue); }
-
-    .music-tracks {
-      display: none;
-      border-top: 1px solid var(--border);
-      padding: 0.5rem 0.75rem;
-      background: var(--bg);
-    }
-
-    .track-item {
-      font-size: 0.7rem;
-      color: var(--muted);
-      cursor: pointer;
-      padding: 0.3rem 0;
-      transition: color 0.15s;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .track-item:last-child { border-bottom: none; }
-    .track-item:hover { color: var(--ink); }
-    .track-item.playing { color: var(--blue-dk); font-weight: 500; }
-
-    /* ─── SILLY POPUP ─── */
-    .silly-popup {
-      background: #BBEE77;
-      border: 4px solid #FF6B00;
-      padding: 2.5rem 2rem 2rem;
-      max-width: 340px;
-      width: 100%;
-      text-align: center;
-      position: relative;
-      box-shadow: 8px 8px 0 #FF6B00;
-      filter: url(#wobbly);
-    }
-
-    .silly-close {
-      position: absolute;
-      top: 0.6rem;
-      right: 0.7rem;
-      font-size: 0.6rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: #FF6B00;
-      border: none;
-      color: #BBEE77;
-      padding: 0.3rem 0.6rem;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .silly-close:hover { background: #cc4f00; }
-
-    .silly-emoji {
-      font-size: 2.4rem;
-      margin-bottom: 0.75rem;
-      animation: spinWobble 3s ease-in-out infinite;
-    }
-
-    @keyframes spinWobble {
-      0%,100% { transform: rotate(-6deg) scale(1); }
-      50%      { transform: rotate(6deg) scale(1.15); }
-    }
-
-    .silly-msg {
-      font-family: 'Caveat', cursive;
-      font-size: 1.9rem;
-      color: #1a3a00;
-      line-height: 1.2;
-      margin-bottom: 0.5rem;
-    }
-
-    .silly-sub {
-      font-size: 0.6rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #3a5c00;
-      opacity: 0.75;
-    }
-
-    /* ─── FOOTER ─── */
-    .site-footer {
-      border-top: 1px solid var(--border);
-      padding-top: 2rem;
-      margin-top: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    .site-footer a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .site-footer a:hover { color: var(--ink); }
-
-    /* ─── ANIMATIONS ─── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ─── MOBILE NAV ─── */
-    .nav-burger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.25rem;
-    }
-
-    .nav-burger span {
-      display: block;
-      width: 18px;
-      height: 2px;
-      background: var(--ink);
-      border-radius: 1px;
-    }
-
-    .nav-mobile-menu {
-      display: none;
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 0.25rem 2.5rem 0.75rem;
-      flex-direction: column;
-      position: sticky;
-      top: 52px;
-      z-index: 49;
-    }
-
-    .nav-mobile-menu.open { display: flex; }
-
-    .nav-mobile-menu a {
-      font-size: 0.88rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.65rem 0;
-      border-bottom: 1px solid var(--border);
-      transition: color 0.15s;
-    }
-
-    .nav-mobile-menu a:last-child { border-bottom: none; }
-    .nav-mobile-menu a:hover { color: var(--ink); }
-
-    /* ─── RESPONSIVE ─── */
     @media (max-width: 600px) {
-      .card-wide { grid-column: span 1; }
-      .card-wide .card-body { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      .nav-status { display: none; }
+      .oss { padding: 0 1.5rem 6rem; }
+      .oss-row { grid-template-columns: 1fr auto; gap: 0.25rem 1rem; }
+      .oss-repo { display: none; }
+    }
+
+    /* ─── GLYPH STRIP ─── */
+    .glyph-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      height: 220px;
+      margin-bottom: 6rem;
+    }
+
+    .glyph-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .glyph-panel svg {
+      width: 65%;
+      height: 80%;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1.75rem 1.5rem; }
+      .nav-links { gap: 1.25rem; }
+      .nav-links a { font-size: 0.82rem; }
       .nav-contact { display: none; }
-      .nav-divider { display: none; }
-      .nav-burger { display: flex; }
-      .about-bio-wrap { padding: 1.25rem; }
-      .about-inner { flex-direction: column; }
-      .about-links { border-left: none; border-top: 2px solid #C8D880; border-bottom: 2px solid #C8D880; flex-direction: row; flex-wrap: wrap; gap: 0.5rem 1.25rem; padding: 0.85rem 1.25rem; min-width: unset; }
-      .music-widget { right: 0.75rem; bottom: 0.75rem; width: calc(100vw - 1.5rem); max-width: 320px; filter: none; }
-      .music-widget.mini { width: 210px; max-width: 210px; }
-      .post-editorial-row { grid-template-columns: 56px 1fr; gap: 0.75rem; padding: 0.9rem 1rem; }
-      .post-editorial-tag { display: none; }
-      .hero-name { font-size: clamp(5.5rem, 22vw, 9rem); }
-      .about-bio { font-size: 0.875rem; line-height: 1.6; }
+      .hero { padding: 3.5rem 1.5rem 6rem; }
+      .hero-body { margin-top: 2.5rem; }
+      .glyph-strip { grid-template-columns: repeat(2, 1fr); height: auto; margin-bottom: 4rem; }
+      .glyph-panel { height: 150px; }
+      .work { padding: 0 1.5rem 6rem; }
+      .work-grid { grid-template-columns: 1fr; }
+      .work-item:nth-child(even) { padding-left: 0; border-left: none; }
+      .writing { padding: 0 1.5rem 8rem; }
+      .writing-grid { grid-template-columns: 1fr; }
+      .writing-item { aspect-ratio: 3 / 2; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">Ausb.</a>
-
+  <a href="index.html" class="nav-logo">Ausb</a>
   <div class="nav-links">
-    <a href="#work">Work</a>
-    <a href="#writing">Writing</a>
+    <a href="index.html">Work</a>
+    <a href="writing/index.html">Writing</a>
     <a href="about.html">About</a>
-    <a href="photo.html" class="nav-secondary">Photos</a>
-  </div>
-
-  <div class="nav-right">
-    <div class="nav-status">
-      <div class="status-dot"></div>
-      Open to work
-    </div>
-    <div class="nav-divider"></div>
-    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Get in touch →</a>
-    <button class="nav-burger" id="navBurger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Contact me</a>
   </div>
 </nav>
 
-<div class="nav-mobile-menu" id="navMobileMenu">
-  <a href="#work">Work</a>
-  <a href="#writing">Writing</a>
-  <a href="about.html">About</a>
-  <a href="photo.html">Photos</a>
-  <a href="mailto:austinbedmonson@gmail.com">Get in touch</a>
-</div>
+<section class="hero">
+  <h1 class="hero-h1">I care about good design.</h1>
+  <h2 class="hero-h2">Even in infrastructure.</h2>
+  <p class="hero-body">Most engineers don't think about design. Most designers don't understand systems. I've lived in both. That's why the things I build tend to be reliable <em>and</em> make sense to the people who depend on them.</p>
+</section>
 
-<script>
-  (function() {
-    var burger = document.getElementById('navBurger');
-    var menu   = document.getElementById('navMobileMenu');
-    burger.addEventListener('click', function() { menu.classList.toggle('open'); });
-    menu.addEventListener('click', function(e) {
-      if (e.target.tagName === 'A') menu.classList.remove('open');
-    });
-    document.addEventListener('click', function(e) {
-      if (!burger.contains(e.target) && !menu.contains(e.target)) menu.classList.remove('open');
-    });
-  })();
-</script>
+<div class="glyph-strip">
 
-<!-- PAGE -->
-<div class="page">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-box">
-      <h1 class="hero-name">Ausb.</h1>
-      <p class="hero-sub">Software engineer focused on infrastructure, automation, and software that reduces complexity for real people.</p>
-    </div>
+  <!-- Docker — lime bg, pink whale -->
+  <div class="glyph-panel" style="background:#CEFC3E">
+    <svg viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="4"  width="18" height="13" rx="3" fill="#F9B4D2"/>
+      <rect x="42" y="4"  width="18" height="13" rx="3" fill="#F9B4D2"/>
+      <rect x="64" y="4"  width="18" height="13" rx="3" fill="#F9B4D2"/>
+      <rect x="20" y="20" width="18" height="13" rx="3" fill="#F9B4D2"/>
+      <rect x="42" y="20" width="18" height="13" rx="3" fill="#F9B4D2"/>
+      <rect x="64" y="20" width="18" height="13" rx="3" fill="#F9B4D2"/>
+      <ellipse cx="54" cy="78" rx="48" ry="26" fill="#F9B4D2"/>
+      <path d="M 96 70 C 114 57 117 80 100 76" fill="#F9B4D2"/>
+      <path d="M 18 52 C 14 40 18 28 14 16" stroke="#F9B4D2" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <circle cx="34" cy="74" r="4" fill="#CEFC3E"/>
+    </svg>
   </div>
 
-  <!-- WORK -->
-  <div class="section" id="work">
-    <div class="section-row">
-      <div class="section-row-left">
-        <span class="section-name">Work.</span>
-        <span class="caveat-note">currently building Partida</span>
-      </div>
-    </div>
-
-    <div class="card-grid">
-
-      <!-- Featured: Partida -->
-      <a href="https://partida.me" class="card card-wide" target="_blank" rel="noopener">
-        <div class="card-thumb">
-          <div class="card-thumb-inner" style="background:none;">
-            <img src="assets/pics/partida-artwork.png" alt="Partida" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;">
-          </div>
-          <span class="thumb-tag">Case Management</span>
-        </div>
-        <div class="card-body">
-          <div>
-            <div class="card-title">Partida — Immigration case management for families moving to Portugal</div>
-            <div class="card-meta">FastAPI · HTMX · PostgreSQL · Firebase Auth · GCP · SSE chat · Signed URLs</div>
-          </div>
-          <span class="card-badge badge-active">Active</span>
-        </div>
-      </a>
-
-      <!-- This site — triggers popup -->
-      <div class="card" onclick="document.getElementById('sitePopup').style.display='flex'" tabindex="0" role="button" onkeydown="if(event.key==='Enter')document.getElementById('sitePopup').style.display='flex'">
-        <div class="card-thumb">
-          <div class="card-thumb-inner" style="background:none;">
-            <img src="assets/pics/site-artwork.png" alt="ausbernard.github.io" style="width:100%;height:100%;object-fit:cover;object-position:right 15%;display:block;">
-          </div>
-          <span class="thumb-tag">Personal Site</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">ausbernard.github.io</div>
-          <div class="card-meta">HTML · CSS · Vanilla JS</div>
-          <span class="card-badge badge-shipped" style="margin-top:0.5rem; align-self:flex-start;">Shipped</span>
-        </div>
-      </div>
-
-      <!-- Photo Journal -->
-      <a href="photo.html" class="card">
-        <div class="card-thumb thumb-sage">
-          <div class="card-thumb-inner">
-            <span class="thumb-label">✦</span>
-          </div>
-          <span class="thumb-tag">Photography</span>
-        </div>
-        <div class="card-body">
-          <div class="card-title">Photo Journal</div>
-          <div class="card-meta">Moments from the road</div>
-        </div>
-      </a>
-
-    </div>
+  <!-- Kubernetes — dark green bg, medium green helm -->
+  <div class="glyph-panel" style="background:#1C3A20">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="52" fill="none" stroke="#5CCD74" stroke-width="9"/>
+      <circle cx="60" cy="60" r="14" fill="#5CCD74"/>
+      <line x1="60" y1="60" x2="60"  y2="8"   stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="102" y2="26"  stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="113" y2="72"  stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="83"  y2="109" stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="37"  y2="109" stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="7"   y2="72"  stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="18"  y2="26"  stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
+    </svg>
   </div>
 
-  <!-- WRITING -->
-  <div class="section" id="writing">
-    <div class="section-row">
-      <div class="section-row-left">
-        <span class="section-name">Writing.</span>
-        <span class="caveat-note">thinking out loud</span>
-      </div>
-      <a href="writing/index.html" class="section-all">All posts →</a>
-    </div>
-
-    <div class="post-list-editorial">
-
-      <a href="writing/cicd-same-image.html" class="post-editorial-row">
-        <span class="post-editorial-date">May 2026</span>
-        <span class="post-editorial-title">The Most Important CI/CD Rule We Adopted: Same Image, Different Clusters</span>
-        <span class="post-editorial-tag tag-platform">Platform</span>
-      </a>
-
-      <a href="writing/terraform-dishwasher.html" class="post-editorial-row">
-        <span class="post-editorial-date">May 2026</span>
-        <span class="post-editorial-title">Terraform is Like a Dishwasher: Great for Daily Loads, Overkill for a Single Cup</span>
-        <span class="post-editorial-tag tag-infra">Infrastructure</span>
-      </a>
-
-      <a href="writing/overengineering-operational-exhaustion.html" class="post-editorial-row">
-        <span class="post-editorial-date">May 2026</span>
-        <span class="post-editorial-title">We Were Overengineering Ourselves Into Operational Exhaustion</span>
-        <span class="post-editorial-tag tag-platform">Platform</span>
-      </a>
-
-      <a href="writing/partida-gap.html" class="post-editorial-row">
-        <span class="post-editorial-date">Apr 2026</span>
-        <span class="post-editorial-title">Why we built Partida: the gap no one was filling in immigration tech</span>
-        <span class="post-editorial-tag tag-product">Product</span>
-      </a>
-
-      <!-- <a href="writing/designing-50-plus.html" class="post-editorial-row">
-        <span class="post-editorial-date">Mar 2026</span>
-        <span class="post-editorial-title">Designing for the 50+ demographic: lessons from a visa app</span>
-        <span class="post-editorial-tag tag-design">Design</span>
-      </a> -->
-
-      <a href="writing/htmx-production.html" class="post-editorial-row">
-        <span class="post-editorial-date">Feb 2026</span>
-        <span class="post-editorial-title">HTMX in production: what nobody tells you going hypermedia-first</span>
-        <span class="post-editorial-tag tag-engineering">Engineering</span>
-      </a>
-
-      <!-- <a href="writing/navigation-discoverability.html" class="post-editorial-row">
-        <span class="post-editorial-date">Jan 2026</span>
-        <span class="post-editorial-title">Navigation discoverability: fixing what users can't find</span>
-        <span class="post-editorial-tag tag-ux">UX</span>
-      </a> -->
-
-    </div>
+  <!-- Python — medium green bg, dark green snakes -->
+  <div class="glyph-panel" style="background:#5CCD74">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 60 14 C 38 14 36 26 36 36 L 36 50 L 60 50 L 60 54 L 28 54 C 28 54 14 53 14 72 C 14 91 28 92 28 92 L 38 92 L 38 78 C 38 78 37 64 52 64 L 68 64 C 68 64 82 65 82 50 L 82 30 C 82 30 83 14 60 14 Z" fill="#1C3A20"/>
+      <circle cx="48" cy="28" r="5" fill="#5CCD74"/>
+      <path d="M 60 106 C 82 106 84 94 84 84 L 84 70 L 60 70 L 60 66 L 92 66 C 92 66 106 67 106 48 C 106 29 92 28 92 28 L 82 28 L 82 42 C 82 42 83 56 68 56 L 52 56 C 52 56 38 55 38 70 L 38 90 C 38 90 37 106 60 106 Z" fill="#1C3A20"/>
+      <circle cx="72" cy="92" r="5" fill="#5CCD74"/>
+    </svg>
   </div>
 
-  <!-- ABOUT STRIP -->
-  <div class="about-strip" id="about">
-    <div class="about-inner">
-      <div class="about-bio-wrap">
-        <p class="about-bio">I build things that are hard to get right and matter when you do. Right now I'm building Partida — immigration case management for families moving to Portugal — while leading platform engineering work focused on CI/CD, deployment systems, security scanning, observability, and internal automation.</p>
-      </div>
-      <div class="about-links">
-        <a href="about.html" class="about-link">About <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg></a>
-        <a href="https://github.com/ausbernard" class="about-link" target="_blank" rel="noopener">GitHub <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg></a>
-        <a href="photo.html" class="about-link">Photos <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg></a>
-        <a href="assets/Austin-Edmonson-CV-EU.pdf" class="about-link" target="_blank" rel="noopener">CV <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg></a>
-        <a href="mailto:austinbedmonson@gmail.com" class="about-link">Email <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="1.5" y1="7.5" x2="7.5" y2="1.5"/><polyline points="3,1.5 7.5,1.5 7.5,6"/></svg></a>
-      </div>
-    </div>
+  <!-- Terraform — pink bg, dark green diamond -->
+  <div class="glyph-panel" style="background:#F9B4D2">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="60,8 88,26 60,44 32,26" fill="#1C3A20"/>
+      <polygon points="28,34 56,52 56,94 28,76" fill="#1C3A20"/>
+      <polygon points="64,52 92,34 92,76 64,94" fill="#1C3A20"/>
+    </svg>
   </div>
-
-  <footer class="site-footer">
-    <span>Austin Edmonson © 2026</span>
-    <a href="mailto:austinbedmonson@gmail.com">austinbedmonson@gmail.com</a>
-  </footer>
 
 </div>
 
-<!-- ─── FLOATING MUSIC WIDGET ─── -->
-<div class="music-widget">
-  <div class="music-header">
-    <div class="music-label-tag">Now Playing</div>
-    <div class="music-squiggle-wrap">
-      <svg id="musicSquiggle" class="music-squiggle" viewBox="0 0 200 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,11 C2,3 6,0 9,5 C12,10 11,20 7,18 C3,16 5,8 9,8 C13,8 15,18 14,21 C13,24 19,21 21,13 C23,5 21,1 25,3 C29,5 29,17 26,19 C23,21 24,12 28,11 C32,10 35,4 37,9 C39,14 38,21 35,20 C32,19 33,11 37,10 C41,9 44,16 43,20 C42,24 47,21 49,13 C51,5 49,1 53,3 C57,5 57,17 54,19 C51,21 52,12 56,11 C60,10 63,4 65,9 C67,14 66,21 63,20 C60,19 61,11 65,10 C69,9 72,16 71,20 C70,24 75,21 77,13 C79,5 77,1 81,3 C85,5 85,17 82,19 C79,21 80,12 84,11 C88,10 91,4 93,9 C95,14 94,21 91,20 C88,19 89,11 93,10 C97,9 99,13 100,11 C102,3 106,0 109,5 C112,10 111,20 107,18 C103,16 105,8 109,8 C113,8 115,18 114,21 C113,24 119,21 121,13 C123,5 121,1 125,3 C129,5 129,17 126,19 C123,21 124,12 128,11 C132,10 135,4 137,9 C139,14 138,21 135,20 C132,19 133,11 137,10 C141,9 144,16 143,20 C142,24 147,21 149,13 C151,5 149,1 153,3 C157,5 157,17 154,19 C151,21 152,12 156,11 C160,10 163,4 165,9 C167,14 166,21 163,20 C160,19 161,11 165,10 C169,9 172,16 171,20 C170,24 175,21 177,13 C179,5 177,1 181,3 C185,5 185,17 182,19 C179,21 180,12 184,11 C188,10 191,4 193,9 C195,14 194,21 191,20 C188,19 189,11 193,10 C197,9 199,13 200,11" stroke="#6B3000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+<section class="work">
+  <p class="work-label">Work</p>
+  <div class="work-grid">
+
+    <a href="https://www.partida.me" target="_blank" rel="noopener" class="work-item">
+      <p class="work-item-tag">Product · Design · Platform</p>
+      <h3 class="work-item-title">Partida</h3>
+      <p class="work-item-desc">Immigration tech built for families, not lawyers. Product, design, and platform engineering from zero.</p>
+      <span class="work-item-link">View project →</span>
+    </a>
+
+  </div>
+</section>
+
+<section class="writing">
+  <div class="writing-header">
+    <p class="writing-label">Writing</p>
+    <a href="writing/index.html" class="writing-all">All posts →</a>
+  </div>
+
+  <div class="writing-grid">
+
+    <a href="writing/cicd-same-image.html" class="writing-item accent-pea">
+      <div>
+        <h3 class="writing-item-title">We Stopped Trusting Deployments Until We Fixed This</h3>
+        <p class="writing-item-snippet">Nothing destroys trust in deployments faster than realizing staging and production were never actually running the same thing.</p>
+      </div>
+      <div class="writing-item-footer">
+        <span class="writing-item-read">Read →</span>
+        <span class="writing-item-tag">Platform</span>
+      </div>
+    </a>
+
+    <a href="writing/terraform-dishwasher.html" class="writing-item accent-gold">
+      <div>
+        <h3 class="writing-item-title">Terraform is Like a Dishwasher: Great for Daily Loads, Overkill for a Single Cup</h3>
+        <p class="writing-item-snippet">If you've heard the word "Terraform" thrown around and nodded along pretending to know what it means, you're not alone.</p>
+      </div>
+      <div class="writing-item-footer">
+        <span class="writing-item-read">Read →</span>
+        <span class="writing-item-tag">Platform</span>
+      </div>
+    </a>
+
+  </div>
+
+</section>
+
+<section class="oss">
+  <p class="oss-label">Open Source</p>
+
+  <a href="https://github.com/gocardless/gocardless-pro-python/issues/129" target="_blank" rel="noopener" class="oss-row">
+    <span class="oss-repo"><img src="https://github.com/gocardless.png?size=80" alt="gocardless-pro-python" /></span>
+    <div>
+      <p class="oss-title">Fixed rate_limit returning a dict instead of a RateLimit object</p>
+      <p class="oss-desc">The public <code>Client.rate_limit</code> property broke documented attribute access (<code>.limit</code>, <code>.remaining</code>, <code>.reset</code>). Identified the gap between the internal API layer and the public interface, wrote a failing test, and submitted the fix.</p>
     </div>
-    <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
-      <button class="music-toggle" id="musicToggle" title="Show track list">▾</button>
-      <button class="music-minimize" id="musicMinimize" title="Minimize">⊟</button>
+    <span class="oss-status">Closed ↗</span>
+  </a>
+
+  <a href="https://github.com/gocardless/gocardless-pro-python/issues/130" target="_blank" rel="noopener" class="oss-row">
+    <span class="oss-repo"><img src="https://github.com/gocardless.png?size=80" alt="gocardless-pro-python" /></span>
+    <div>
+      <p class="oss-title">Added direct unit tests for the Paginator class</p>
+      <p class="oss-desc">The <code>Paginator</code> class powers every <code>.all()</code> call in the library but had zero direct coverage. Added 7 isolated unit tests with <code>unittest.mock</code> covering multi-page traversal, cursor logic, parameter passing, empty responses, and mutation safety.</p>
     </div>
-  </div>
-  <div class="music-main">
-    <img id="cover" class="music-art" src="assets/music/covers/palace-greyhound.jpg" alt="Album art">
-    <div class="music-info">
-      <div class="music-title" id="nowTitle">Palace – Greyhound</div>
+    <span class="oss-status">Closed ↗</span>
+  </a>
+
+  <a href="https://github.com/spotify/confidence-sdk-python/issues/114" target="_blank" rel="noopener" class="oss-row">
+    <span class="oss-repo"><img src="https://github.com/spotify.png?size=80" alt="confidence-sdk-python" /></span>
+    <div>
+      <p class="oss-title">Found shared mutable class-level context causing instance data leakage</p>
+      <p class="oss-desc">All <code>Confidence</code> instances shared the same class-level <code>context</code> dict — setting context on one silently contaminated all others. Identified the root cause, proposed moving initialization to <code>__init__</code>, and flagged a secondary risk with a shared <code>httpx.AsyncClient</code>.</p>
     </div>
-    <div class="eq-bars" id="eqBars">
-      <div class="eq-bar paused"></div>
-      <div class="eq-bar paused"></div>
-      <div class="eq-bar paused"></div>
-      <div class="eq-bar paused"></div>
-      <div class="eq-bar paused"></div>
-    </div>
-  </div>
-  <div class="music-controls">
-    <button class="music-btn" id="prev">←</button>
-    <button class="music-btn music-btn-play" id="playPause">▶</button>
-    <button class="music-btn" id="next">→</button>
-    <button class="music-btn music-btn-loop" id="loopBtn" title="Loop: Off">↻</button>
-  </div>
-  <div class="music-tracks" id="musicTracks">
-    <div id="trackList"></div>
-  </div>
-</div>
+    <span class="oss-status">Open ↗</span>
+  </a>
 
-<audio id="audio" preload="metadata"></audio>
+</section>
 
-<!-- SVG filter for wobbly popup border -->
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <filter id="wobbly">
-      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="3" seed="4" result="noise"/>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
-    </filter>
-  </defs>
-</svg>
-
-<!-- Silly popup -->
-<div id="sitePopup" style="display:none; position:fixed; inset:0; z-index:10000; align-items:center; justify-content:center; background:rgba(26,16,10,0.7); padding:1rem;">
-  <div class="silly-popup">
-    <button class="silly-close" onclick="document.getElementById('sitePopup').style.display='none'">✕ close</button>
-    <div class="silly-emoji">🌐</div>
-    <p class="silly-msg">you're already here silly...</p>
-    <p class="silly-sub">this is the site you're looking at right now!</p>
-  </div>
-</div>
-
-<script>
-  // Popup backdrop close
-  document.getElementById('sitePopup').addEventListener('click', function(e) {
-    if (e.target === this) this.style.display = 'none';
-  });
-
-  // Music player
-  const tracks = [
-    { title: "Palace – Greyhound",    file: "assets/music/songs/palace-greyhound.m4a",    cover: "assets/music/covers/palace-greyhound.jpg" },
-    { title: "Michi – Escondida",     file: "assets/music/songs/michi-escondida.m4a",     cover: "assets/music/covers/michi-escondida.jpg" },
-    { title: "Gambino – Algorhythmn", file: "assets/music/songs/gambino-algorhythmn.m4a", cover: "assets/music/covers/gambino-algorhythm.jpg" },
-  ];
-
-  const audio     = document.getElementById('audio');
-  const nowTitle  = document.getElementById('nowTitle');
-  const coverImg  = document.getElementById('cover');
-  const bars      = document.querySelectorAll('#eqBars .eq-bar');
-  const trackList = document.getElementById('trackList');
-  const playPause = document.getElementById('playPause');
-  const loopBtn   = document.getElementById('loopBtn');
-
-  let current  = 0;
-  let expanded = false;
-
-  function setPlaying(playing) {
-    bars.forEach(b => b.classList.toggle('paused', !playing));
-    document.getElementById('musicSquiggle').classList.toggle('playing', playing);
-    playPause.textContent = playing ? '⏸' : '▶';
-  }
-
-  function loadTrack(idx, autoplay = false) {
-    current = idx;
-    const t = tracks[idx];
-    audio.src = t.file;
-    nowTitle.textContent = t.title;
-    coverImg.src = t.cover;
-    coverImg.alt = t.title;
-    renderList();
-    if (autoplay) audio.play().catch(() => {});
-  }
-
-  function renderList() {
-    trackList.innerHTML = tracks.map((t, i) =>
-      `<div class="track-item${i === current ? ' playing' : ''}" data-idx="${i}">
-        ${String(i + 1).padStart(2, '0')}. ${t.title}
-      </div>`
-    ).join('');
-    trackList.querySelectorAll('.track-item').forEach(el => {
-      el.addEventListener('click', () => loadTrack(parseInt(el.dataset.idx), true));
-    });
-  }
-
-  document.getElementById('musicToggle').addEventListener('click', () => {
-    const tracksEl = document.getElementById('musicTracks');
-    const toggleBtn = document.getElementById('musicToggle');
-    expanded = !expanded;
-    tracksEl.style.display = expanded ? 'block' : 'none';
-    toggleBtn.textContent = expanded ? '▴' : '▾';
-  });
-
-  playPause.addEventListener('click', () => {
-    if (audio.paused) { audio.play().catch(() => {}); } else { audio.pause(); }
-  });
-
-  document.getElementById('prev').addEventListener('click', () => {
-    loadTrack((current - 1 + tracks.length) % tracks.length, true);
-  });
-
-  document.getElementById('next').addEventListener('click', () => {
-    loadTrack((current + 1) % tracks.length, true);
-  });
-
-  loopBtn.addEventListener('click', () => {
-    audio.loop = !audio.loop;
-    loopBtn.classList.toggle('loop-on', audio.loop);
-    loopBtn.title = `Loop: ${audio.loop ? 'On' : 'Off'}`;
-  });
-
-  audio.addEventListener('play',  () => setPlaying(true));
-  audio.addEventListener('pause', () => setPlaying(false));
-  audio.addEventListener('ended', () => {
-    if (!audio.loop) loadTrack((current + 1) % tracks.length, true);
-  });
-
-  renderList();
-  loadTrack(0, false);
-
-  // Minimize toggle
-  const widget  = document.querySelector('.music-widget');
-  const miniBtn = document.getElementById('musicMinimize');
-
-  function setMini(on) {
-    widget.classList.toggle('mini', on);
-    miniBtn.textContent = on ? '⊞' : '⊟';
-    miniBtn.title = on ? 'Expand' : 'Minimize';
-  }
-
-  miniBtn.addEventListener('click', () => setMini(!widget.classList.contains('mini')));
-
-  if (window.innerWidth <= 600) setMini(true);
-</script>
 </body>
 </html>
