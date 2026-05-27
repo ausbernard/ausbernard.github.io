@@ -23,7 +23,10 @@
       color: var(--ink);
       font-family: 'Questrial', sans-serif;
       -webkit-font-smoothing: antialiased;
-      min-height: 100vh;\n      max-width: 1400px;\n      margin-left: auto;\n      margin-right: auto;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* ─── NAV ─── */
@@ -64,16 +67,18 @@
     .nav-contact {
       font-family: 'Questrial', sans-serif;
       font-size: 0.85rem;
+      letter-spacing: 0.01em;
       color: #1E2A5E;
       background: #CAFF33;
       text-decoration: none;
       padding: 0.45rem 1.1rem;
       border-radius: 999px;
       transition: opacity 0.15s, transform 0.15s;
+      opacity: 1;
     }
 
     .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
-    .nav-linkedin { color: var(--ink); opacity: 0.5; display: flex; align-items: center; transition: opacity 0.15s; }
+    .nav-linkedin { color: var(--ink); opacity: 0.5; display: flex; align-items: center; transition: opacity 0.15s; border: 1.5px solid currentColor; border-radius: 6px; padding: 2px 3px; }
     .nav-linkedin:hover { opacity: 1; }
 
     /* ─── BLOB HERO ─── */
@@ -178,8 +183,10 @@
 
     @media (max-width: 600px) {
       nav { padding: 1.75rem 1.5rem; }
-      .nav-links { gap: 1.5rem; }
-      .nav-links a { font-size: 0.82rem; }
+      .nav-links { gap: 0.75rem; }
+      .nav-links a { font-size: 0.8rem; }
+      .nav-contact { font-size: 0.72rem; padding: 0.35rem 0.75rem; }
+      .nav-linkedin svg { width: 16px; height: 16px; }
       .blob-section { padding: 2rem 1.5rem 1.5rem; }
       .about-identity { padding: 2rem 1.5rem 0; }
       .about-data { padding: 0 1.5rem 2rem; }
