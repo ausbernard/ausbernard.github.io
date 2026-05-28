@@ -13,6 +13,24 @@
       --ink:   #1E2A5E;
       --ink-2: #3D4870;
       --muted: #C0BDB5;
+      --accent:  #CAFF33;
+    }
+    [data-theme="dark"] {
+      --bg:      #111318;
+      --ink:     #E6E1D6;
+      --ink-2:   #9EA3B8;
+      --muted:   #6B7280;
+      --accent:  #CAFF33;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:      #111318;
+        --ink:     #E6E1D6;
+        --ink-2:   #9EA3B8;
+        --muted:   #6B7280;
+        --accent:  #CAFF33;
+      }
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,8 +84,7 @@
     .nav-contact {
       font-family: 'Questrial', sans-serif;
       font-size: 0.85rem;
-      color: #1E2A5E;
-      background: #CAFF33;
+      background: var(--accent);
       text-decoration: none;
       padding: 0.45rem 1.1rem;
       border-radius: 999px;
@@ -75,8 +92,11 @@
     }
 
     .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
+    a.nav-contact { color: #1E2A5E; }
     .nav-linkedin { color: var(--ink); opacity: 0.5; display: flex; align-items: center; transition: opacity 0.15s; border: 1.5px solid currentColor; border-radius: 6px; padding: 2px 3px; }
     .nav-linkedin:hover { opacity: 1; }
+    .nav-theme-toggle { background: none; border: 1.5px solid var(--ink); border-radius: 6px; padding: 2px 3px; color: var(--ink); opacity: 0.5; cursor: pointer; display: flex; align-items: center; transition: opacity 0.15s; font-size: 0; line-height: 0; }
+    .nav-theme-toggle:hover { opacity: 1; }
 
     /* ─── HERO ─── */
     .hero {
@@ -165,7 +185,7 @@
 
     .post-row-date {
       font-family: 'Questrial', sans-serif;
-      font-size: 0.65rem;
+      font-size: 0.75rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--muted);
@@ -175,7 +195,7 @@
 
     .post-row-title {
       font-family: 'Rozha One', serif;
-      font-size: clamp(1.15rem, 2vw, 1.6rem);
+      font-size: clamp(1.3rem, 2.2vw, 1.85rem);
       line-height: 1.2;
       color: var(--ink);
       letter-spacing: -0.01em;
@@ -184,7 +204,7 @@
 
     .post-row-excerpt {
       font-family: 'Questrial', sans-serif;
-      font-size: 0.88rem;
+      font-size: 0.97rem;
       line-height: 1.7;
       color: var(--ink-2);
       margin-bottom: 0.75rem;
@@ -193,7 +213,7 @@
 
     .post-row-tag {
       font-family: 'Questrial', sans-serif;
-      font-size: 0.62rem;
+      font-size: 0.72rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
@@ -212,12 +232,28 @@
       .nav-links a { font-size: 0.8rem; }
       .nav-contact { font-size: 0.72rem; padding: 0.35rem 0.75rem; }
       .nav-linkedin svg { width: 16px; height: 16px; }
+      .nav-theme-toggle { display: none; }
       .hero { padding: 3rem 1.5rem 2.5rem; }
       .hero-sub { max-width: 100%; }
       .tag-filter { padding: 0 1.5rem 2rem; gap: 0.35rem 0.85rem; }
       .post-list { padding: 0 1.5rem 8rem; }
       .post-row { grid-template-columns: 48px 1fr; gap: 0 0.85rem; padding: 1.25rem 1rem; }
     }
+
+    [data-theme="dark"] .row-platform,
+    :root:not([data-theme="light"]) .row-platform    { background: rgba(103, 119, 182, 0.25); }
+    [data-theme="dark"] .row-product,
+    :root:not([data-theme="light"]) .row-product     { background: rgba(178, 134,  34, 0.25); }
+    [data-theme="dark"] .row-engineering,
+    :root:not([data-theme="light"]) .row-engineering { background: rgba(132, 158,  21, 0.25); }
+    [data-theme="dark"] .row-design,
+    :root:not([data-theme="light"]) .row-design      { background: rgba(209, 112, 137, 0.25); }
+    [data-theme="dark"] .row-ux,
+    :root:not([data-theme="light"]) .row-ux          { background: rgba(216,  86,  14, 0.25); }
+    [data-theme="dark"] .row-infra,
+    :root:not([data-theme="light"]) .row-infra       { background: rgba(146, 162, 166, 0.25); }
+    [data-theme="dark"] .row-terraform,
+    :root:not([data-theme="light"]) .row-terraform   { background: rgba(103, 119, 182, 0.25); }
   </style>
 </head>
 <body>
@@ -231,6 +267,11 @@
     <a href="http://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="nav-linkedin" aria-label="LinkedIn">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
     </a>
+    <button class="nav-theme-toggle" id="themeToggle" aria-label="Toggle color mode">
+      <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
     <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Contact me</a>
   </div>
 </nav>
@@ -328,6 +369,35 @@
       });
     });
   })();
+</script>
+
+<script>
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const icon = document.getElementById('themeIcon');
+
+  const sunSVG = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
+  const moonSVG = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+  function isDark() {
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function applyTheme(dark) {
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    icon.innerHTML = dark ? sunSVG : moonSVG;
+    toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+
+  applyTheme(isDark());
+
+  toggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') !== 'dark';
+    localStorage.setItem('theme', next ? 'dark' : 'light');
+    applyTheme(next);
+  });
 </script>
 </body>
 </html>
