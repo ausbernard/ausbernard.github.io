@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building Partida: A Technical Breakdown — Ausb</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Questrial&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:    #F5F0E6;
+      --ink:   #1E2A5E;
+      --ink-2: #3D4870;
+      --muted: #C0BDB5;
+      --accent:  #CAFF33;
+      --code-bg: rgba(30, 42, 94, 0.07);
+      --pre-bg:  rgba(30, 42, 94, 0.05);
+    }
+    [data-theme="dark"] {
+      --bg:      #111318;
+      --ink:     #E6E1D6;
+      --ink-2:   #9EA3B8;
+      --muted:   #6B7280;
+      --accent:  #CAFF33;
+      --code-bg: rgba(255, 255, 255, 0.09);
+      --pre-bg:  rgba(255, 255, 255, 0.06);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:      #111318;
+        --ink:     #E6E1D6;
+        --ink-2:   #9EA3B8;
+        --muted:   #6B7280;
+        --accent:  #CAFF33;
+        --code-bg: rgba(255, 255, 255, 0.09);
+        --pre-bg:  rgba(255, 255, 255, 0.06);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Questrial', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    nav {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 2.25rem 3rem;
+    }
+
+    .nav-logo {
+      font-family: 'Rozha One', serif;
+      font-size: 1.25rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: baseline;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+    }
+
+    .nav-links a:hover  { opacity: 1; }
+    .nav-links a.active { opacity: 1; }
+
+    .nav-contact {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.85rem;
+      background: var(--accent);
+      text-decoration: none;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
+    a.nav-contact { color: #1E2A5E; }
+    .nav-linkedin { color: var(--ink); opacity: 0.5; display: flex; align-items: center; transition: opacity 0.15s; border: 1.5px solid currentColor; border-radius: 6px; padding: 2px 3px; }
+    .nav-linkedin:hover { opacity: 1; }
+    .nav-theme-toggle { background: none; border: 1.5px solid var(--ink); border-radius: 6px; padding: 2px 3px; color: var(--ink); opacity: 0.5; cursor: pointer; display: flex; align-items: center; transition: opacity 0.15s; font-size: 0; line-height: 0; }
+    .nav-theme-toggle:hover { opacity: 1; }
+
+    .post-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 8rem;
+    }
+
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 2.5rem;
+      transition: color 0.15s;
+    }
+
+    .post-back:hover { color: var(--ink); }
+
+    .post-tag {
+      display: inline-block;
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      color: #6777B6;
+    }
+
+    .post-title {
+      font-family: 'Rozha One', serif;
+      font-size: clamp(1.9rem, 4.5vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .post-meta {
+      display: flex;
+      gap: 1.5rem;
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--muted);
+    }
+
+    .post-body {
+      font-family: 'Questrial', sans-serif;
+      font-size: 1.12rem;
+      line-height: 1.85;
+      color: var(--ink-2);
+    }
+
+    .post-body p  { margin-bottom: 1.6rem; }
+
+    .post-body h2 {
+      font-family: 'Rozha One', serif;
+      font-size: 1.5rem;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 2.5rem 0 0.8rem;
+      line-height: 1.2;
+    }
+
+    .post-body h3 {
+      font-family: 'Questrial', sans-serif;
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--ink);
+      margin: 2rem 0 0.6rem;
+    }
+
+    .post-body strong { color: var(--ink); }
+    .post-body em     { font-style: italic; }
+
+    .post-body code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      color: var(--ink);
+    }
+
+    .post-body pre {
+      background: var(--pre-bg);
+      border: 1px solid var(--muted);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 1.6rem;
+    }
+
+    .post-body pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.85em;
+      color: var(--ink);
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--muted);
+      padding-left: 1.25rem;
+      margin: 0 0 1.6rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol { margin: 0 0 1.6rem 1.5rem; }
+    .post-body li  { margin-bottom: 0.4rem; }
+    .post-body hr  { border: none; border-top: 1px solid var(--muted); margin: 2rem 0; opacity: 0.4; }
+
+    @media (max-width: 600px) {
+      nav { padding: 1.75rem 1.5rem; }
+      .nav-links { gap: 0.75rem; }
+      .nav-links a { font-size: 0.8rem; }
+      .nav-contact { font-size: 0.72rem; padding: 0.35rem 0.75rem; }
+      .nav-linkedin svg { width: 16px; height: 16px; }
+      .nav-theme-toggle { display: none; }
+      .post-wrap { padding: 2.5rem 1.25rem 6rem; }
+      .post-body { font-size: 0.96rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Ausb</a>
+  <div class="nav-links">
+    <a href="../index.html">Work</a>
+    <a href="index.html" class="active">Writing</a>
+    <a href="../about.html">About</a>
+    <a href="../recruit.html">Hire</a>
+    <a href="http://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="nav-linkedin" aria-label="LinkedIn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
+    </a>
+    <button class="nav-theme-toggle" id="themeToggle" aria-label="Toggle color mode">
+      <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Contact me</a>
+  </div>
+</nav>
+
+<div class="post-wrap">
+
+  <a href="index.html" class="post-back">← Writing</a>
+
+  <span class="post-tag">Platform · Product</span>
+  <h1 class="post-title">Building Partida: A Technical Breakdown</h1>
+  <div class="post-meta">
+    <span>2026</span>
+    <span>12 min read</span>
+  </div>
+
+  <div class="post-body">
+
+    <p>I failed a system design interview. Not badly — I'd done the coding rounds fine — but when the conversation shifted from <em>what</em> to <em>why</em>, I had nothing. I'd been memorizing architectures without understanding why they existed. The interviewer noticed. The interview ended.</p>
+
+    <p>Before I left, the interviewer gave me advice I've been turning over ever since:</p>
+
+    <blockquote>Find a problem that's yours. Something in your world. Then run the full loop: figure out the problem → design it → build it → ship it → see what breaks → iterate. That cycle, done on something you care about, compounds fast.</blockquote>
+
+    <p>That's how Partida started.</p>
+
+    <hr />
+
+    <h2>The Problem</h2>
+
+    <p>My family had been thinking about relocating abroad. When I started researching what that actually involved, I was overwhelmed. The Portugal D7 visa alone requires a valid passport, two EU-format passport photos, a signed application, an FBI background check with apostille, proof of accommodation, proof of sufficient funds, travel health insurance, a flight itinerary, power of attorney forms, NIF application, a personal statement — and the list keeps going. Multiply that by a spouse, maybe kids, and you're looking at three or four times the paperwork, each document with its own expiration date and cross-dependencies.</p>
+
+    <p>The problem wasn't finding the information. It was tracking it. There was no visual progress — just a pile of requirements and a gnawing sense that something was being forgotten. A spreadsheet helps, but it doesn't tell you that your FBI background check expires before your consulate appointment, or that your spouse's apostille is blocking your joint application.</p>
+
+    <p>That's what Partida solves: a document tracker that understands dependencies, surfaces blockers, and shows a family's real progress instead of just a list.</p>
+
+    <hr />
+
+    <h2>Design from First Principles</h2>
+
+    <p>Coming off the interview, I noticed a bad habit in myself: I'd reach for patterns I'd read about rather than patterns the problem required. Redis cache to show I know caching. Kafka because I'd studied it. I was designing for an imaginary interviewer, not for the actual problem.</p>
+
+    <p>With Partida, I forced myself to start with questions instead.</p>
+
+    <p><strong>What actually needs to be tracked?</strong> Documents and people. That's it. A person has documents. Documents have statuses. Everything else is decoration.</p>
+
+    <p><strong>How many users?</strong> At first, just me and my spouse running locally. But if it actually works, others will want it — some self-hosting, some on a shared instance. That means designing for one user today without painting myself into a corner for tomorrow.</p>
+
+    <p><strong>What's the read-to-write ratio?</strong> Writes are rare — status updates, document uploads. Reads dominate. Someone checking their tracker obsessively tells me reads will far outnumber writes. Cache might matter someday. Not yet.</p>
+
+    <p><strong>What breaks first?</strong> The database gets corrupted, or I make a schema change and break existing data. One is solved with backups. The other requires thinking carefully about every migration before running it.</p>
+
+    <p>Starting with these questions meant the architecture that emerged was earned, not assumed.</p>
+
+    <hr />
+
+    <h2>The Prototype</h2>
+
+    <p>Version zero was intentionally minimal: Python dictionaries as an in-memory database. Two dicts — <code>personal_documents</code> for member-specific documents and <code>shared_documents</code> for family-wide ones. FastAPI served them. cURL tested them.</p>
+
+    <pre><code>personal_documents = {
+    1: {
+        "id": 1,
+        "title": "passport",
+        "family_member_id": "primary",
+        "depends_on": [],
+        "status": "not_started"
+    },
+    # ...
+}
+
+shared_documents = {
+    39: {
+        "id": 39,
+        "title": "Proof_of_Accommodation",
+        "family_members": ["primary", "spouse", "child1", "child2"],
+        "depends_on": [],
+        "status": "not_started"
+    },
+    # ...
+}</code></pre>
+
+    <p>The tradeoffs were obvious and accepted. No persistence meant no real users. No SQL meant no complex queries. But it proved the logic worked: documents could have owners, statuses, and dependencies. That was enough to move forward.</p>
+
+    <p>The moment the core was solid, I replaced the dictionaries with a real database and wired up a proper frontend. The prototype had done its job.</p>
+
+    <hr />
+
+    <h2>The Stack</h2>
+
+    <h3>SQLAlchemy + PostgreSQL</h3>
+
+    <p>The data is naturally relational: people have documents, documents have statuses, documents depend on other documents. A relational database was the right call, not a trendy one.</p>
+
+    <p>SQLAlchemy specifically because I could stay in Python. No context-switching to raw SQL while trying to move fast. The ORM let me define my schema as Python classes, and the relationship mapping matched the way I was already thinking about the data. Type hints integrated naturally with my API layer. For a schema that's stable and read-heavy, it fit without friction.</p>
+
+    <h3>FastAPI</h3>
+
+    <p>I considered Flask. Five lines of code, working API in minutes — beautiful in its simplicity. But data validation kept coming up. With Flask I'd be stitching together Marshmallow for serialization, something else for docs, something else for type checking. FastAPI gives Pydantic, automatic OpenAPI docs, and native type hints out of the box. I knew I'd end up there eventually, so I started there instead.</p>
+
+    <h3>HTMX + Jinja2</h3>
+
+    <p>My frontend instincts lag behind my visual ambitions. I know what I want things to look like — making them look that way is the problem. I didn't want to build a React app. I wanted the server to stay authoritative and the frontend to stay simple.</p>
+
+    <p>HTMX does one thing: it lets any HTML element make an HTTP request and swap the response into the page. No build step. No framework. Attributes like <code>hx-post</code> and <code>hx-swap</code> handle what would otherwise require a full client-side state management layer. My FastAPI routes return HTML fragments directly — the server stays the source of truth, HTMX handles the dynamic updates.</p>
+
+    <p>It felt like magic at first. Then I realized it's just HTML being allowed to do what hypertext always could — link to and load other content — but with more flexibility about where it lands on the page.</p>
+
+    <hr />
+
+    <h2>First Deploy</h2>
+
+    <p>I ran it. <code>500 error</code>.</p>
+
+    <p>The database tables existed. The schema was right. The frontend was failing because there was no data. I'd spent so much time modeling the structure — people, documents, statuses, dependencies — that I forgot the app expected rows to already exist. Tables without rows are useless.</p>
+
+    <p>I wrote a seed script: family members, 50+ documents, initial statuses (all <code>not_started</code>), and the dependency relationships between them. Ran it. Refreshed. Everything worked. Then I closed the terminal and reopened it — data still there. Then I updated a status mid-session — UI updated. Then I tried to break it on purpose.</p>
+
+    <p>I found one real issue: when you add a new table or column, SQLAlchemy's <code>create_all()</code> doesn't help you. It creates tables that don't exist, but it won't migrate data in tables that do. I needed migrations.</p>
+
+    <hr />
+
+    <h2>Adding Alembic Mid-Stream</h2>
+
+    <p>Most migration tutorials assume a fresh project. Mine wasn't. Tables already existed. Alembic had no idea where to start.</p>
+
+    <p>The first issue was a split <code>Base</code>. My <code>__init__.py</code> was importing <code>Base</code> from two different model files:</p>
+
+    <pre><code>from .document import Base   # first import
+from .learning import Base   # silently overwrites the first</code></pre>
+
+    <p>Alembic only saw the models attached to the second <code>Base</code>. The fix was a single shared <code>base.py</code> that every model imported from — one <code>Base</code> to rule them all.</p>
+
+    <p>The second issue was schema drift. When I ran the first autogenerate migration, it wanted to <em>drop</em> two tables — <code>document_dependencies</code> and <code>family_document_dependencies</code> — stale junction tables still in the database but removed from the models. The database and the code had gotten out of sync, and Alembic was faithfully reflecting that.</p>
+
+    <p>The fix was stamping a baseline — telling Alembic "the database is already here, start tracking from this point" — then generating a migration to clean up the stale tables:</p>
+
+    <pre><code>alembic stamp base
+alembic revision --autogenerate -m "drop_stale_dependency_tables"
+alembic upgrade head</code></pre>
+
+    <p>Every migration after that followed the same discipline: one model change, one migration, review the generated <code>upgrade()</code> and <code>downgrade()</code> before running anything. Alembic's autogenerate is good but not perfect — it even says so in the comment it leaves in every file:</p>
+
+    <pre><code># ### commands auto generated by Alembic - please adjust! ###</code></pre>
+
+    <p>That's not a disclaimer. It's an instruction. The migration chain for Phase 1 ended up clean and linear:</p>
+
+    <pre><code>base
+  └── drop_stale_dependency_tables
+        └── add_household
+              └── add_user
+                    └── refactor_family_members_to_members
+                          └── add_household_invites</code></pre>
+
+    <hr />
+
+    <h2>Scaling the Data Model</h2>
+
+    <p>The original data model worked perfectly — for one family. The <code>FamilyMembers</code> table used a SQLAlchemy enum as its primary key:</p>
+
+    <pre><code>class FamilyMemberType(enum.Enum):
+    PRIMARY = "primary"
+    SPOUSE  = "spouse"
+    CHILD_1 = "child_1"
+    CHILD_2 = "child_2"
+
+class FamilyMembers(Base):
+    __tablename__ = 'family_members'
+    id = Column(SQLEnum(FamilyMemberType), primary_key=True)
+    display_name = Column(String, nullable=False)</code></pre>
+
+    <p>The problem: <code>"primary"</code> is now a unique value across the entire database. When a second family signs up and tries to register their primary applicant, the database rejects it — a row with <code>id = "primary"</code> already exists. There's no way to tell two primaries apart.</p>
+
+    <p>The fix required rethinking the entire membership model. I introduced a <code>Household</code> as the top-level grouping, replaced the enum primary key with a standard integer ID, and separated the concept of a <em>member</em> (a person with documents) from a <em>user</em> (someone who logs in):</p>
+
+    <pre><code>class Household(Base):
+    # top-level grouping — visa type, timeline, name
+
+class Member(Base):
+    # person in a household — has documents, a role, may or may not login
+    # integer PK, household_id FK, role as a plain column
+
+class User(Base):
+    # the login account — authentication only
+    # separate because a child is a Member but not a User
+
+class HouseholdInvite(Base):
+    # token-based invite for partners to join an existing household</code></pre>
+
+    <p>The permission model followed naturally: adults default to admin (editors), children are always viewers. At least one active admin must remain in a household at all times — pending invites don't count toward that threshold.</p>
+
+    <p>This is the design decision that took the most deliberate thought. It would have been easy to just add a <code>household_id</code> column and call it done. But separating Member from User matters — it correctly models the real world, where a three-year-old has documents but doesn't have login credentials. Getting that right early means the auth layer, the permission system, and the onboarding flow can all be built on accurate foundations.</p>
+
+    <hr />
+
+    <h2>Where It Stands</h2>
+
+    <p>Partida is live and in beta with 15 families. 2 attorney partners have been involved in feedback. The tracker covers 19 case types with full dependency modeling — if your apostille expires before your consulate appointment, the tracker knows, and it tells you.</p>
+
+    <p>12 deploys a week on Railway. FastAPI + SQLAlchemy async on the backend. HTMX + Jinja2 on the frontend. Firebase Auth for authentication, compliance-first from the start. Claude for architecture reviews and AI-assisted iteration, which cut feature development time meaningfully.</p>
+
+    <p>The stack isn't exotic. It was chosen by asking the right questions first, building the simplest thing that could prove the idea, and earning complexity when the problem actually demanded it. That's the whole lesson from the interview I failed.</p>
+
+  </div>
+
+</div>
+
+<script>
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const icon = document.getElementById('themeIcon');
+
+  const sunSVG = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
+  const moonSVG = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+  function isDark() {
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function applyTheme(dark) {
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    icon.innerHTML = dark ? sunSVG : moonSVG;
+    toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+
+  applyTheme(isDark());
+
+  toggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') !== 'dark';
+    localStorage.setItem('theme', next ? 'dark' : 'light');
+    applyTheme(next);
+  });
+</script>
+</body>
+</html>
