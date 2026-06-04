@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Why we built Partida — Ausb</title>
+  <title>Partida — Ausb</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Questrial&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Questrial&family=Bebas+Neue&family=Sigmar&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:    #F5F0E6;
-      --ink:   #1E2A5E;
-      --ink-2: #3D4870;
-      --muted: #C0BDB5;
+      --bg:      #F5F0E6;
+      --ink:     #1E2A5E;
+      --ink-2:   #3D4870;
+      --muted:   #C0BDB5;
       --accent:  #CAFF33;
       --code-bg: rgba(30, 42, 94, 0.07);
-      --pre-bg:  rgba(30, 42, 94, 0.05);
     }
+
     [data-theme="dark"] {
       --bg:      #111318;
       --ink:     #E6E1D6;
@@ -24,7 +24,6 @@
       --muted:   #6B7280;
       --accent:  #CAFF33;
       --code-bg: rgba(255, 255, 255, 0.09);
-      --pre-bg:  rgba(255, 255, 255, 0.06);
     }
 
     @media (prefers-color-scheme: dark) {
@@ -35,7 +34,6 @@
         --muted:   #6B7280;
         --accent:  #CAFF33;
         --code-bg: rgba(255, 255, 255, 0.09);
-        --pre-bg:  rgba(255, 255, 255, 0.06);
       }
     }
 
@@ -47,6 +45,7 @@
       font-family: 'Questrial', sans-serif;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
+      overflow-x: hidden;
       max-width: 1400px;
       margin-left: auto;
       margin-right: auto;
@@ -89,11 +88,13 @@
     .nav-contact {
       font-family: 'Questrial', sans-serif;
       font-size: 0.85rem;
+      letter-spacing: 0.01em;
       background: var(--accent);
       text-decoration: none;
       padding: 0.45rem 1.1rem;
       border-radius: 999px;
       transition: opacity 0.15s, transform 0.15s;
+      opacity: 1;
     }
 
     .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
@@ -103,14 +104,12 @@
     .nav-theme-toggle { background: none; border: 1.5px solid var(--ink); border-radius: 6px; padding: 2px 3px; color: var(--ink); opacity: 0.5; cursor: pointer; display: flex; align-items: center; transition: opacity 0.15s; font-size: 0; line-height: 0; }
     .nav-theme-toggle:hover { opacity: 1; }
 
-    /* ─── POST ─── */
-    .post-wrap {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 3.5rem 2rem 8rem;
+    /* ─── PAGE ─── */
+    .page-wrap {
+      padding: 2rem 3rem 8rem;
     }
 
-    .post-back {
+    .page-back {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
@@ -118,130 +117,148 @@
       font-size: 0.78rem;
       color: var(--muted);
       text-decoration: none;
-      margin-bottom: 2.5rem;
+      margin-bottom: 3rem;
       transition: color 0.15s;
     }
 
-    .post-back:hover { color: var(--ink); }
+    .page-back:hover { color: var(--ink); }
 
-    .post-tag {
-      display: inline-block;
+    /* ─── PROJECT HEADER ─── */
+    .project-header {
+      margin-bottom: 3rem;
+    }
+
+    .project-tag {
       font-family: 'Questrial', sans-serif;
       font-size: 0.62rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 1rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
     }
 
-    .tag-platform    { color: #6777B6; }
-    .tag-product     { color: #B28622; }
-    .tag-engineering { color: #849E15; }
-    .tag-design      { color: #D17089; }
-    .tag-ux          { color: #D8560E; }
-    .tag-infra       { color: #92A2A6; }
-    .tag-terraform   { color: #6777B6; }
-
-    .post-title {
+    .project-title {
       font-family: 'Rozha One', serif;
-      font-size: clamp(1.9rem, 4.5vw, 3rem);
-      line-height: 1.1;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.04;
+      color: var(--ink);
       letter-spacing: -0.02em;
-      color: var(--ink);
       margin-bottom: 1rem;
     }
 
-    .post-meta {
-      display: flex;
-      gap: 1.5rem;
+    .project-desc {
       font-family: 'Questrial', sans-serif;
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-bottom: 3rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--muted);
-    }
-
-    /* ─── POST BODY ─── */
-    .post-body {
-      font-family: 'Questrial', sans-serif;
-      font-size: 1.12rem;
-      line-height: 1.85;
+      font-size: clamp(0.95rem, 1.35vw, 1.1rem);
+      line-height: 1.75;
       color: var(--ink-2);
+      max-width: 54ch;
     }
 
-    .post-body p  { margin-bottom: 1.6rem; }
-
-    .post-body h2 {
-      font-family: 'Rozha One', serif;
-      font-size: 1.5rem;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-      margin: 2.5rem 0 0.8rem;
-      line-height: 1.2;
-    }
-
-    .post-body strong { color: var(--ink); }
-    .post-body em     { font-style: italic; }
-
-    .post-body code {
-      font-family: 'Courier New', monospace;
-      font-size: 0.88em;
-      background: var(--code-bg);
-      padding: 0.1em 0.4em;
-      border-radius: 3px;
-      color: var(--ink);
-    }
-
-    .post-body pre {
-      background: var(--pre-bg);
-      border: 1px solid var(--muted);
-      border-radius: 8px;
-      padding: 1.25rem 1.5rem;
-      overflow-x: auto;
-      margin-bottom: 1.6rem;
-    }
-
-    .post-body pre code {
-      background: none;
-      padding: 0;
-      font-size: 0.85em;
-      color: var(--ink);
-    }
-
-    .post-body blockquote {
-      border-left: 3px solid var(--muted);
-      padding-left: 1.25rem;
-      margin: 0 0 1.6rem;
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    .post-body ul,
-    .post-body ol { margin: 0 0 1.6rem 1.5rem; }
-    .post-body li  { margin-bottom: 0.4rem; }
-    .post-body hr  { border: none; border-top: 1px solid var(--muted); margin: 2rem 0; opacity: 0.4; }
-
-    .post-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 2.5rem;
-      margin-top: 3rem;
+    /* ─── PROJECT BODY ─── */
+    .project-body {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 3rem;
+      align-items: start;
       border-top: 1px solid var(--muted);
-      gap: 1rem;
+      padding-top: 2.5rem;
     }
 
-    .post-nav a {
+    .project-section {
+      margin-bottom: 2rem;
+    }
+
+    .project-section-title {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--ink);
+      margin-bottom: 0.65rem;
+    }
+
+    .project-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .project-bullets li {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: var(--ink-2);
+      padding-left: 1.1em;
+      position: relative;
+    }
+
+    .project-bullets li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--muted);
+    }
+
+    .project-links {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2.25rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .project-link-live {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.92rem;
+      color: #4A6FE3;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .project-link-breakdown {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.92rem;
+      color: var(--ink);
+      text-decoration: none;
+      opacity: 0.65;
+      transition: opacity 0.15s;
+    }
+
+    .project-link-live:hover,
+    .project-link-breakdown:hover { opacity: 0.7; }
+
+    .project-stack {
+      border: 1px solid var(--muted);
+      border-radius: 12px;
+      padding: 1.75rem;
+    }
+
+    .project-stack-title {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+    }
+
+    .project-stack-row {
+      padding: 0.8rem 0;
+      border-top: 1px solid var(--muted);
+    }
+
+    .project-stack-label {
       font-family: 'Questrial', sans-serif;
       font-size: 0.82rem;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s;
-      max-width: 45%;
+      font-weight: bold;
+      color: var(--ink);
+      margin-bottom: 0.15rem;
     }
 
-    .post-nav a:hover { color: var(--ink); }
-    .post-nav .nav-next { text-align: right; margin-left: auto; }
+    .project-stack-value {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.82rem;
+      color: var(--ink-2);
+    }
 
     @media (max-width: 600px) {
       nav { padding: 1.75rem 1.5rem; }
@@ -250,8 +267,8 @@
       .nav-contact { font-size: 0.72rem; padding: 0.35rem 0.75rem; }
       .nav-linkedin svg { width: 16px; height: 16px; }
       .nav-theme-toggle { display: none; }
-      .post-wrap { padding: 2.5rem 1.25rem 6rem; }
-      .post-body { font-size: 0.96rem; }
+      .page-wrap { padding: 1.5rem 1.5rem 6rem; }
+      .project-body { grid-template-columns: 1fr; gap: 2rem; }
     }
   </style>
 </head>
@@ -260,8 +277,8 @@
 <nav>
   <a href="../index.html" class="nav-logo">Ausb</a>
   <div class="nav-links">
-    <a href="../index.html">Work</a>
-    <a href="index.html">Writing</a>
+    <a href="../index.html" class="active">Work</a>
+    <a href="../writing/index.html">Writing</a>
     <a href="../about.html">About</a>
     <a href="../recruit.html">Hire</a>
     <a href="http://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="nav-linkedin" aria-label="LinkedIn">
@@ -276,50 +293,83 @@
   </div>
 </nav>
 
-<div class="post-wrap">
+<div class="page-wrap">
 
-  <a href="index.html" class="post-back">← All posts</a>
+  <a href="../index.html" class="page-back">← Work</a>
 
-  <span class="post-tag tag-product">Product</span>
-  <h1 class="post-title">Why we built Partida: the gap no one was filling in immigration tech</h1>
-  <div class="post-meta">
-    <span>April 2026</span>
-    <span>5 min read</span>
+  <div class="project-header">
+    <p class="project-tag">Product · Design · Platform</p>
+    <h1 class="project-title">Partida</h1>
+    <p class="project-desc">Immigration tech built for families, not lawyers. Product, design, and platform engineering from zero.</p>
   </div>
 
-  <div id="post-content" class="post-body"></div>
+  <div class="project-body">
 
-  <div class="post-nav">
-    <a href="overengineering-operational-exhaustion.html">← Overengineering &amp; Operational Exhaustion</a>
-    <a href="htmx-production.html" class="nav-next">HTMX in production →</a>
+    <div class="project-details">
+      <div class="project-section">
+        <h4 class="project-section-title">Product Impact</h4>
+        <ul class="project-bullets">
+          <li>15 families onboarded to beta</li>
+          <li>2 attorney partners providing feedback</li>
+          <li>Document tracking across 19 case types</li>
+        </ul>
+      </div>
+
+      <div class="project-section">
+        <h4 class="project-section-title">Platform Engineering</h4>
+        <ul class="project-bullets">
+          <li>12 deploys/week on Railway</li>
+          <li>FastAPI + SQLAlchemy async, PostgreSQL</li>
+          <li>Firebase Auth (compliance-first)</li>
+          <li>HTMX + Jinja2 for progressive enhancement</li>
+        </ul>
+      </div>
+
+      <div class="project-section">
+        <h4 class="project-section-title">AI-Augmented Development</h4>
+        <ul class="project-bullets">
+          <li>Claude for architecture design &amp; code review</li>
+          <li>40% faster feature iteration with AI-assisted testing</li>
+          <li>Real-time schema migration planning</li>
+        </ul>
+      </div>
+
+      <div class="project-links">
+        <a href="https://partida.me/" target="_blank" rel="noopener" class="project-link-live">View Live ↗</a>
+        <a href="../writing/partida-technical-breakdown.html" class="project-link-breakdown">Read Technical Breakdown →</a>
+      </div>
+    </div>
+
+    <div class="project-stack">
+      <p class="project-stack-title">Tech Stack</p>
+      <div class="project-stack-row">
+        <p class="project-stack-label">Backend</p>
+        <p class="project-stack-value">FastAPI, SQLAlchemy</p>
+      </div>
+      <div class="project-stack-row">
+        <p class="project-stack-label">Database</p>
+        <p class="project-stack-value">PostgreSQL async</p>
+      </div>
+      <div class="project-stack-row">
+        <p class="project-stack-label">Frontend</p>
+        <p class="project-stack-value">HTMX, Jinja2</p>
+      </div>
+      <div class="project-stack-row">
+        <p class="project-stack-label">Auth</p>
+        <p class="project-stack-value">Firebase Auth</p>
+      </div>
+      <div class="project-stack-row">
+        <p class="project-stack-label">Hosting</p>
+        <p class="project-stack-value">Railway, PostgreSQL</p>
+      </div>
+      <div class="project-stack-row">
+        <p class="project-stack-label">Role</p>
+        <p class="project-stack-value">Solo founder, all layers</p>
+      </div>
+    </div>
+
   </div>
-
 </div>
-
-<div id="md" style="display:none">
-Most immigration software is built for lawyers. The dashboards, the document checklists, the case timelines — they're all optimized for the professional managing dozens of cases, not for the family sitting at a kitchen table trying to figure out if they need a notary or what the difference between an NHR and a D7 visa actually means in practice.
-
-When we started talking to families who had gone through the Portugal immigration process, the same pattern kept coming up. They'd start with a spreadsheet. Then they'd move to a WhatsApp group with other expats. Then they'd hire a lawyer who communicated entirely by email. The information existed — it was just scattered across five different contexts, none of which talked to each other.
-
-## The gap wasn't information — it was continuity
-
-There's no shortage of blog posts about moving to Portugal. The forums are active. The Facebook groups are enormous. But when a family is three months into the process and their SEF appointment gets rescheduled, they have nowhere to go that actually knows their situation. They start over, re-explaining to a new person or digging back through old emails.
-
-What they needed wasn't a better search engine. They needed a place that held their case — their documents, their timeline, their outstanding questions — and could surface the right information at the right moment. That's what we set out to build with Partida.
-
-## What Partida does differently
-
-Partida is case-centric, not task-centric. The family's situation — visa type, family composition, target municipality — shapes everything: which documents they need, which deadlines apply, which steps come next. Instead of a generic checklist, they get a timeline that reflects their actual path.
-
-We also built real-time communication directly into the case view. Not because email is broken, but because context-switching is expensive. When your lawyer sends you a message inside the context of your case, both sides already know what you're talking about. There's no "as discussed" or "per my last email" — just the conversation, attached to the moment it matters.
-
-There's more to build. But the foundation — a place that knows your case and grows with it — is the thing we kept wishing existed when we were talking to families. So we built it.
-</div>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-  document.getElementById('post-content').innerHTML =
-    marked.parse(document.getElementById('md').textContent.trim());
-</script>
 
 <script>
   const root = document.documentElement;
