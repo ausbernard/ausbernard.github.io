@@ -400,87 +400,157 @@
 
   const HELP = `Available commands:
 
-  help          Show this message
+  help          Show available commands
   whoami        Who is Austin?
-  stack         Technical skills & tools
-  availability  Current work status
-  work          Recent experience
-  oss           Open source contributions
-  style         How Austin works
+  systems       How Austin thinks about building systems
+  stack         Technical depth and tools
+  ai            How AI fits into his engineering workflow
+  availability  Current roles and hiring status
+  work          Engineering and product experience
+  oss           Open source and production contributions
+  design        System design principles and tradeoffs
+  style         Working style and communication approach
   contact       Get in touch
-  clear         Clear the terminal`;
+  clear         Clear the terminal`
 
-  const WHOAMI = `Austin Edmonson — platform/infra engineer based in Atlanta.
+  const WHOAMI = `
+  Austin Edmonson — platform / infrastructure engineer.
 
-6+ years across DevOps, platform engineering, and software engineering.
-Currently: Platform Engineering at The Home Depot.
-Also building: Partida, immigration tech for families.
+  6+ years across DevOps, platform engineering, and backend systems.
 
-Unusual combination: infra engineer who actually cares about design.`;
+  Currently:
+    Platform Engineering @ The Home Depot
 
-  const STACK = `§Platform
-  Kubernetes · Terraform · Docker · GitHub Actions · Jenkins
-  SonarQube · Qwiet.ai · Trivy
+  Also building:
+    Partida — immigration infrastructure for families navigating complex systems.
 
-§Backend
-  Python · FastAPI · HTMX · Bash
+  I build systems that reduce complexity: CI/CD pipelines, Kubernetes platforms, and internal tooling that turns operational noise into something engineers can reason about.
 
-§Data
-  PostgreSQL · Redis
+  My focus is simple:
+  make hard systems understandable, and make understandable systems scalable.
+  `;
 
-§Observability
-  Prometheus · Grafana
+  const STACK = `
+  Platform
+    Kubernetes · Terraform · Docker · GitHub Actions · Jenkins
 
-§Cloud
-  GCP · AWS`;
+  Backend
+    Python · FastAPI · Bash
 
-  const AVAILABILITY = `Status: Open to new opportunities.
+  Systems
+    PostgreSQL · Redis · Linux
 
-Preferred: Platform engineering · DevOps · SRE · Staff-adjacent roles
-Format:    Full-time · open to contract depending on scope
-Location:  Remote-first; open to hybrid in Atlanta
-Visa:      US citizen, no sponsorship needed
+  Observability
+    Prometheus · Grafana
 
-→ type contact  to reach Austin directly`;
+  Cloud
+    GCP · Azure
+  `;
 
-  const WORK = `The Home Depot — Platform Engineer
-  CI/CD pipelines for Kubernetes infrastructure.
-  Terraform module simplification for teams inheriting oversized patterns.
-  Grafana dashboards turning noisy systems into something teams could reason about.
+  const AI = `
+  AI-assisted engineering workflow:
 
-Partida (founding, in progress)
-  Product, design, and platform from zero.
-  FastAPI + HTMX stack in production.
-  Immigration tech built for families, not lawyers.
+  I use AI as part of system design and implementation — not as a shortcut, but as an extension of how I think through problems.
 
-→ about.html  for full CV`;
+  Platform engineering:
+    Exploring Kubernetes and Terraform patterns
+    Accelerating CI/CD and infrastructure design decisions
+    Moving faster from unknown systems → working mental models
 
-  const OSS = `spotify/confidence-sdk-python
-  Caught shared mutable class-level context causing instance data leakage.
-  Identified root cause, proposed fix, flagged secondary httpx risk.
+  Product (Partida):
+    Turning ambiguous user workflows into structured backend systems
+    Rapid prototyping of architecture and API design
+    Iterating on system boundaries early
 
-gocardless/gocardless-pro-python (×2)
-  Fixed rate_limit returning dict instead of typed RateLimit object.
-  Added 7 unit tests for Paginator — zero coverage before this.
+  Principle:
+    AI reduces exploration time.
+    Engineering is still responsible for correctness, reliability, and design.
+  `;
 
-→ github.com/ausbernard`;
+  const AVAILABILITY = `
+  Status:
+    Actively exploring platform engineering, infrastructure, and FDE roles.
 
-  const STYLE = `Style:
-  Async-first, docs-heavy.
-  Comfortable in Agile and Kanban. Enjoys paired programming.
+  Preferred:
+    Platform engineering · Staff-level infra · Developer tooling · AI systems
 
-Works best on:
-  Internal tooling · developer enablement · platform simplification
-  Problems with no obvious owner · systems that need documentation
+  Location:
+    Remote-first, open to hybrid
 
-Communication:
-  Writes things teammates actually want to read.
-  Explains infrastructure to non-engineers without condescending.
+  Visa:
+    US citizen, no sponsorship required
 
-Standards:
-  "Good enough" is not a finish line.
-  Fast, thorough, safe — and with some pizzaz.
-`;
+  If you're building systems that need to scale cleanly →
+  start with: contact
+  `;
+
+  const WORK = `
+  The Home Depot — Platform Engineer
+
+  I work on internal platform systems powering CI/CD pipelines for Kubernetes-based infrastructure.
+
+  Focus areas:
+    - CI/CD systems for build, scan, test, and deploy workflows
+    - Terraform simplification for teams inheriting complex infrastructure
+    - Observability systems using Grafana to make system behavior readable
+
+  Partida — Founder / Builder
+
+  Immigration infrastructure for families navigating complex systems.
+
+  Built from scratch using FastAPI and modern backend tooling.
+  Focused on clarity, safety, and reducing friction in high-stakes workflows.
+
+  → about.html for full background
+  `;
+
+  const OSS = `
+  spotify/confidence-sdk-python
+    Identified shared mutable class-level state causing instance data leakage
+    Proposed fix and validated behavioral correctness
+
+  gocardless/gocardless-pro-python
+    Fixed rate_limit returning incorrect type structure
+    Added missing test coverage for pagination logic
+
+  Focus:
+    Finding subtle correctness and reliability issues in production libraries
+  `;
+
+  const STYLE = `
+  Engineering style:
+
+  Design-first, implementation-heavy.
+  Strong bias toward simplicity and maintainability.
+
+  Works best on:
+    Internal platforms
+    Developer tooling
+    Systems with unclear ownership
+    Infrastructure that has grown too complex to reason about
+
+  Communication:
+    Writes documentation that engineers actually use
+    Translates infrastructure complexity into clear mental models
+
+  Standards:
+    Fast, correct, and safe — in that order, but all required.
+
+  Preference:
+    Systems should be understandable before they are optimized.
+  `;
+
+  const DESIGN = `
+  Systems thinking:
+
+  CI/CD pipelines → reliability systems, not automation scripts
+  Infrastructure → product surface area for engineers
+  Observability → user experience for debugging systems
+  Internal tools → leverage multipliers, not utilities
+
+  Goal:
+  Make complex systems predictable and operable.
+  `;
 
   const CONTACT = `Email:    austinbedmonson@gmail.com
 LinkedIn: linkedin.com/in/abedmonson
@@ -572,6 +642,8 @@ GitHub:   github.com/ausbernard
     ls:                 () => printBlock(LS),
     vim:                () => printBlock(VIM),
     'cat resume':       () => printBlock(CATRESUME),
+    ai:                 () => printBlock(AI),
+    design:             () => printBlock(DESIGN),
   };
 
   function runCommand(raw) {

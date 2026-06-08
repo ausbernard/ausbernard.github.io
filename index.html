@@ -351,7 +351,7 @@
 
     .writing-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 1rem;
     }
 
@@ -376,6 +376,7 @@
 
     .writing-item.accent-pea  { background: #6777B6; }
     .writing-item.accent-gold { background: #B28622; }
+    .writing-item.accent-red  { background: #BB6068; }
 
     .writing-item-footer {
       display: flex;
@@ -409,6 +410,30 @@
 
     .accent-pea  .writing-item-title { color: #EFCE7B; }
     .accent-gold .writing-item-title { color: #F8CABA; }
+    .accent-red  .writing-item-title { color: #CAFF33; }
+
+    .writing-item { position: relative; }
+
+    .writing-grid .writing-item:first-child::before {
+      content: 'New';
+      position: absolute;
+      top: 0.9rem;
+      right: 0.9rem;
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      clip-path: polygon(50% 0%, 59% 20%, 82% 9%, 72% 31%, 100% 38%, 78% 50%, 100% 62%, 72% 69%, 82% 91%, 59% 80%, 50% 100%, 41% 80%, 18% 91%, 28% 69%, 0% 62%, 22% 50%, 0% 38%, 28% 31%, 18% 9%, 41% 20%);
+      filter: drop-shadow(0 0 2.5px #FF6B2B);
+      transform: rotate(-10deg);
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.46rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #1E2A5E;
+      font-weight: bold;
+      line-height: 44px;
+      text-align: center;
+    }
 
     .writing-item-snippet {
       font-family: 'Questrial', sans-serif;
@@ -697,7 +722,7 @@
       .stats { margin: 0 1.5rem; padding: 2.5rem 0 5rem; }
       .stats-grid { gap: 2rem 2.5rem; }
       .writing { padding: 0 1.5rem 8rem; }
-      .writing-grid { grid-template-columns: 1fr; }
+      .writing-grid { grid-template-columns: 1fr; gap: 0.75rem; }
       .writing-item { aspect-ratio: 3 / 2; padding: 1.25rem; }
     }
   </style>
@@ -895,6 +920,17 @@
   </div>
 
   <div class="writing-grid">
+
+    <a href="writing/llm-non-determinism.html" class="writing-item accent-red">
+      <div>
+        <h3 class="writing-item-title">LLM Non-Determinism is Useful. Until You Mistake it for Engineering Truth.</h3>
+        <p class="writing-item-snippet">The model explores. The engineer decides. And increasingly, the engineer has to decide whether the decision itself was made on solid ground.</p>
+      </div>
+      <div class="writing-item-footer">
+        <span class="writing-item-read">Read →</span>
+        <span class="writing-item-tag">Engineering</span>
+      </div>
+    </a>
 
     <a href="writing/cicd-same-image.html" class="writing-item accent-pea">
       <div>
