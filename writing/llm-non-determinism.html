@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLM Non-Determinism is Useful. Until You Mistake it for Engineering Truth. — Ausb</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Questrial&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:    #F5F0E6;
+      --ink:   #1E2A5E;
+      --ink-2: #3D4870;
+      --muted: #C0BDB5;
+      --accent:  #CAFF33;
+      --code-bg: rgba(30, 42, 94, 0.07);
+      --pre-bg:  rgba(30, 42, 94, 0.05);
+    }
+    [data-theme="dark"] {
+      --bg:      #111318;
+      --ink:     #E6E1D6;
+      --ink-2:   #9EA3B8;
+      --muted:   #6B7280;
+      --accent:  #CAFF33;
+      --code-bg: rgba(255, 255, 255, 0.09);
+      --pre-bg:  rgba(255, 255, 255, 0.06);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:      #111318;
+        --ink:     #E6E1D6;
+        --ink-2:   #9EA3B8;
+        --muted:   #6B7280;
+        --accent:  #CAFF33;
+        --code-bg: rgba(255, 255, 255, 0.09);
+        --pre-bg:  rgba(255, 255, 255, 0.06);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Questrial', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    nav {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 2.25rem 3rem;
+    }
+
+    .nav-logo {
+      font-family: 'Rozha One', serif;
+      font-size: 1.25rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: baseline;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+    }
+
+    .nav-links a:hover  { opacity: 1; }
+    .nav-links a.active { opacity: 1; }
+
+    .nav-contact {
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.85rem;
+      background: var(--accent);
+      text-decoration: none;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
+    a.nav-contact { color: #1E2A5E; }
+    .nav-linkedin { color: var(--ink); opacity: 0.5; display: flex; align-items: center; transition: opacity 0.15s; border: 1.5px solid currentColor; border-radius: 6px; padding: 2px 3px; }
+    .nav-linkedin:hover { opacity: 1; }
+    .nav-theme-toggle { background: none; border: 1.5px solid var(--ink); border-radius: 6px; padding: 2px 3px; color: var(--ink); opacity: 0.5; cursor: pointer; display: flex; align-items: center; transition: opacity 0.15s; font-size: 0; line-height: 0; }
+    .nav-theme-toggle:hover { opacity: 1; }
+
+    .post-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 8rem;
+    }
+
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 2.5rem;
+      transition: color 0.15s;
+    }
+
+    .post-back:hover { color: var(--ink); }
+
+    .post-tag {
+      display: inline-block;
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      color: #849E15;
+    }
+
+    .post-title {
+      font-family: 'Rozha One', serif;
+      font-size: clamp(1.9rem, 4.5vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .post-meta {
+      display: flex;
+      gap: 1.5rem;
+      font-family: 'Questrial', sans-serif;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--muted);
+    }
+
+    .post-body {
+      font-family: 'Questrial', sans-serif;
+      font-size: 1.12rem;
+      line-height: 1.85;
+      color: var(--ink-2);
+    }
+
+    .post-body p  { margin-bottom: 1.6rem; }
+
+    .post-body h2 {
+      font-family: 'Rozha One', serif;
+      font-size: 1.5rem;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 2.5rem 0 0.8rem;
+      line-height: 1.2;
+    }
+
+    .post-body strong { color: var(--ink); }
+    .post-body em     { font-style: italic; }
+
+    .post-body code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      color: var(--ink);
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--muted);
+      padding-left: 1.25rem;
+      margin: 0 0 1.6rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body hr { border: none; border-top: 1px solid var(--muted); margin: 2.5rem 0; opacity: 0.4; }
+
+    @media (max-width: 600px) {
+      nav { padding: 1.75rem 1.5rem; }
+      .nav-links { gap: 0.75rem; }
+      .nav-links a { font-size: 0.8rem; }
+      .nav-contact { font-size: 0.72rem; padding: 0.35rem 0.75rem; }
+      .nav-linkedin svg { width: 16px; height: 16px; }
+      .nav-theme-toggle { display: none; }
+      .post-wrap { padding: 2.5rem 1.25rem 6rem; }
+      .post-body { font-size: 0.96rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Ausb</a>
+  <div class="nav-links">
+    <a href="../index.html">Work</a>
+    <a href="index.html" class="active">Writing</a>
+    <a href="../about.html">About</a>
+    <a href="../recruit.html">Hire</a>
+    <a href="http://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="nav-linkedin" aria-label="LinkedIn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
+    </a>
+    <button class="nav-theme-toggle" id="themeToggle" aria-label="Toggle color mode">
+      <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Contact me</a>
+  </div>
+</nav>
+
+<div class="post-wrap">
+
+  <a href="index.html" class="post-back">← Writing</a>
+
+  <span class="post-tag">Engineering · AI</span>
+  <h1 class="post-title">LLM Non-Determinism is Useful. Until You Mistake it for Engineering Truth.</h1>
+  <div class="post-meta">
+    <span>June 2026</span>
+    <span>8 min read</span>
+  </div>
+
+  <div class="post-body">
+
+    <p>Us software engineers are trained — hard wired — to love repeatability. Same input. Same output. Same test results. Same build artifacts. Same deployment behavior. Generally this meant it was safe, it could be trusted, depended on — especially when deploying to customers in production. Predictability is the yellow brick road to our Oz. When something behaves differently twice, we call that a bug, open a ticket or a pull request, iterate, write tests, and patch it.</p>
+
+    <p>Then LLMs showed up.</p>
+
+    <p>You give the model the same prompt twice, and it may give you two different answers. Not wildly different, necessarily. Sometimes just different wording. Sometimes a more closely related example. Sometimes a small hallucinated goblin with a polite smile wearing a confidently worded hat. Sometimes, as we've seen more than we'd like, far worse. This notion can make any of us feel uncomfortable — unsure — because it challenges our paradigm of what software engineering is. For me though, as someone self-taught, my paradigm was always a little grey. You always needed some creativity within the documentation and Stack Overflow threads to make sense of what is truth, what is lies, and what are possible solutions.</p>
+
+    <p><strong>LLM non-determinism is useful for exploration, but dangerous when misunderstood in production engineering.</strong></p>
+
+    <hr />
+
+    <p>LLMs are useful because they wander. They remix. They offer a second path from the woods. Sometimes they hand you a better abstraction. Sometimes they hand you a puddle of mud disguised as genius and call it an architectural design. The variability is not automatically bad. In fact, it is often the point.</p>
+
+    <p>Before LLMs, we learned from Stack Overflow, blogs, docs, conference talks, random websites, and that one coworker who somehow knew every obscure Linux command or JVM flag. We have always relied on outside inputs to stretch our thinking. LLMs have changed the speed, volume, and shape of those inputs. It's not bad — it's just our new reality.</p>
+
+    <p>But I think there's something worth pausing on here. It's not just that the inputs arrive faster. It's that the surface of the input has changed. When you read a blog post or a Stack Overflow answer, you're reading something a human chose to say, for reasons you can interrogate. There's an author with a context, a bias, a specific problem they were solving. When an LLM generates an answer, you're reading a statistically smoothed surface drawn from a vast latent space of text. It has no intent. It has no context of its own. It has no skin in the game. The shape of the artifact is the same — words, code, explanation — but the provenance is entirely different. That doesn't make it useless. It makes it a different kind of input, and I think we're still collectively learning what that means.</p>
+
+    <p>They can push the boundaries of what is possible in our minds. They can surface approaches we would not have reached on our own. They can be the Jarvis to our Iron Man. They can give us language for an idea that is still foggy in our head. They can help us see the edges of a problem sooner. But despite the pros, this does not remove the engineer from the loop. It makes the engineer more important.</p>
+
+    <p>Our job is to synthesize. To know enough about the system, the constraints, the failure modes, the customer, the runtime, and the use case to decide whether the model's output is actually valuable. Because for production engineering, that same non-determinism is dangerous when misunderstood. An LLM suggestion is not a source of truth, nor at the moment should it be. It is not a passing test. It is not a design review. It is not a deployment plan. It is a candidate.</p>
+
+    <p>Maybe a good candidate.</p>
+
+    <p>Maybe a very confident puddle of mud.</p>
+
+    <hr />
+
+    <p>I ran into this recently while working on a Kubernetes deployment for a paved-road pipeline. The application was a tiny cron job — it made API calls, aggregated data, and wrote results to a BigQuery table in GCP. The ask was simple: adjust the deployment path so we could run a dry-run style deployment without executing the entire workflow.</p>
+
+    <p>The LLM produced a clean-looking change. The Kubernetes YAML was valid. The surrounding code changes looked reasonable. The explanation was confident. Nothing immediately looked wrong.</p>
+
+    <p>The problem was that it changed part of the parameterization in our overlay. Values that were expected to remain strings were transformed into literals. The deployment was now looking for something that didn't exist.</p>
+
+    <p>The model wasn't being malicious. It wasn't even obviously wrong. It was making what looked like a reasonable change based on patterns it had seen before.</p>
+
+    <p>That's the danger. <strong>Most bad LLM outputs don't look ridiculous. They look correct enough to skip verification.</strong></p>
+
+    <hr />
+
+    <p>What's interesting is that the same model also helped me solve a different deployment problem that same week. It helped me rethink how we handled environment variables across our deployment workflows. Instead of relying on lifecycle-specific <code>.env</code> files and complex custom parsing logic, we simplified the flow by exposing configuration through the deployment at runtime and letting Kubernetes handle it as intended.</p>
+
+    <p>The result was a cleaner design that made it easier to support additional deployment paths without introducing more conditional logic or overengineering.</p>
+
+    <p>Same model. Same week.</p>
+
+    <p>One output created a subtle bug. Another helped simplify a system.</p>
+
+    <hr />
+
+    <p>So let the LLM push the edges of your thinking where creativity helps. Let it expand the space of possible approaches, surface alternatives, and challenge assumptions you might not have questioned on your own.</p>
+
+    <p>But once you move from exploration into execution, the rules change.</p>
+
+    <p>At that point, the work has to come back through boring, yet beautiful, engineering discipline. And the discipline itself has to get sharper. Tests can pass and encode the wrong behavior. Types can be syntactically valid but semantically wrong. Explanations can sound right and describe something that doesn't exist. The linter can catch syntax. It can't catch the subtle semantic drift where the model quietly changed what "done" means.</p>
+
+    <p>We have to verify the verification. Not just "does this work" but "does this work the way I think it works."</p>
+
+    <p>That separation matters.</p>
+
+    <p>The model is good at generating possibilities. It is not accountable for consequences.</p>
+
+    <p>That responsibility stays with the engineer.</p>
+
+    <p>The model explores. The engineer decides.</p>
+
+    <p>And increasingly, the engineer also has to decide whether the decision itself was made on solid ground, or on a surface that just looked solid enough.</p>
+
+    <hr />
+
+    <div style="margin-top: 2rem;">
+      <p style="font-family: 'Questrial', sans-serif; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.85rem;">Read next</p>
+      <a href="cicd-same-image.html" style="text-decoration: none; display: block;">
+        <p style="font-family: 'Rozha One', serif; font-size: 1.25rem; line-height: 1.2; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 0.4rem; transition: opacity 0.15s;" onmouseover="this.style.opacity='0.65'" onmouseout="this.style.opacity='1'">We Stopped Trusting Deployments Until We Fixed This →</p>
+        <p style="font-family: 'Questrial', sans-serif; font-size: 0.9rem; color: var(--ink-2); line-height: 1.6;">Nothing destroys trust in deployments faster than realizing staging and production were never actually running the same thing.</p>
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const icon = document.getElementById('themeIcon');
+
+  const sunSVG = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
+  const moonSVG = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+  function isDark() {
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function applyTheme(dark) {
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    icon.innerHTML = dark ? sunSVG : moonSVG;
+    toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+
+  applyTheme(isDark());
+
+  toggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') !== 'dark';
+    localStorage.setItem('theme', next ? 'dark' : 'light');
+    applyTheme(next);
+  });
+</script>
+</body>
+</html>
