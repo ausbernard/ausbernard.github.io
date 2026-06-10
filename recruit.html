@@ -540,6 +540,26 @@
     Systems should be understandable before they are optimized.
   `;
 
+  const SYSTEMS = `
+§CI/CD Pipeline — The Home Depot
+  Build, scan, test, and deploy workflows for Kubernetes infrastructure
+  Security scanning: SonarQube · Trivy · Qwiet.ai integrated into pipeline gates
+  Jenkins + GitHub Actions for orchestration
+  Terraform modules simplified for teams inheriting oversized patterns
+
+§Partida — Immigration Platform
+  FastAPI + SQLAlchemy async backend on Railway
+  PostgreSQL multi-tenant data model (Household → Member → Document)
+  HTMX + Jinja2 frontend — server-rendered, no client-side framework
+  Firebase Auth for compliance-first authentication
+  Schema migrations managed with Alembic from project inception
+
+§Observability
+  Grafana dashboards turning noisy Kubernetes systems into readable signal
+  Prometheus metrics for CI/CD pipeline health and deployment visibility
+
+→ type work  for full experience  |  type stack  for tools`;
+
   const DESIGN = `
   Systems thinking:
 
@@ -632,6 +652,7 @@ GitHub:   github.com/ausbernard
     help:               () => printBlock(HELP),
     whoami:             () => printBlock(WHOAMI),
     stack:              () => printBlock(STACK),
+    systems:            () => printBlock(SYSTEMS),
     availability:       () => printBlock(AVAILABILITY),
     work:               () => printBlock(WORK),
     oss:                () => printBlock(OSS),
