@@ -3,584 +3,603 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>We Stopped Trusting Deployments Until We Fixed This — Ausb</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Questrial&display=swap" rel="stylesheet" />
+  <title>We Stopped Trusting Deployments Until We Fixed This — Austin Edmonson</title>
   <style>
     :root {
-      --bg:    #F5F0E6;
-      --ink:   #1E2A5E;
-      --ink-2: #3D4870;
-      --muted: #C0BDB5;
-      --accent:  #CAFF33;
-      --code-bg: rgba(30, 42, 94, 0.07);
-      --pre-bg:  rgba(30, 42, 94, 0.05);
-    }
-    [data-theme="dark"] {
-      --bg:      #111318;
-      --ink:     #E6E1D6;
-      --ink-2:   #9EA3B8;
-      --muted:   #6B7280;
-      --accent:  #CAFF33;
-      --code-bg: rgba(255, 255, 255, 0.09);
-      --pre-bg:  rgba(255, 255, 255, 0.06);
+      --bg: #FCFCFA;
+      --border: #E3DCC9;
+      --ink: #1A1A1A;
+      --muted: #7A7461;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg:      #111318;
-        --ink:     #E6E1D6;
-        --ink-2:   #9EA3B8;
-        --muted:   #6B7280;
-        --accent:  #CAFF33;
-        --code-bg: rgba(255, 255, 255, 0.09);
-        --pre-bg:  rgba(255, 255, 255, 0.06);
-      }
-    }
+    * { box-sizing: border-box; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
       background: var(--bg);
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 700;
       color: var(--ink);
-      font-family: 'Questrial', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-      max-width: 1400px;
-      margin-left: auto;
-      margin-right: auto;
+      text-decoration: none;
     }
 
     nav {
       display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 2.25rem 3rem;
+      align-items: center;
+      gap: 28px;
     }
 
-    .nav-logo {
-      font-family: 'Rozha One', serif;
-      font-size: 1.25rem;
-      color: var(--ink);
+    nav a {
+      color: var(--muted);
       text-decoration: none;
-      letter-spacing: -0.01em;
+      font-size: 15px;
+      font-weight: 200;
     }
 
-    .nav-links {
+    nav a:hover,
+    nav a.active {
+      color: var(--ink);
+    }
+
+    .theme-toggle {
       display: flex;
-      align-items: baseline;
-      gap: 2.5rem;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
     }
 
-    .nav-links a {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.9rem;
+    .theme-toggle:hover {
       color: var(--ink);
-      text-decoration: none;
-      letter-spacing: 0.01em;
-      opacity: 0.7;
-      transition: opacity 0.15s;
     }
 
-    .nav-links a:hover  { opacity: 1; }
-    .nav-links a.active { opacity: 1; }
-
-    .nav-contact {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.85rem;
-      background: var(--accent);
-      text-decoration: none;
-      padding: 0.45rem 1.1rem;
-      border-radius: 999px;
-      transition: opacity 0.15s, transform 0.15s;
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
     }
 
-    .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
-    a.nav-contact { color: #1E2A5E; }
-    .nav-linkedin { color: var(--ink); opacity: 0.5; display: flex; align-items: center; transition: opacity 0.15s; border: 1.5px solid currentColor; border-radius: 6px; padding: 2px 3px; }
-    .nav-linkedin:hover { opacity: 1; }
-    .nav-theme-toggle { background: none; border: 1.5px solid var(--ink); border-radius: 6px; padding: 2px 3px; color: var(--ink); opacity: 0.5; cursor: pointer; display: flex; align-items: center; transition: opacity 0.15s; font-size: 0; line-height: 0; }
-    .nav-theme-toggle:hover { opacity: 1; }
+    html {
+      transition: filter 0.3s ease;
+    }
 
-    /* ─── POST ─── */
-    .post-wrap {
-      max-width: 680px;
+    img {
+      transition: filter 0.3s ease;
+    }
+
+    html.dark-mode {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode img {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    main {
+      max-width: 760px;
       margin: 0 auto;
-      padding: 3.5rem 2rem 8rem;
+      padding: 48px 24px 80px;
     }
 
     .post-back {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.78rem;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 16px;
       color: var(--muted);
       text-decoration: none;
-      margin-bottom: 2.5rem;
-      transition: color 0.15s;
+      margin-bottom: 24px;
     }
 
-    .post-back:hover { color: var(--ink); }
-
-    .post-tag {
-      display: inline-block;
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
+    .post-back:hover {
+      color: var(--ink);
+      border-color: var(--ink);
     }
-
-    .tag-platform    { color: #6777B6; }
-    .tag-product     { color: #B28622; }
-    .tag-engineering { color: #849E15; }
-    .tag-design      { color: #D17089; }
-    .tag-ux          { color: #D8560E; }
-    .tag-infra       { color: #92A2A6; }
-    .tag-terraform   { color: #6777B6; }
 
     .post-title {
-      font-family: 'Rozha One', serif;
-      font-size: clamp(1.9rem, 4.5vw, 3rem);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+      font-size: 36px;
+      font-weight: 700;
       color: var(--ink);
-      margin-bottom: 1rem;
+      margin: 0;
+      line-height: 1.25;
     }
 
-    .post-meta {
-      display: flex;
-      gap: 1.5rem;
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.75rem;
+    .post-date {
+      font-size: 14px;
       color: var(--muted);
-      margin-bottom: 3rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--muted);
+      margin: 16px 0 0;
     }
 
-    /* ─── POST BODY ─── */
+    .post-hero {
+      display: block;
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-top: 32px;
+    }
+
     .post-body {
-      font-family: 'Questrial', sans-serif;
-      font-size: 1.12rem;
-      line-height: 1.85;
-      color: var(--ink-2);
+      margin-top: 40px;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--muted);
     }
 
-    .post-body p  { margin-bottom: 1.6rem; }
+    .post-body p { margin: 0 0 20px; }
 
     .post-body h2 {
-      font-family: 'Rozha One', serif;
-      font-size: 1.5rem;
-      letter-spacing: -0.01em;
+      font-size: 22px;
+      font-weight: 700;
       color: var(--ink);
-      margin: 2.5rem 0 0.8rem;
-      line-height: 1.2;
+      margin: 40px 0 14px;
+      line-height: 1.3;
     }
 
-    .post-body strong { color: var(--ink); }
-    .post-body em     { font-style: italic; }
+    .post-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 28px 0 10px;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em { font-style: italic; }
 
     .post-body code {
-      font-family: 'Courier New', monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.88em;
-      background: var(--code-bg);
-      padding: 0.1em 0.4em;
-      border-radius: 3px;
+      background: rgba(26, 26, 26, 0.06);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
       color: var(--ink);
     }
 
     .post-body pre {
-      background: var(--pre-bg);
-      border: 1px solid var(--muted);
+      background: rgba(26, 26, 26, 0.04);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 1.25rem 1.5rem;
+      padding: 18px 20px;
       overflow-x: auto;
-      margin-bottom: 1.6rem;
+      margin: 0 0 20px;
     }
 
     .post-body pre code {
       background: none;
       padding: 0;
       font-size: 0.85em;
-      color: var(--ink);
     }
 
     .post-body blockquote {
-      border-left: 3px solid var(--muted);
-      padding-left: 1.25rem;
-      margin: 0 0 1.6rem;
+      border-left: 3px solid var(--border);
+      padding-left: 18px;
+      margin: 0 0 20px;
       color: var(--muted);
       font-style: italic;
     }
 
     .post-body ul,
-    .post-body ol { margin: 0 0 1.6rem 1.5rem; }
-    .post-body li  { margin-bottom: 0.4rem; }
-    .post-body hr  { border: none; border-top: 1px solid var(--muted); margin: 2rem 0; opacity: 0.4; }
+    .post-body ol { margin: 0 0 20px 22px; }
+    .post-body li { margin-bottom: 8px; }
 
-    .post-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 2.5rem;
-      margin-top: 3rem;
-      border-top: 1px solid var(--muted);
-      gap: 1rem;
+    .post-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 36px 0;
     }
 
-    .post-nav a {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.82rem;
+    footer {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 24px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
       color: var(--muted);
       text-decoration: none;
-      transition: color 0.15s;
-      max-width: 45%;
     }
 
-    .post-nav a:hover { color: var(--ink); }
-    .post-nav .nav-next { text-align: right; margin-left: auto; }
-
-    @media (max-width: 600px) {
-      nav { padding: 1.75rem 1.5rem; }
-      .nav-links { gap: 0.75rem; }
-      .nav-links a { font-size: 0.8rem; }
-      .nav-contact { font-size: 0.72rem; padding: 0.35rem 0.75rem; }
-      .nav-linkedin svg { width: 16px; height: 16px; }
-      .nav-theme-toggle { display: none; }
-      .post-wrap { padding: 2.5rem 1.25rem 6rem; }
-      .post-body { font-size: 0.96rem; }
+    .footer-links a:hover {
+      color: var(--ink);
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="../index.html" class="nav-logo">Ausb</a>
-  <div class="nav-links">
-    <a href="../index.html">Work</a>
-    <a href="index.html">Writing</a>
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 3 9 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-divider"></div>
+    <a href="../index.html" class="brand-name">Austin Edmonson</a>
+  </div>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Articles</a>
     <a href="../about.html">About</a>
-    <a href="../recruit.html">Hire</a>
-    <a href="http://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="nav-linkedin" aria-label="LinkedIn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
-    </a>
-    <button class="nav-theme-toggle" id="themeToggle" aria-label="Toggle color mode">
-      <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
-    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Contact me</a>
-  </div>
-</nav>
+  </nav>
+</header>
 
-<div class="post-wrap">
-
-  <a href="index.html" class="post-back">← All posts</a>
-
-  <span class="post-tag tag-platform">Platform</span>
+<main>
+  <a href="index.html" class="post-back">←</a>
   <h1 class="post-title">We Stopped Trusting Deployments Until We Fixed This</h1>
-  <div class="post-meta">
-    <span>May 2026</span>
-    <span>6 min read</span>
-  </div>
+  <p class="post-date">May 2026</p>
 
-  <div id="post-content" class="post-body"></div>
+  <img src="../assets/cicd-same-image-hero.jpg" alt="Painting of a city skyline at dusk with a translucent square overlay and a building glowing orange" class="post-hero" />
 
-  <div class="post-nav">
-    <a href="terraform-dishwasher.html" class="nav-next">Terraform is Like a Dishwasher →</a>
-  </div>
+  <div class="post-body">
 
-</div>
+    <p>Nothing destroys trust in deployments faster than realizing staging and production were never actually running the same thing.</p>
 
-<div id="md" style="display:none">
-## The CI/CD lesson that mattered more than branching strategies.
+    <p>Every engineering team eventually hears some version of:</p>
 
-Nothing destroys trust in deployments faster than realizing staging and production were never actually running the same thing.
+    <blockquote>"But it worked in staging."</blockquote>
 
-Every engineering team eventually hears some version of:
+    <p>Which usually translates to:</p>
 
-> "But it worked in staging."
+    <ul>
+      <li>different image</li>
+      <li>different environment variables</li>
+      <li>slightly different dependencies</li>
+      <li>different permissions</li>
+      <li>and now three engineers are trying to determine whether production broke because of the code or because the deployment process quietly changed underneath it</li>
+    </ul>
 
-Which usually translates to:
+    <p>That realization changed how I think about CI/CD entirely.</p>
 
-- different image
-- different environment variables
-- slightly different dependencies
-- different permissions
-- and now three engineers are trying to determine whether production broke because of the code or because the deployment process quietly changed underneath it
+    <p>Not branches. Not tooling. Not GitHub Actions. Not Kubernetes.</p>
 
-That realization changed how I think about CI/CD entirely.
+    <p><strong>Artifact trust.</strong></p>
 
-Not branches.
+    <p>That became the entire game.</p>
 
-Not tooling.
+    <hr />
 
-Not GitHub Actions.
+    <h2>The Problem We Were Actually Solving</h2>
 
-Not Kubernetes.
+    <p>Our team ships containerized workloads into Kubernetes environments.</p>
 
-**Artifact trust.**
+    <p>We needed:</p>
 
-That became the entire game.
+    <ul>
+      <li>governance around production releases</li>
+      <li>executive approval before production deployment</li>
+      <li>auditability</li>
+      <li>reliable testing</li>
+      <li>and enough automation that engineers could still move quickly</li>
+    </ul>
 
----
+    <p>Like most teams, we started with branching strategies.</p>
 
-## The Problem We Were Actually Solving
-
-Our team ships containerized workloads into Kubernetes environments.
-
-We needed:
-- governance around production releases
-- executive approval before production deployment
-- auditability
-- reliable testing
-- and enough automation that engineers could still move quickly
-
-Like most teams, we started with branching strategies.
-
-```text
-np         → active development
+    <pre><code>np         → active development
 rc         → release candidate and stabilization
-production → live environment
-```
+production → live environment</code></pre>
 
-If we didn't have governance and approval requirements, trunk-based deployment would likely be simpler operationally.
+    <p>If we didn't have governance and approval requirements, trunk-based deployment would likely be simpler operationally.</p>
 
-But eventually I realized something important:
+    <p>But eventually I realized something important:</p>
 
-Branches themselves do not make deployments safe.
+    <p>Branches themselves do not make deployments safe.</p>
 
-You can have beautiful Git workflows, release candidates, change requests, approvals, and perfectly named branches — and still have completely unreliable deployments if your artifacts drift between environments.
+    <p>You can have beautiful Git workflows, release candidates, change requests, approvals, and perfectly named branches — and still have completely unreliable deployments if your artifacts drift between environments.</p>
 
-That's the real failure mode.
+    <p>That's the real failure mode.</p>
 
----
+    <hr />
 
-## The Rule That Changed Everything
+    <h2>The Rule That Changed Everything</h2>
 
-We adopted one simple rule:
+    <p>We adopted one simple rule:</p>
 
-**Build once. Promote the same image everywhere.**
+    <p><strong>Build once. Promote the same image everywhere.</strong></p>
 
-No rebuilding containers between environments.
-No "slightly different" production artifact.
-No environment-specific build process.
+    <p>No rebuilding containers between environments. No "slightly different" production artifact. No environment-specific build process.</p>
 
-The exact same image that runs in np becomes the image that eventually reaches production.
+    <p>The exact same image that runs in np becomes the image that eventually reaches production.</p>
 
-That one decision eliminated an enormous amount of deployment uncertainty.
+    <p>That one decision eliminated an enormous amount of deployment uncertainty.</p>
 
-We started calling this the slingshot pattern.
+    <p>We started calling this the slingshot pattern.</p>
 
----
+    <hr />
 
-## The Slingshot Pattern
+    <h2>The Slingshot Pattern</h2>
 
-When a PR merges into np, automation kicks off:
+    <p>When a PR merges into np, automation kicks off:</p>
 
-1. Run tests
-2. Run vulnerability scans
-3. Build the container image
-4. Run image and manifest scans
-4. Deploy into the np Kubernetes cluster
-5. Promote the exact same image into the rc artifact location
+    <ol>
+      <li>Run tests</li>
+      <li>Run vulnerability scans</li>
+      <li>Build the container image</li>
+      <li>Run image and manifest scans</li>
+      <li>Deploy into the np Kubernetes cluster</li>
+      <li>Promote the exact same image into the rc artifact location</li>
+    </ol>
 
-Not deployed yet. Just staged and waiting.
+    <p>Not deployed yet. Just staged and waiting.</p>
 
-That distinction matters.
+    <p>That distinction matters.</p>
 
-A lot of CI/CD systems accidentally rebuild images during promotion between environments. Which means checksums differ, dependencies drift, debugging becomes painful, and "worked in staging" stops meaning anything.
+    <p>A lot of CI/CD systems accidentally rebuild images during promotion between environments. Which means checksums differ, dependencies drift, debugging becomes painful, and "worked in staging" stops meaning anything.</p>
 
-We wanted deployments to feel boring and trustworthy.
+    <p>We wanted deployments to feel boring and trustworthy.</p>
 
-Same image. Different clusters.
+    <p>Same image. Different clusters.</p>
 
----
+    <hr />
 
-## RC Became Our Confidence Layer
+    <h2>RC Became Our Confidence Layer</h2>
 
-When changes move from np → rc, another workflow triggers:
+    <p>When changes move from np → rc, another workflow triggers:</p>
 
-1. Deploy the exact same image into the rc Kubernetes cluster
-2. Run deployments using production credentials in dry-run mode
-3. Generate a GitHub pre-release
-4. Open an Organizational Change Request for approval
-5. Promote the same image into the production artifact location
+    <ol>
+      <li>Deploy the exact same image into the rc Kubernetes cluster</li>
+      <li>Run deployments using production credentials in dry-run mode</li>
+      <li>Generate a GitHub pre-release</li>
+      <li>Open an Organizational Change Request for approval</li>
+      <li>Promote the same image into the production artifact location</li>
+    </ol>
 
-That production dry-run step ended up catching an incredible amount of operational weirdness:
+    <p>That production dry-run step ended up catching an incredible amount of operational weirdness:</p>
 
-- missing permissions
-- IAM problems
-- secret access failures
-- environment mismatches
-- cluster-level surprises
+    <ul>
+      <li>missing permissions</li>
+      <li>IAM problems</li>
+      <li>secret access failures</li>
+      <li>environment mismatches</li>
+      <li>cluster-level surprises</li>
+    </ul>
 
-Because nothing is more frustrating than: *"The application worked perfectly but production permissions failed."*
+    <p>Because nothing is more frustrating than: <em>"The application worked perfectly but production permissions failed."</em></p>
 
-The earlier we caught those issues, the calmer deployments became.
+    <p>The earlier we caught those issues, the calmer deployments became.</p>
 
----
+    <hr />
 
-## Why We Didn't Deploy Directly From `np`
+    <h2>Why We Didn't Deploy Directly From <code>np</code></h2>
 
-One fair question is:
+    <p>One fair question is:</p>
 
-> "Why not just deploy directly from `np` using trunk-based workflows?"
+    <blockquote>"Why not just deploy directly from <code>np</code> using trunk-based workflows?"</blockquote>
 
-And honestly, in a highly mature engineering organization, I probably would lean more in that direction.
+    <p>And honestly, in a highly mature engineering organization, I probably would lean more in that direction.</p>
 
-But context matters.
+    <p>But context matters.</p>
 
-The team I inherited was deploying workloads directly from laptops into environments through Cloud Run jobs — without standardized pipelines, release visibility, or strong deployment boundaries between environments.
+    <p>The team I inherited was deploying workloads directly from laptops into environments through Cloud Run jobs — without standardized pipelines, release visibility, or strong deployment boundaries between environments.</p>
 
-`np` was effectively development, testing, deployment, and production approval all blended together.
+    <p><code>np</code> was effectively development, testing, deployment, and production approval all blended together.</p>
 
-So before we could optimize for deployment velocity, we first needed to establish:
+    <p>So before we could optimize for deployment velocity, we first needed to establish:</p>
 
-- trust in automation
-- trust in releases
-- repeatable deployment behavior
-- auditability
-- and safer operational patterns
+    <ul>
+      <li>trust in automation</li>
+      <li>trust in releases</li>
+      <li>repeatable deployment behavior</li>
+      <li>auditability</li>
+      <li>and safer operational patterns</li>
+    </ul>
 
-Most of our workloads were not customer-facing frontend applications. They were internal SaaS automations, API integrations, monitoring services, seat provisioning workflows, identity lifecycle tooling, and operational support systems.
+    <p>Most of our workloads were not customer-facing frontend applications. They were internal SaaS automations, API integrations, monitoring services, seat provisioning workflows, identity lifecycle tooling, and operational support systems.</p>
 
-Which meant many failures would not immediately surface visually. A deployment could succeed technically while silently failing operationally.
+    <p>Which meant many failures would not immediately surface visually. A deployment could succeed technically while silently failing operationally.</p>
 
-The `rc` layer became less about adding process and more about creating operational trust — confidence, validation, and a real boundary between experimentation and production promotion.
+    <p>The <code>rc</code> layer became less about adding process and more about creating operational trust — confidence, validation, and a real boundary between experimentation and production promotion.</p>
 
-And honestly, it did slow the team down at first.
+    <p>And honestly, it did slow the team down at first.</p>
 
-But that was intentional.
+    <p>But that was intentional.</p>
 
-You cannot build trust in automation by moving faster than the automation is capable of validating safely.
+    <p>You cannot build trust in automation by moving faster than the automation is capable of validating safely.</p>
 
-The release process was not only technical infrastructure. It was behavioral infrastructure.
+    <p>The release process was not only technical infrastructure. It was behavioral infrastructure.</p>
 
-Over time, as teams mature operationally, you can absolutely reduce ceremony and move toward more continuous deployment models. But inherited systems rarely start there safely.
+    <p>Over time, as teams mature operationally, you can absolutely reduce ceremony and move toward more continuous deployment models. But inherited systems rarely start there safely.</p>
 
----
+    <hr />
 
-## The Goal Was Never More Automation
+    <h2>The Goal Was Never More Automation</h2>
 
-This is where I think a lot of platform engineering discussions go sideways.
+    <p>This is where I think a lot of platform engineering discussions go sideways.</p>
 
-People talk about CI/CD like the goal is maximum automation at all costs.
+    <p>People talk about CI/CD like the goal is maximum automation at all costs.</p>
 
-It's not.
+    <p>It's not.</p>
 
-The goal is trust.
+    <p>The goal is trust.</p>
 
-A release process should make engineers feel more confident deploying software, not less. The automation only matters if it reduces uncertainty.
+    <p>A release process should make engineers feel more confident deploying software, not less. The automation only matters if it reduces uncertainty.</p>
 
-That's why the slingshot pattern worked so well for us:
+    <p>That's why the slingshot pattern worked so well for us:</p>
 
-- one artifact
-- consistent promotion
-- predictable deployments
-- less drift
-- fewer surprises
+    <ul>
+      <li>one artifact</li>
+      <li>consistent promotion</li>
+      <li>predictable deployments</li>
+      <li>less drift</li>
+      <li>fewer surprises</li>
+    </ul>
 
-It reduced the number of unknowns engineers had to reason about during releases.
+    <p>It reduced the number of unknowns engineers had to reason about during releases.</p>
 
----
+    <hr />
 
-## The Most Fragile Part: Branch Divergence
+    <h2>The Most Fragile Part: Branch Divergence</h2>
 
-The hardest part of the entire system wasn't Kubernetes.
+    <p>The hardest part of the entire system wasn't Kubernetes. It wasn't GitHub Actions. It wasn't artifact promotion.</p>
 
-It wasn't GitHub Actions.
+    <p>It was humans.</p>
 
-It wasn't artifact promotion.
+    <p>More specifically: hotfixes, release pressure, and branch divergence during stabilization windows.</p>
 
-It was humans.
+    <p>Eventually rc would drift away from np:</p>
 
-More specifically: hotfixes, release pressure, and branch divergence during stabilization windows.
+    <ul>
+      <li>production fixes landed directly in rc</li>
+      <li>last-minute changes happened under pressure</li>
+      <li>release-specific tweaks appeared</li>
+      <li>and suddenly the branches no longer represented the same reality</li>
+    </ul>
 
-Eventually rc would drift away from np:
+    <p>At first teams tell themselves: <em>"We'll remember to merge it back later."</em></p>
 
-- production fixes landed directly in rc
-- last-minute changes happened under pressure
-- release-specific tweaks appeared
-- and suddenly the branches no longer represented the same reality
+    <p>That works exactly until nobody remembers.</p>
 
-At first teams tell themselves: *"We'll remember to merge it back later."*
+    <p>Then six weeks later: <em>"Why did this production bug come back?"</em></p>
 
-That works exactly until nobody remembers.
+    <p>We experimented with fully automating the back-merge process, but honestly, automatic conflict generation infrastructure is not as fun as it sounds.</p>
 
-Then six weeks later: *"Why did this production bug come back?"*
+    <p>What ended up working best was:</p>
 
-We experimented with fully automating the back-merge process, but honestly, automatic conflict generation infrastructure is not as fun as it sounds.
+    <ul>
+      <li>automatic visibility</li>
+      <li>notifications</li>
+      <li>lightweight tooling</li>
+      <li>and manual ownership when conflicts existed</li>
+    </ul>
 
-What ended up working best was:
+    <p>Enough automation to reduce friction. Not enough automation to create invisible chaos.</p>
 
-- automatic visibility
-- notifications
-- lightweight tooling
-- and manual ownership when conflicts existed
+    <hr />
 
-Enough automation to reduce friction. Not enough automation to create invisible chaos.
+    <h2>What I Learned</h2>
 
----
+    <p>The branches themselves don't make you safe. The automation and artifact consistency behind them do.</p>
 
-## What I Learned
+    <p>Once we committed to same image, different clusters — deployments became dramatically easier to reason about.</p>
 
-The branches themselves don't make you safe. The automation and artifact consistency behind them do.
+    <p>If production failed, we knew:</p>
 
-Once we committed to same image, different clusters — deployments became dramatically easier to reason about.
+    <ul>
+      <li>the artifact had not changed</li>
+      <li>the deployment pipeline had not changed</li>
+      <li>only the environment had</li>
+    </ul>
 
-If production failed, we knew:
+    <p>That level of confidence matters more than people realize.</p>
 
-- the artifact had not changed
-- the deployment pipeline had not changed
-- only the environment had
+    <p>Because at the end of the day, most engineers are not afraid of deployments.</p>
 
-That level of confidence matters more than people realize.
+    <p>They're afraid of uncertainty.</p>
 
-Because at the end of the day, most engineers are not afraid of deployments.
+    <p>Good CI/CD systems reduce uncertainty.</p>
 
-They're afraid of uncertainty.
+    <p>That's the real job.</p>
 
-Good CI/CD systems reduce uncertainty.
+  </div>
+</main>
 
-That's the real job.
-</div>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<footer>
+  <p>© 2026 Austin Edmonson. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="../index.html">Home</a>
+    <a href="index.html">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+  </div>
+</footer>
+
 <script>
-  document.getElementById('post-content').innerHTML =
-    marked.parse(document.getElementById('md').textContent.trim());
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var html = document.documentElement;
+
+    function isDark() {
+      var stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    html.classList.toggle('dark-mode', isDark());
+
+    toggle.addEventListener('click', function() {
+      var next = !html.classList.contains('dark-mode');
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      html.classList.toggle('dark-mode', next);
+    });
+  })();
 </script>
 
-<script>
-  const root = document.documentElement;
-  const toggle = document.getElementById('themeToggle');
-  const icon = document.getElementById('themeIcon');
-
-  const sunSVG = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
-  const moonSVG = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
-
-  function isDark() {
-    const stored = localStorage.getItem('theme');
-    if (stored) return stored === 'dark';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-
-  function applyTheme(dark) {
-    root.setAttribute('data-theme', dark ? 'dark' : 'light');
-    icon.innerHTML = dark ? sunSVG : moonSVG;
-    toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-  }
-
-  applyTheme(isDark());
-
-  toggle.addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') !== 'dark';
-    localStorage.setItem('theme', next ? 'dark' : 'light');
-    applyTheme(next);
-  });
-</script>
 </body>
 </html>

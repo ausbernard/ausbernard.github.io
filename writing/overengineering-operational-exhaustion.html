@@ -3,447 +3,482 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>We Were Overengineering Ourselves Into Operational Exhaustion — Ausb</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Questrial&display=swap" rel="stylesheet" />
+  <title>We Were Overengineering Ourselves Into Operational Exhaustion — Austin Edmonson</title>
   <style>
     :root {
-      --bg:    #F5F0E6;
-      --ink:   #1E2A5E;
-      --ink-2: #3D4870;
-      --muted: #C0BDB5;
-      --accent:  #CAFF33;
-      --code-bg: rgba(30, 42, 94, 0.07);
-      --pre-bg:  rgba(30, 42, 94, 0.05);
-    }
-    [data-theme="dark"] {
-      --bg:      #111318;
-      --ink:     #E6E1D6;
-      --ink-2:   #9EA3B8;
-      --muted:   #6B7280;
-      --accent:  #CAFF33;
-      --code-bg: rgba(255, 255, 255, 0.09);
-      --pre-bg:  rgba(255, 255, 255, 0.06);
+      --bg: #FCFCFA;
+      --border: #E3DCC9;
+      --ink: #1A1A1A;
+      --muted: #7A7461;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg:      #111318;
-        --ink:     #E6E1D6;
-        --ink-2:   #9EA3B8;
-        --muted:   #6B7280;
-        --accent:  #CAFF33;
-        --code-bg: rgba(255, 255, 255, 0.09);
-        --pre-bg:  rgba(255, 255, 255, 0.06);
-      }
-    }
+    * { box-sizing: border-box; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
       background: var(--bg);
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 700;
       color: var(--ink);
-      font-family: 'Questrial', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-      max-width: 1400px;
-      margin-left: auto;
-      margin-right: auto;
+      text-decoration: none;
     }
 
     nav {
       display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 2.25rem 3rem;
+      align-items: center;
+      gap: 28px;
     }
 
-    .nav-logo {
-      font-family: 'Rozha One', serif;
-      font-size: 1.25rem;
-      color: var(--ink);
+    nav a {
+      color: var(--muted);
       text-decoration: none;
-      letter-spacing: -0.01em;
+      font-size: 15px;
+      font-weight: 200;
     }
 
-    .nav-links {
+    nav a:hover,
+    nav a.active {
+      color: var(--ink);
+    }
+
+    .theme-toggle {
       display: flex;
-      align-items: baseline;
-      gap: 2.5rem;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
     }
 
-    .nav-links a {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.9rem;
+    .theme-toggle:hover {
       color: var(--ink);
-      text-decoration: none;
-      letter-spacing: 0.01em;
-      opacity: 0.7;
-      transition: opacity 0.15s;
     }
 
-    .nav-links a:hover  { opacity: 1; }
-    .nav-links a.active { opacity: 1; }
-
-    .nav-contact {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.85rem;
-      background: var(--accent);
-      text-decoration: none;
-      padding: 0.45rem 1.1rem;
-      border-radius: 999px;
-      transition: opacity 0.15s, transform 0.15s;
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
     }
 
-    .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
-    a.nav-contact { color: #1E2A5E; }
-    .nav-linkedin { color: var(--ink); opacity: 0.5; display: flex; align-items: center; transition: opacity 0.15s; border: 1.5px solid currentColor; border-radius: 6px; padding: 2px 3px; }
-    .nav-linkedin:hover { opacity: 1; }
-    .nav-theme-toggle { background: none; border: 1.5px solid var(--ink); border-radius: 6px; padding: 2px 3px; color: var(--ink); opacity: 0.5; cursor: pointer; display: flex; align-items: center; transition: opacity 0.15s; font-size: 0; line-height: 0; }
-    .nav-theme-toggle:hover { opacity: 1; }
+    html {
+      transition: filter 0.3s ease;
+    }
 
-    /* ─── POST ─── */
-    .post-wrap {
-      max-width: 680px;
+    img {
+      transition: filter 0.3s ease;
+    }
+
+    html.dark-mode {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode img {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    main {
+      max-width: 760px;
       margin: 0 auto;
-      padding: 3.5rem 2rem 8rem;
+      padding: 48px 24px 80px;
     }
 
     .post-back {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.78rem;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 16px;
       color: var(--muted);
       text-decoration: none;
-      margin-bottom: 2.5rem;
-      transition: color 0.15s;
+      margin-bottom: 24px;
     }
 
-    .post-back:hover { color: var(--ink); }
-
-    .post-tag {
-      display: inline-block;
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
+    .post-back:hover {
+      color: var(--ink);
+      border-color: var(--ink);
     }
-
-    .tag-platform    { color: #6777B6; }
-    .tag-product     { color: #B28622; }
-    .tag-engineering { color: #849E15; }
-    .tag-design      { color: #D17089; }
-    .tag-ux          { color: #D8560E; }
-    .tag-infra       { color: #92A2A6; }
-    .tag-terraform   { color: #6777B6; }
 
     .post-title {
-      font-family: 'Rozha One', serif;
-      font-size: clamp(1.9rem, 4.5vw, 3rem);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+      font-size: 36px;
+      font-weight: 700;
       color: var(--ink);
-      margin-bottom: 1rem;
+      margin: 0;
+      line-height: 1.25;
     }
 
-    .post-meta {
-      display: flex;
-      gap: 1.5rem;
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.75rem;
+    .post-date {
+      font-size: 14px;
       color: var(--muted);
-      margin-bottom: 3rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--muted);
+      margin: 16px 0 0;
     }
 
-    /* ─── POST BODY ─── */
+    .post-hero {
+      display: block;
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-top: 32px;
+    }
+
     .post-body {
-      font-family: 'Questrial', sans-serif;
-      font-size: 1.12rem;
-      line-height: 1.85;
-      color: var(--ink-2);
+      margin-top: 40px;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--muted);
     }
 
-    .post-body p  { margin-bottom: 1.6rem; }
+    .post-body p { margin: 0 0 20px; }
 
     .post-body h2 {
-      font-family: 'Rozha One', serif;
-      font-size: 1.5rem;
-      letter-spacing: -0.01em;
+      font-size: 22px;
+      font-weight: 700;
       color: var(--ink);
-      margin: 2.5rem 0 0.8rem;
-      line-height: 1.2;
+      margin: 40px 0 14px;
+      line-height: 1.3;
     }
 
-    .post-body strong { color: var(--ink); }
-    .post-body em     { font-style: italic; }
+    .post-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 28px 0 10px;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em { font-style: italic; }
 
     .post-body code {
-      font-family: 'Courier New', monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.88em;
-      background: var(--code-bg);
-      padding: 0.1em 0.4em;
-      border-radius: 3px;
+      background: rgba(26, 26, 26, 0.06);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
       color: var(--ink);
     }
 
     .post-body pre {
-      background: var(--pre-bg);
-      border: 1px solid var(--muted);
+      background: rgba(26, 26, 26, 0.04);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 1.25rem 1.5rem;
+      padding: 18px 20px;
       overflow-x: auto;
-      margin-bottom: 1.6rem;
+      margin: 0 0 20px;
     }
 
     .post-body pre code {
       background: none;
       padding: 0;
       font-size: 0.85em;
-      color: var(--ink);
     }
 
     .post-body blockquote {
-      border-left: 3px solid var(--muted);
-      padding-left: 1.25rem;
-      margin: 0 0 1.6rem;
+      border-left: 3px solid var(--border);
+      padding-left: 18px;
+      margin: 0 0 20px;
       color: var(--muted);
       font-style: italic;
     }
 
     .post-body ul,
-    .post-body ol { margin: 0 0 1.6rem 1.5rem; }
-    .post-body li  { margin-bottom: 0.4rem; }
-    .post-body hr  { border: none; border-top: 1px solid var(--muted); margin: 2rem 0; opacity: 0.4; }
+    .post-body ol { margin: 0 0 20px 22px; }
+    .post-body li { margin-bottom: 8px; }
 
-    .post-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 2.5rem;
-      margin-top: 3rem;
-      border-top: 1px solid var(--muted);
-      gap: 1rem;
+    .post-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 36px 0;
     }
 
-    .post-nav a {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.82rem;
+    footer {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 24px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
       color: var(--muted);
       text-decoration: none;
-      transition: color 0.15s;
-      max-width: 45%;
     }
 
-    .post-nav a:hover { color: var(--ink); }
-    .post-nav .nav-next { text-align: right; margin-left: auto; }
-
-    @media (max-width: 600px) {
-      nav { padding: 1.75rem 1.5rem; }
-      .nav-links { gap: 0.75rem; }
-      .nav-links a { font-size: 0.8rem; }
-      .nav-contact { font-size: 0.72rem; padding: 0.35rem 0.75rem; }
-      .nav-linkedin svg { width: 16px; height: 16px; }
-      .nav-theme-toggle { display: none; }
-      .post-wrap { padding: 2.5rem 1.25rem 6rem; }
-      .post-body { font-size: 0.96rem; }
+    .footer-links a:hover {
+      color: var(--ink);
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="../index.html" class="nav-logo">Ausb</a>
-  <div class="nav-links">
-    <a href="../index.html">Work</a>
-    <a href="index.html">Writing</a>
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 3 9 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-divider"></div>
+    <a href="../index.html" class="brand-name">Austin Edmonson</a>
+  </div>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Articles</a>
     <a href="../about.html">About</a>
-    <a href="../recruit.html">Hire</a>
-    <a href="http://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="nav-linkedin" aria-label="LinkedIn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
-    </a>
-    <button class="nav-theme-toggle" id="themeToggle" aria-label="Toggle color mode">
-      <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
-    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Contact me</a>
-  </div>
-</nav>
+  </nav>
+</header>
 
-<div class="post-wrap">
-
-  <a href="index.html" class="post-back">← All posts</a>
-
-  <span class="post-tag tag-platform">Platform</span>
+<main>
+  <a href="index.html" class="post-back">←</a>
   <h1 class="post-title">We Were Overengineering Ourselves Into Operational Exhaustion</h1>
-  <div class="post-meta">
-    <span>May 2026</span>
-    <span>5 min read</span>
+  <p class="post-date">May 2026</p>
+
+  <img src="../assets/overengineering-hero.jpg" alt="A circular hole cut through a grassy hill, opening onto a blue sky with clouds" class="post-hero" />
+
+  <div class="post-body">
+
+    <p><em>Your team shouldn't be the emotional support group for your architecture.</em></p>
+
+    <p>There's a very specific kind of fear that enters a small engineering team when someone says:</p>
+
+    <p>"Don't worry, Terraform manages it."</p>
+
+    <p>At first it feels comforting. Infrastructure as code. Reusable modules. Enterprise workflows. Clean architecture diagrams. Everything versioned. Everything declarative. Everything "scalable."</p>
+
+    <p>Then six months later someone needs to rotate a secret and suddenly three engineers are staring at a failed Terraform plan like archaeologists trying to decode an ancient warning tablet.</p>
+
+    <p>I don't say that to knock Terraform. Terraform is powerful. In the right environment, with the right staffing and operational maturity, it solves real problems elegantly.</p>
+
+    <p>But small teams have a dangerous habit of inheriting infrastructure patterns designed for organizations with:</p>
+
+    <ul>
+      <li>dedicated platform divisions</li>
+      <li>infra specialists</li>
+      <li>module governance</li>
+      <li>architecture review boards</li>
+      <li>and at least one engineer whose entire personality is Terraform state management</li>
+    </ul>
+
+    <p>We did not have that team.</p>
+
+    <p>What I inherited was a small group of engineers who mostly just wanted to support services and ship code safely to production. Before I joined, some deployments were literally happening from engineers' laptops directly into production through Cloud Run jobs. That was the mentality. Keep the services alive. Move fast. Support the business.</p>
+
+    <p>Then suddenly those same engineers were expected to operate inside a heavily managed Terraform Enterprise ecosystem layered across Kubernetes, networking modules, secrets management, CI systems, state files, and deployment workflows.</p>
+
+    <p>On paper it looked mature.</p>
+
+    <p>In reality it felt like introducing a second job.</p>
+
+    <hr />
+
+    <h2>Simple things became emotionally expensive</h2>
+
+    <ul>
+      <li>Rotate a secret? Open Terraform.</li>
+      <li>Need cluster configuration? Open Terraform.</li>
+      <li>Need environment changes? Open Terraform.</li>
+    </ul>
+
+    <p>And god forbid a staff engineer did a POC six months ago, left some drift behind in state, and now your networking module suddenly wants:</p>
+
+    <ul>
+      <li>7 changes</li>
+      <li>5 additions</li>
+      <li>resources nobody on your current team has ever touched</li>
+      <li>and a plan output long enough to qualify as weekend reading</li>
+    </ul>
+
+    <p>Nothing builds confidence before a production deploy quite like: <em>"Why is Terraform trying to recreate networking resources I didn't even know existed?"</em></p>
+
+    <hr />
+
+    <h2>The real issue: complexity ownership</h2>
+
+    <p>At some point I realized the issue wasn't Terraform itself.</p>
+
+    <p>The issue was <strong>complexity ownership</strong>.</p>
+
+    <p>We had inherited infrastructure patterns designed for teams with dedicated platform bandwidth, but the actual team just needed:</p>
+
+    <ul>
+      <li>safe deployments</li>
+      <li>understandable workflows</li>
+      <li>reliable secret management</li>
+      <li>and confidence that deploying an app wouldn't accidentally awaken ancient networking demons</li>
+    </ul>
+
+    <p>Infrastructure had become "correct" architecturally but exhausting operationally.</p>
+
+    <hr />
+
+    <h2>So we changed direction</h2>
+
+    <p>We moved workloads onto a managed Kubernetes platform and simplified the ownership model dramatically. Instead of routing every operational concern through Terraform workflows, we focused on standardizing application delivery and reducing the amount of infrastructure engineers needed to think about daily.</p>
+
+    <p>We centralized secrets into a native secrets management tool instead of threading secrets through multiple Terraform abstractions and deployment layers.</p>
+
+    <p>CI/CD became:</p>
+
+    <ul>
+      <li>build</li>
+      <li>test</li>
+      <li>scan</li>
+      <li>deploy</li>
+    </ul>
+
+    <p>Not:</p>
+
+    <ul>
+      <li>open four repos</li>
+      <li>investigate state drift</li>
+      <li>update variables</li>
+      <li>re-run plans</li>
+      <li>emotionally recover</li>
+      <li>then finally deploy the actual application</li>
+    </ul>
+
+    <p>I also built reusable repository templates with parameterized Kubernetes configs and standardized deployment patterns so onboarding new applications became significantly easier. Developers didn't need deep Kubernetes or Terraform knowledge just to ship code anymore.</p>
+
+    <p>And honestly, that changed the team dynamic more than the technology itself.</p>
+
+    <p>Non-infrastructure engineers could participate in deployments confidently. Operational workflows became understandable. Secrets became manageable. Shipping stopped feeling scary.</p>
+
+    <p>We cut deployment workflows from something like 8+ operational steps down to about 3 predictable ones.</p>
+
+    <p>Was it less architecturally "pure?" Probably.</p>
+
+    <p>Was it dramatically healthier for the team operating it every day? Absolutely.</p>
+
+    <hr />
+
+    <h2>Overengineering rarely feels like overengineering while you're building it</h2>
+
+    <p>It usually feels responsible. Mature. Future-proof.</p>
+
+    <p>Until your team becomes the unpaid emotional support group for your architecture.</p>
+
+    <p>That experience changed how I think about platform engineering entirely.</p>
+
+    <p>Now I care a lot more about:</p>
+
+    <ul>
+      <li>cognitive load</li>
+      <li>operational clarity</li>
+      <li>onboarding friction</li>
+      <li>maintainability</li>
+      <li>and whether the system still makes sense to the people supporting it six months later</li>
+    </ul>
+
+    <p>Sometimes the best infrastructure decision is not adding another abstraction layer.</p>
+
+    <p>Sometimes it's removing three of them.</p>
+
   </div>
+</main>
 
-  <div id="post-content" class="post-body"></div>
-
-  <div class="post-nav">
-    <a href="terraform-dishwasher.html">← Terraform is Like a Dishwasher</a>
-    <a href="partida-gap.html" class="nav-next">Why we built Partida →</a>
+<footer>
+  <p>© 2026 Austin Edmonson. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="../index.html">Home</a>
+    <a href="index.html">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
   </div>
+</footer>
 
-</div>
-
-<div id="md" style="display:none">
-*Your team shouldn't be the emotional support group for your architecture.*
-
-There's a very specific kind of fear that enters a small engineering team when someone says:
-
-"Don't worry, Terraform manages it."
-
-At first it feels comforting. Infrastructure as code. Reusable modules. Enterprise workflows. Clean architecture diagrams. Everything versioned. Everything declarative. Everything "scalable."
-
-Then six months later someone needs to rotate a secret and suddenly three engineers are staring at a failed Terraform plan like archaeologists trying to decode an ancient warning tablet.
-
-I don't say that to knock Terraform. Terraform is powerful. In the right environment, with the right staffing and operational maturity, it solves real problems elegantly.
-
-But small teams have a dangerous habit of inheriting infrastructure patterns designed for organizations with:
-
-- dedicated platform divisions
-- infra specialists
-- module governance
-- architecture review boards
-- and at least one engineer whose entire personality is Terraform state management
-
-We did not have that team.
-
-What I inherited was a small group of engineers who mostly just wanted to support services and ship code safely to production. Before I joined, some deployments were literally happening from engineers' laptops directly into production through Cloud Run jobs. That was the mentality. Keep the services alive. Move fast. Support the business.
-
-Then suddenly those same engineers were expected to operate inside a heavily managed Terraform Enterprise ecosystem layered across Kubernetes, networking modules, secrets management, CI systems, state files, and deployment workflows.
-
-On paper it looked mature.
-
-In reality it felt like introducing a second job.
-
-## Simple things became emotionally expensive
-
-- Rotate a secret? Open Terraform.
-- Need cluster configuration? Open Terraform.
-- Need environment changes? Open Terraform.
-
-And god forbid a staff engineer did a POC six months ago, left some drift behind in state, and now your networking module suddenly wants:
-
-- 7 changes
-- 5 additions
-- resources nobody on your current team has ever touched
-- and a plan output long enough to qualify as weekend reading
-
-Nothing builds confidence before a production deploy quite like: *"Why is Terraform trying to recreate networking resources I didn't even know existed?"*
-
-## The real issue: complexity ownership
-
-At some point I realized the issue wasn't Terraform itself.
-
-The issue was **complexity ownership**.
-
-We had inherited infrastructure patterns designed for teams with dedicated platform bandwidth, but the actual team just needed:
-
-- safe deployments
-- understandable workflows
-- reliable secret management
-- and confidence that deploying an app wouldn't accidentally awaken ancient networking demons
-
-Infrastructure had become "correct" architecturally but exhausting operationally.
-
-## So we changed direction
-
-We moved workloads onto a managed Kubernetes platform and simplified the ownership model dramatically. Instead of routing every operational concern through Terraform workflows, we focused on standardizing application delivery and reducing the amount of infrastructure engineers needed to think about daily.
-
-We centralized secrets into a native secrets management tool instead of threading secrets through multiple Terraform abstractions and deployment layers.
-
-CI/CD became:
-
-- build
-- test
-- scan
-- deploy
-
-Not:
-
-- open four repos
-- investigate state drift
-- update variables
-- re-run plans
-- emotionally recover
-- then finally deploy the actual application
-
-I also built reusable repository templates with parameterized Kubernetes configs and standardized deployment patterns so onboarding new applications became significantly easier. Developers didn't need deep Kubernetes or Terraform knowledge just to ship code anymore.
-
-And honestly, that changed the team dynamic more than the technology itself.
-
-Non-infrastructure engineers could participate in deployments confidently. Operational workflows became understandable. Secrets became manageable. Shipping stopped feeling scary.
-
-We cut deployment workflows from something like 8+ operational steps down to about 3 predictable ones.
-
-Was it less architecturally "pure?" Probably.
-
-Was it dramatically healthier for the team operating it every day? Absolutely.
-
-## Overengineering rarely feels like overengineering while you're building it
-
-It usually feels responsible. Mature. Future-proof.
-
-Until your team becomes the unpaid emotional support group for your architecture.
-
-That experience changed how I think about platform engineering entirely.
-
-Now I care a lot more about:
-
-- cognitive load
-- operational clarity
-- onboarding friction
-- maintainability
-- and whether the system still makes sense to the people supporting it six months later
-
-Sometimes the best infrastructure decision is not adding another abstraction layer.
-
-Sometimes it's removing three of them.
-</div>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-  document.getElementById('post-content').innerHTML =
-    marked.parse(document.getElementById('md').textContent.trim());
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var html = document.documentElement;
+
+    function isDark() {
+      var stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    html.classList.toggle('dark-mode', isDark());
+
+    toggle.addEventListener('click', function() {
+      var next = !html.classList.contains('dark-mode');
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      html.classList.toggle('dark-mode', next);
+    });
+  })();
 </script>
 
-<script>
-  const root = document.documentElement;
-  const toggle = document.getElementById('themeToggle');
-  const icon = document.getElementById('themeIcon');
-
-  const sunSVG = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
-  const moonSVG = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
-
-  function isDark() {
-    const stored = localStorage.getItem('theme');
-    if (stored) return stored === 'dark';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-
-  function applyTheme(dark) {
-    root.setAttribute('data-theme', dark ? 'dark' : 'light');
-    icon.innerHTML = dark ? sunSVG : moonSVG;
-    toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-  }
-
-  applyTheme(isDark());
-
-  toggle.addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') !== 'dark';
-    localStorage.setItem('theme', next ? 'dark' : 'light');
-    applyTheme(next);
-  });
-</script>
 </body>
 </html>

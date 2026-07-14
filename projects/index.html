@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Austin Edmonson</title>
+  <style>
+    :root {
+      --bg: #FCFCFA;
+      --border: #E3DCC9;
+      --ink: #1A1A1A;
+      --muted: #7A7461;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 200;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--ink);
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    html {
+      transition: filter 0.3s ease;
+    }
+
+    img {
+      transition: filter 0.3s ease;
+    }
+
+    html.dark-mode {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode img {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .page-title {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .page-subtext {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 20px 0 0;
+    }
+
+    section {
+      margin-top: 48px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .oss-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .oss-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 24px 16px;
+      margin: 0 -16px;
+      border-radius: 10px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.2s ease;
+    }
+
+    .oss-row:hover {
+      background: rgba(26, 26, 26, 0.05);
+    }
+
+    .oss-row:last-child {
+      border-bottom: none;
+    }
+
+    .oss-repo-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: block;
+      object-fit: cover;
+    }
+
+    .oss-body {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .oss-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .oss-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 8px 0 0;
+    }
+
+    .oss-desc code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.9em;
+      background: rgba(26, 26, 26, 0.06);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      color: var(--ink);
+    }
+
+    .oss-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .oss-repo-name {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .oss-status {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    footer {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 24px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 3 9 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-divider"></div>
+    <a href="../index.html" class="brand-name">Austin Edmonson</a>
+  </div>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../writing/index.html">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="index.html" class="active">Projects</a>
+    <a href="../uses.html">Uses</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <h1 class="page-title">Projects</h1>
+  <p class="page-subtext">Things I've built, plus open source contributions along the way.</p>
+
+  <section>
+    <p class="section-label">Repos</p>
+    <div class="oss-list">
+      <a href="https://github.com/ausbernard/Vigia" target="_blank" rel="noopener" class="oss-row">
+        <img src="../assets/vigia-cover.jpg" alt="Vigia" class="oss-repo-img" />
+        <div class="oss-body">
+          <p class="oss-title">Vigia</p>
+          <p class="oss-desc">A read-only service that proxies the Railway API, reshapes deployment data, and surfaces project health across a workspace in a clean dashboard — FastAPI backend, React + Vite frontend.</p>
+          <div class="oss-meta">
+            <span class="oss-repo-name">ausbernard/Vigia</span>
+            <span class="oss-status">FastAPI · React ↗</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://github.com/ausbernard/python-ci-pavedroad" target="_blank" rel="noopener" class="oss-row">
+        <img src="../assets/python-ci-pavedroad-cover.jpg" alt="python-ci-pavedroad" class="oss-repo-img" />
+        <div class="oss-body">
+          <p class="oss-title">python-ci-pavedroad</p>
+          <p class="oss-desc">A reusable, production-ready CI/CD pipeline template for Python projects — GitHub Actions, Docker, pytest, and ruff wired up so new services start with testing and deployment already solved.</p>
+          <div class="oss-meta">
+            <span class="oss-repo-name">ausbernard/python-ci-pavedroad</span>
+            <span class="oss-status">Python · Docker ↗</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://github.com/ausbernard/Cairn" target="_blank" rel="noopener" class="oss-row">
+        <img src="../assets/cairn-cover.jpg" alt="Cairn" class="oss-repo-img" />
+        <div class="oss-body">
+          <p class="oss-title">Cairn</p>
+          <p class="oss-desc">A Rust CLI for people with no free time — capture ideas, use Claude to break them into 45-minute sessions with clear done-when criteria, and get learning tasks scheduled automatically when you're stuck instead of grinding on a blocker.</p>
+          <div class="oss-meta">
+            <span class="oss-repo-name">ausbernard/Cairn</span>
+            <span class="oss-status">Rust · SQLite ↗</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Open Source Contributions</p>
+    <div class="oss-list">
+      <a href="https://github.com/spotify/confidence-sdk-python/issues/114" target="_blank" rel="noopener" class="oss-row">
+      <img src="https://github.com/spotify.png?size=80" alt="spotify" class="oss-repo-img" />
+      <div class="oss-body">
+        <p class="oss-title">Found shared mutable class-level context causing instance data leakage</p>
+        <p class="oss-desc">All <code>Confidence</code> instances shared the same class-level <code>context</code> dict — setting context on one silently contaminated all others. Identified the root cause, proposed moving initialization to <code>__init__</code>, and flagged a secondary risk with a shared <code>httpx.AsyncClient</code>.</p>
+        <div class="oss-meta">
+          <span class="oss-repo-name">spotify/confidence-sdk-python</span>
+          <span class="oss-status">Closed ↗</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://github.com/gocardless/gocardless-pro-python/issues/129" target="_blank" rel="noopener" class="oss-row">
+      <img src="https://github.com/gocardless.png?size=80" alt="gocardless" class="oss-repo-img" />
+      <div class="oss-body">
+        <p class="oss-title">Fixed rate_limit returning a dict instead of a RateLimit object</p>
+        <p class="oss-desc">The public <code>Client.rate_limit</code> property broke documented attribute access (<code>.limit</code>, <code>.remaining</code>, <code>.reset</code>). Identified the gap between the internal API layer and the public interface, wrote a failing test, and submitted the fix.</p>
+        <div class="oss-meta">
+          <span class="oss-repo-name">gocardless/gocardless-pro-python</span>
+          <span class="oss-status">Closed ↗</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://github.com/gocardless/gocardless-pro-python/issues/130" target="_blank" rel="noopener" class="oss-row">
+      <img src="https://github.com/gocardless.png?size=80" alt="gocardless" class="oss-repo-img" />
+      <div class="oss-body">
+        <p class="oss-title">Added direct unit tests for the Paginator class</p>
+        <p class="oss-desc">The <code>Paginator</code> class powers every <code>.all()</code> call in the library but had zero direct coverage. Added 7 isolated unit tests with <code>unittest.mock</code> covering multi-page traversal, cursor logic, parameter passing, empty responses, and mutation safety.</p>
+        <div class="oss-meta">
+          <span class="oss-repo-name">gocardless/gocardless-pro-python</span>
+          <span class="oss-status">Closed ↗</span>
+        </div>
+      </div>
+    </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Austin Edmonson. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="../index.html">Home</a>
+    <a href="../writing/index.html">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var html = document.documentElement;
+
+    function isDark() {
+      var stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    html.classList.toggle('dark-mode', isDark());
+
+    toggle.addEventListener('click', function() {
+      var next = !html.classList.contains('dark-mode');
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      html.classList.toggle('dark-mode', next);
+    });
+  })();
+</script>
+
+</body>
+</html>
