@@ -4,10 +4,13 @@ Personal portfolio site. Hand-coded, no frameworks, no build step.
 
 ## 🗂 What's in here
 
-- **`index.html`** — home (work, writing, glyph strip)
+- **`index.html`** — home
 - **`about.html`** — who I am, stack, CV
+- **`uses.html`** — tools/gear
+- **`projects/`** — repos + open source contributions
 - **`writing/`** — blog posts
-- **`assets/`** — CV + anything else
+- **`work/`** — engineering impact case studies
+- **`assets/`** — CV + everything else
 
 ## 🛠 Stack
 
