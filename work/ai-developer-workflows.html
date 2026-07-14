@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Developer Workflows — Austin Edmonson</title>
+  <style>
+    :root {
+      --border: #E5E7EB;
+      --ink: #111318;
+      --muted: #6B7280;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #FFFFFF;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 200;
+    }
+
+    nav a:hover {
+      color: var(--ink);
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    html {
+      transition: filter 0.3s ease;
+    }
+
+    img {
+      transition: filter 0.3s ease;
+    }
+
+    html.dark-mode {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode img {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 48px 24px 120px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 16px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 32px;
+    }
+
+    .back-link:hover {
+      border-color: var(--ink);
+      color: #3EC6B0;
+    }
+
+    .case-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    section {
+      margin-top: 48px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .case-text {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 8px;
+    }
+
+    .case-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .case-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .case-list li::before {
+      content: "•";
+      color: #3EC6B0;
+      flex-shrink: 0;
+    }
+
+    .impact-stat {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 0 0 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 3 9 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-divider"></div>
+    <a href="../index.html" class="brand-name">Austin Edmonson</a>
+  </div>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../writing/index.html">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <a href="../index.html" class="back-link">←</a>
+  <h1 class="case-title">AI Developer Workflows</h1>
+
+  <section>
+    <p class="section-label">Problem</p>
+    <p class="case-text">...</p>
+  </section>
+
+  <section>
+    <p class="section-label">My Role</p>
+    <p class="case-text">...</p>
+  </section>
+
+  <section>
+    <p class="section-label">What I Built</p>
+    <ul class="case-list">
+      <li>...</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">Impact</p>
+    <p class="impact-stat">...</p>
+    <p class="case-text" style="margin-top: 12px;">...</p>
+  </section>
+
+  <section>
+    <p class="section-label">Lessons</p>
+    <p class="case-text">What I'd change...</p>
+    <p class="case-text">Tradeoffs...</p>
+    <p class="case-text">Architecture...</p>
+  </section>
+</main>
+
+<script>
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var html = document.documentElement;
+
+    function isDark() {
+      var stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    html.classList.toggle('dark-mode', isDark());
+
+    toggle.addEventListener('click', function() {
+      var next = !html.classList.contains('dark-mode');
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      html.classList.toggle('dark-mode', next);
+    });
+  })();
+</script>
+
+</body>
+</html>

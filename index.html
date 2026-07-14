@@ -4,1020 +4,549 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ausb</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Questrial&family=Bebas+Neue&family=Sigmar&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:      #F5F0E6;
-      --ink:     #1E2A5E;
-      --ink-2:   #3D4870;
-      --muted:   #C0BDB5;
-      --accent:  #CAFF33;
-      --code-bg: rgba(30, 42, 94, 0.07);
+      --bg: #FCFCFA;
+      --border: #E3DCC9;
+      --ink: #1A1A1A;
+      --muted: #7A7461;
     }
 
-    [data-theme="dark"] {
-      --bg:      #111318;
-      --ink:     #E6E1D6;
-      --ink-2:   #9EA3B8;
-      --muted:   #6B7280;
-      --accent:  #CAFF33;
-      --code-bg: rgba(255, 255, 255, 0.09);
-    }
+    * { box-sizing: border-box; }
 
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg:      #111318;
-        --ink:     #E6E1D6;
-        --ink-2:   #9EA3B8;
-        --muted:   #6B7280;
-        --accent:  #CAFF33;
-        --code-bg: rgba(255, 255, 255, 0.09);
-      }
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
       background: var(--bg);
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 700;
       color: var(--ink);
-      font-family: 'Questrial', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-      overflow-x: hidden;
-      max-width: 1400px;
-      margin-left: auto;
-      margin-right: auto;
+      text-decoration: none;
     }
 
     nav {
       display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 2.25rem 3rem;
+      align-items: center;
+      gap: 28px;
     }
 
-    .nav-logo {
-      font-family: 'Rozha One', serif;
-      font-size: 1.25rem;
-      color: var(--ink);
+    nav a {
+      color: var(--muted);
       text-decoration: none;
-      letter-spacing: -0.01em;
+      font-size: 15px;
+      font-weight: 200;
     }
 
-    .nav-links {
+    nav a:hover {
+      color: var(--ink);
+    }
+
+    .theme-toggle {
       display: flex;
-      align-items: baseline;
-      gap: 2.5rem;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
     }
 
-    .nav-links a {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.9rem;
+    .theme-toggle:hover {
+      color: var(--ink);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    html {
+      transition: filter 0.3s ease;
+    }
+
+    img {
+      transition: filter 0.3s ease;
+    }
+
+    html.dark-mode {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode img {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode .hero-avatar {
+      border: 3px solid #FFFFFF;
+    }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 48px 24px 120px;
+    }
+
+    .hero-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin: 0 0 20px;
+    }
+
+    .hero-name {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .hero-subtext {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 20px 0 0;
+    }
+
+    .social-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .social-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
       color: var(--ink);
       text-decoration: none;
-      letter-spacing: 0.01em;
-      opacity: 0.7;
-      transition: opacity 0.15s;
     }
 
-    .nav-links a:hover  { opacity: 1; }
-    .nav-links a.active { opacity: 1; }
-
-    .nav-contact {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.01em;
-      background: var(--accent);
-      text-decoration: none;
-      padding: 0.45rem 1.1rem;
-      border-radius: 999px;
-      transition: opacity 0.15s, transform 0.15s;
-      opacity: 1;
+    .social-box:hover {
+      border-color: #3EC6B0;
+      color: #3EC6B0;
     }
 
-    .nav-contact:hover { opacity: 0.85; transform: scale(1.03); }
-    a.nav-contact { color: #1E2A5E; }
-    .nav-linkedin { color: var(--ink); opacity: 0.5; display: flex; align-items: center; transition: opacity 0.15s; border: 1.5px solid currentColor; border-radius: 6px; padding: 2px 3px; }
-    .nav-linkedin:hover { opacity: 1; }
-
-    .nav-theme-toggle { background: none; border: 1.5px solid var(--ink); border-radius: 6px; padding: 2px 3px; color: var(--ink); opacity: 0.5; cursor: pointer; display: flex; align-items: center; transition: opacity 0.15s; font-size: 0; line-height: 0; }
-    .nav-theme-toggle:hover { opacity: 1; }
-
-    /* ─── HERO ─── */
-    .hero {
-      padding: 5rem 3rem 8rem;
+    .social-box svg {
+      width: 18px;
+      height: 18px;
     }
 
-    .hero-h1 {
-      font-family: 'Rozha One', serif;
-      font-size: clamp(3rem, 7.5vw, 6.5rem);
-      line-height: 1.04;
-      color: var(--ink);
-      letter-spacing: -0.02em;
+    section {
+      margin-top: 56px;
     }
 
-    .hero-h2 {
-      font-family: 'Rozha One', serif;
-      font-size: clamp(1.9rem, 4.75vw, 4rem);
-      line-height: 1.1;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-      margin-top: 0.2em;
-    }
-
-    .hero-body {
-      margin-top: 3.5rem;
-      max-width: 54ch;
-    }
-
-    .hero-body {
-      font-family: 'Questrial', sans-serif;
-      font-size: clamp(0.95rem, 1.35vw, 1.1rem);
-      line-height: 1.75;
-      color: var(--ink-2);
-    }
-
-    /* ─── WORK GRID ─── */
-    .work {
-      padding: 0 3rem 8rem;
-    }
-
-    .work-label {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.14em;
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
       text-transform: uppercase;
-      color: var(--ink);
-      margin-bottom: 2rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 0 0 16px;
     }
 
-    .work-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
+    .impact-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .impact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 10px;
+      margin: 0 -10px;
+      border-radius: 8px;
+      background: transparent;
+      transition: background-color 0.2s ease;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .impact-item:hover {
+      background: rgba(26, 26, 26, 0.05);
+    }
+
+    .impact-list a.impact-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .impact-list a.impact-item:last-of-type {
+      border-bottom: none;
+    }
+
+    .impact-arrow {
+      color: #EC4899;
+      font-size: 16px;
+      line-height: 1.5;
+      flex-shrink: 0;
+    }
+
+    .impact-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .impact-subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--muted);
+      margin: 4px 0 0;
+    }
+
+    .work-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .work-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .work-cv-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(26, 26, 26, 0.05);
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .work-cv-button:hover {
+      background: rgba(26, 26, 26, 0.09);
+    }
+
+    .work-cv-button svg {
+      width: 16px;
+      height: 16px;
     }
 
     .work-item {
-      border-top: 1px solid var(--muted);
-      padding: 2rem 0 2.5rem;
-      display: block;
-    }
-
-    .work-item:nth-child(even) {
-      padding-left: 2rem;
-      padding-right: 0;
-      border-left: 1px solid var(--muted);
-    }
-
-
-    .work-item-tag {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.85rem;
-    }
-
-    .work-item-title {
-      font-family: 'Rozha One', serif;
-      font-size: 1.25rem;
-      line-height: 1.1;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-      margin-bottom: 0.75rem;
-    }
-
-    .work-item-desc {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: var(--ink-2);
-    }
-
-    .work-item-link {
-      display: inline-block;
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.78rem;
-      color: var(--ink);
-      margin-top: 1.25rem;
-      letter-spacing: 0.02em;
-    }
-
-
-/* ─── PROJECT DETAIL ─── */
-    .project {
-      border-top: 1px solid var(--muted);
-      padding-top: 2rem;
-    }
-
-    .project-body {
-      display: grid;
-      grid-template-columns: 1.3fr 1fr;
-      gap: 3rem;
-      align-items: start;
-      margin-top: 2rem;
-    }
-
-    .project-section {
-      margin-bottom: 2rem;
-    }
-
-    .project-section-title {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      font-weight: bold;
-      color: var(--ink);
-      margin-bottom: 0.65rem;
-    }
-
-    .project-bullets {
-      list-style: none;
       display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
+      align-items: flex-start;
+      gap: 14px;
     }
 
-    .project-bullets li {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.92rem;
-      line-height: 1.6;
-      color: var(--ink-2);
-      padding-left: 1.1em;
-      position: relative;
-    }
-
-    .project-bullets li::before {
-      content: '•';
-      position: absolute;
-      left: 0;
-      color: var(--muted);
-    }
-
-    .project-links {
-      display: flex;
-      gap: 2rem;
-      margin-top: 2.25rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .project-link-live {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.92rem;
-      color: #4A6FE3;
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-
-    .project-link-breakdown {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.92rem;
-      color: var(--ink);
-      text-decoration: none;
-      opacity: 0.65;
-      transition: opacity 0.15s;
-    }
-
-    .project-link-live:hover,
-    .project-link-breakdown:hover { opacity: 0.7; }
-
-    .project-stack {
-      border: 1px solid var(--muted);
-      border-radius: 12px;
-      padding: 1.75rem;
-    }
-
-    .project-stack-title {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      font-weight: bold;
-      color: var(--ink);
-      margin-bottom: 1.25rem;
-    }
-
-    .project-stack-row {
-      padding: 0.8rem 0;
-      border-top: 1px solid var(--muted);
-    }
-
-    .project-stack-label {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.82rem;
-      font-weight: bold;
-      color: var(--ink);
-      margin-bottom: 0.15rem;
-    }
-
-    .project-stack-value {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.82rem;
-      color: var(--ink-2);
-    }
-
-/* ─── WRITING SECTION ─── */
-    .writing {
-      padding: 0 3rem 10rem;
-    }
-
-    .writing-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-    }
-
-    .writing-label {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink);
-    }
-
-    .writing-all {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.75rem;
-      color: var(--ink);
-      text-decoration: none;
-      opacity: 0.5;
-      letter-spacing: 0.02em;
-      transition: opacity 0.15s;
-    }
-
-    .writing-all:hover { opacity: 1; }
-
-    .writing-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .writing-item {
-      border-radius: 14px;
-      padding: 2rem;
-      aspect-ratio: 4 / 3;
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: 0.75rem;
-      box-shadow: 0 4px 16px rgba(30, 42, 94, 0.12), 0 1px 4px rgba(30, 42, 94, 0.08);
-      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-    }
-
-    .writing-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 32px rgba(30, 42, 94, 0.18), 0 2px 8px rgba(30, 42, 94, 0.1);
-      opacity: 0.95;
-    }
-
-    .writing-item.accent-pea  { background: #6777B6; }
-    .writing-item.accent-gold { background: #B28622; }
-    .writing-item.accent-red  { background: #BB6068; }
-
-    .writing-item-footer {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-top: auto;
-    }
-
-    .writing-item-read {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.06em;
-      color: rgba(255,255,255,0.7);
-    }
-
-    .writing-item-tag {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
-    }
-
-    .writing-item-title {
-      font-family: 'Rozha One', serif;
-      font-size: clamp(1.5rem, 2.2vw, 1.85rem);
-      line-height: 1.15;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.25rem;
-    }
-
-    .accent-pea  .writing-item-title { color: #EFCE7B; }
-    .accent-gold .writing-item-title { color: #F8CABA; }
-    .accent-red  .writing-item-title { color: #CAFF33; }
-
-    .writing-item { position: relative; }
-
-    .writing-grid .writing-item:first-child::before {
-      content: 'New';
-      position: absolute;
-      top: 0.9rem;
-      right: 0.9rem;
-      width: 44px;
-      height: 44px;
-      background: var(--accent);
-      clip-path: polygon(50% 0%, 59% 20%, 82% 9%, 72% 31%, 100% 38%, 78% 50%, 100% 62%, 72% 69%, 82% 91%, 59% 80%, 50% 100%, 41% 80%, 18% 91%, 28% 69%, 0% 62%, 22% 50%, 0% 38%, 28% 31%, 18% 9%, 41% 20%);
-      filter: drop-shadow(0 0 2.5px #FF6B2B);
-      transform: rotate(-10deg);
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.46rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #1E2A5E;
-      font-weight: bold;
-      line-height: 44px;
-      text-align: center;
-    }
-
-    .writing-item-snippet {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.65;
-      color: rgba(255,255,255,0.78);
-    }
-
-    /* ─── OPEN SOURCE ─── */
-    .oss {
-      padding: 0 3rem 8rem;
-    }
-
-    .oss-label {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink);
-      margin-bottom: 2rem;
-    }
-
-    .oss-row {
-      display: grid;
-      grid-template-columns: 200px 1fr auto;
-      gap: 0 2rem;
-      padding: 1.5rem 0;
-      border-top: 1px solid var(--muted);
-      text-decoration: none;
-      align-items: center;
-      transition: opacity 0.15s;
-    }
-
-    .oss-row:last-child { border-bottom: 1px solid var(--muted); }
-    .oss-row:hover { opacity: 0.65; }
-
-    .oss-repo {
+    .work-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 700;
     }
 
-    .oss-repo img {
-      width: 44px;
-      height: 44px;
-      border-radius: 6px;
-      display: block;
+    .work-logo-img {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
     }
 
-    .oss-title {
-      font-family: 'Rozha One', serif;
-      font-size: 1.25rem;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
+    html.dark-mode .work-logo-img,
+    html.dark-mode .work-logo-fill {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode .work-logo-img img,
+    html.dark-mode .work-logo-fill img {
+      filter: none;
+    }
+
+    .work-logo-img img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+
+    .work-logo-fill img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .work-body {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .work-title {
+      font-size: 16px;
+      font-weight: 600;
       color: var(--ink);
-      margin-bottom: 0.4rem;
+      margin: 0;
     }
 
-    .oss-desc {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.65;
-      color: var(--ink-2);
-    }
-
-    .oss-desc code {
-      font-family: 'Courier New', monospace;
-      font-size: 0.82em;
-      background: var(--code-bg);
-      padding: 0.1em 0.35em;
-      border-radius: 3px;
-      color: var(--ink);
-    }
-
-    .oss-status {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    .work-subtitle {
+      font-size: 14px;
+      font-weight: 400;
       color: var(--muted);
-      padding-top: 0.2rem;
+      margin: 3px 0 0;
+    }
+
+    .work-dates {
+      font-size: 14px;
+      color: var(--muted);
       white-space: nowrap;
+      padding-top: 2px;
     }
 
-    /* ─── ABOUT ─── */
-    .about {
-      padding: 0 3rem 10rem;
-    }
-
-    .about-label {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink);
-      margin-bottom: 2rem;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: 4rem;
-      align-items: start;
-      border-top: 1px solid var(--muted);
-      padding-top: 2rem;
-    }
-
-    .about-data-row {
-      display: grid;
-      grid-template-columns: 100px 1fr;
-      gap: 0 1.5rem;
-      padding: 0.65rem 0;
-      border-bottom: 1px solid rgba(192, 189, 181, 0.4);
-    }
-
-    .about-data-label {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding-top: 0.1rem;
-    }
-
-    .about-data-value {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.88rem;
-      color: var(--ink-2);
-    }
-
-    .about-data-value a {
-      color: var(--ink);
-      text-decoration: none;
-      border-bottom: 1px solid var(--muted);
-      transition: border-color 0.15s;
-    }
-
-    .about-data-value a:hover { border-color: var(--ink); }
-
-    .about-bio p {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.85;
-      color: var(--ink-2);
-      margin-bottom: 1.5rem;
-    }
-
-    .about-bio p:last-child { margin-bottom: 0; }
-
-    /* ─── CTA CLOSE ─── */
-    .cta {
-      padding: 6rem 3rem 10rem;
-      border-top: 1px solid var(--muted);
-      margin: 0 3rem;
-    }
-
-    .cta-heading {
-      font-family: 'Rozha One', serif;
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      line-height: 1.04;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-      margin-bottom: 1.25rem;
-    }
-
-    .cta-email {
-      font-family: 'Questrial', sans-serif;
-      font-size: clamp(1rem, 2vw, 1.35rem);
-      color: var(--ink);
-      text-decoration: none;
-      border-bottom: 1.5px solid var(--ink);
-      padding-bottom: 0.1em;
-      opacity: 0.6;
-      transition: opacity 0.15s;
-    }
-
-    .cta-email:hover { opacity: 1; }
-
-    @media (max-width: 600px) {
-      .oss { padding: 0 1.5rem 6rem; }
-      .oss-row { grid-template-columns: 40px 1fr auto; gap: 0.5rem 0.75rem; }
-      .oss-repo img { width: 36px; height: 36px; }
-      .cta { margin: 0 1.5rem; padding: 4rem 0 8rem; }
-    }
-
-    /* ─── GLYPH STRIP ─── */
-    .glyph-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      height: 220px;
-      margin: 0 2.25rem 6rem;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(30, 42, 94, 0.1), 0 2px 8px rgba(30, 42, 94, 0.06);
-    }
-
-    .glyph-panel {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .glyph-panel svg {
-      width: 65%;
-      height: 80%;
-    }
-
-    /* ─── HERO ACTIONS ─── */
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2.5rem;
-      flex-wrap: wrap;
-    }
-
-    .hero-btn {
-      font-family: 'Questrial', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      padding: 0.85rem 1.75rem;
-      border-radius: 10px;
-      display: inline-block;
-      transition: opacity 0.15s, transform 0.15s;
-    }
-
-    .hero-btn-primary {
-      background: var(--accent);
-      color: #1E2A5E;
-    }
-
-    .hero-btn-secondary {
-      border: 1.5px solid var(--muted);
-      color: var(--ink);
-    }
-
-    .hero-btn:hover { opacity: 0.8; transform: translateY(-1px); }
-
-    /* ─── STATS ─── */
-    .stats {
-      margin: 0 3rem;
-      padding: 3rem 0 6rem;
-      border-top: 1px solid var(--muted);
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem 4rem;
-      max-width: 54ch;
-    }
-
-    .stat-value {
-      font-family: 'Rozha One', serif;
-      font-size: clamp(2.25rem, 5vw, 3.25rem);
-      line-height: 1;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-      margin-bottom: 0.4rem;
-    }
-
-    .stat-label {
-      font-family: 'Questrial', sans-serif;
-      font-size: 0.95rem;
-      color: var(--ink-2);
-      line-height: 1.5;
-    }
-
-    @media (max-width: 600px) {
-      nav { padding: 1.75rem 1.5rem; }
-      .nav-links { gap: 0.75rem; }
-      .nav-links a { font-size: 0.8rem; }
-      .nav-contact { font-size: 0.72rem; padding: 0.35rem 0.75rem; }
-      .nav-linkedin svg { width: 16px; height: 16px; }
-      .nav-theme-toggle { display: none; }
-      .hero { padding: 3.5rem 1.5rem 6rem; }
-      .hero-body { margin-top: 2.5rem; max-width: 100%; }
-      .glyph-strip { grid-template-columns: repeat(2, 1fr); height: auto; margin: 0 1.5rem 4rem; }
-      .glyph-panel { height: 150px; }
-      .work { padding: 0 1.5rem 6rem; }
-      .work-grid { grid-template-columns: 1fr; }
-      .work-item:nth-child(even) { padding-left: 0; border-left: none; }
-      .project-body { grid-template-columns: 1fr; gap: 2rem; }
-      .project-stack { margin-top: 0; }
-      .stats { margin: 0 1.5rem; padding: 2.5rem 0 5rem; }
-      .stats-grid { gap: 2rem 2.5rem; }
-      .writing { padding: 0 1.5rem 8rem; }
-      .writing-grid { grid-template-columns: 1fr; gap: 0.75rem; }
-      .writing-item { aspect-ratio: 3 / 2; padding: 1.25rem; }
-    }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="nav-logo">Ausb</a>
-  <div class="nav-links">
-    <a href="index.html">Work</a>
-    <a href="writing/index.html">Writing</a>
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 3 9 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-divider"></div>
+    <a href="index.html" class="brand-name">Austin Edmonson</a>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="writing/index.html">Articles</a>
     <a href="about.html">About</a>
-    <a href="recruit.html">Hire</a>
-    <a href="http://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="nav-linkedin" aria-label="LinkedIn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
-    </a>
-    <button class="nav-theme-toggle" id="themeToggle" aria-label="Toggle color mode">
-      <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <a href="projects/index.html">Projects</a>
+    <a href="uses.html">Uses</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
-    <a href="mailto:austinbedmonson@gmail.com" class="nav-contact">Contact me</a>
-  </div>
-</nav>
+  </nav>
+</header>
 
-<section class="hero">
-  <h1 class="hero-h1">Software & Platform Engineer</h1>
-  <h2 class="hero-h2">I build production systems from zero.</h2>
-  <p class="hero-body">I build backend systems, cloud infrastructure, and the tooling that keeps teams shipping. Remote-first and <em>timezone flexible</em>.</p>
-  <div class="hero-actions">
-    <a href="#work" class="hero-btn hero-btn-primary">See work →</a>
-    <a href="assets/Austin-Edmonson-CV-EU.pdf" download class="hero-btn hero-btn-secondary">Download resume</a>
-  </div>
-</section>
+<main>
+  <img src="assets/austin-headshot.jpeg" alt="Austin Edmonson" class="hero-avatar" />
+  <h1 class="hero-name">I build internal platforms that make thousands of engineers faster.</h1>
+  <p class="hero-subtext">Senior Platform Engineer focused on developer experience, CI/CD, Kubernetes, and AI-assisted software delivery.</p>
+  <p class="hero-subtext">I design systems that remove friction from the software development lifecycle so engineering teams can ship software faster, safer, and with more confidence.</p>
 
-<section class="stats">
-  <div class="stats-grid">
-    <div class="stat">
-      <p class="stat-value">8+</p>
-      <p class="stat-label">Years backend</p>
+  <div class="social-row">
+    <a href="https://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="social-box">
+      <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
+    </a>
+    <a href="https://github.com/ausbernard" target="_blank" rel="noopener" class="social-box">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.1 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.02 1.75 2.68 1.25 3.34.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .3.2.66.79.55A10.51 10.51 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5Z"/></svg>
+    </a>
+  </div>
+
+  <section>
+    <p class="section-label">Engineering Impact</p>
+    <div class="impact-list">
+      <a href="work/cicd-platform.html" class="impact-item">
+        <span class="impact-arrow">→</span>
+        <span>
+          <p class="impact-title">CI/CD Platform</p>
+          <p class="impact-subtitle">Standardized software delivery for 3,000+ engineers across 300,000+ repositories.</p>
+        </span>
+      </a>
+      <a href="work/github-actions-platform.html" class="impact-item">
+        <span class="impact-arrow">→</span>
+        <span>
+          <p class="impact-title">GitHub Actions Runner Platform</p>
+          <p class="impact-subtitle">Elastic Kubernetes runners powering enterprise builds</p>
+        </span>
+      </a>
+      <a href="work/enterprise-ai-adoption.html" class="impact-item">
+        <span class="impact-arrow">→</span>
+        <span>
+          <p class="impact-title">Enterprise AI Adoption</p>
+          <p class="impact-subtitle">Leading organization-wide AI integration into the SDLC</p>
+        </span>
+      </a>
+      <a href="work/ai-developer-workflows.html" class="impact-item">
+        <span class="impact-arrow">→</span>
+        <span>
+          <p class="impact-title">AI Developer Workflows</p>
+          <p class="impact-subtitle">Claude reviews, agentic automation, developer tooling</p>
+        </span>
+      </a>
     </div>
-    <div class="stat">
-      <p class="stat-value">Remote</p>
-      <p class="stat-label">Since 2021</p>
+  </section>
+
+  <section>
+    <p class="section-label">Writing</p>
+    <div class="impact-list">
+      <a href="writing/partida-technical-breakdown.html" class="impact-item">
+        <span class="impact-arrow">→</span>
+        <span>
+          <p class="impact-title">Building Partida: A Technical Breakdown</p>
+          <p class="impact-subtitle">Real bugs, real code, real numbers — the split Base import, the Alembic surprise, the enum-as-primary-key that broke at scale.</p>
+        </span>
+      </a>
+      <a href="writing/overengineering-operational-exhaustion.html" class="impact-item">
+        <span class="impact-arrow">→</span>
+        <span>
+          <p class="impact-title">We Were Overengineering Ourselves Into Operational Exhaustion</p>
+          <p class="impact-subtitle">What happens when a small team inherits infrastructure patterns built for a platform org three times its size.</p>
+        </span>
+      </a>
+      <a href="writing/cicd-same-image.html" class="impact-item">
+        <span class="impact-arrow">→</span>
+        <span>
+          <p class="impact-title">We Stopped Trusting Deployments Until We Fixed This</p>
+          <p class="impact-subtitle">Nothing destroys trust in deployments faster than realizing staging and production were never actually running the same thing.</p>
+        </span>
+      </a>
     </div>
-    <div class="stat">
-      <p class="stat-value">UTC±2</p>
-      <p class="stat-label">Flexible hours</p>
-    </div>
-    <div class="stat">
-      <p class="stat-value">3</p>
-      <p class="stat-label">Open source fixes</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<div class="glyph-strip">
-
-  <!-- Docker — lime bg, pink whale -->
-  <div class="glyph-panel" style="background:#CEFC3E">
-    <svg viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg">
-      <rect x="20" y="4"  width="18" height="13" rx="3" fill="#F9B4D2"/>
-      <rect x="42" y="4"  width="18" height="13" rx="3" fill="#F9B4D2"/>
-      <rect x="64" y="4"  width="18" height="13" rx="3" fill="#F9B4D2"/>
-      <rect x="20" y="20" width="18" height="13" rx="3" fill="#F9B4D2"/>
-      <rect x="42" y="20" width="18" height="13" rx="3" fill="#F9B4D2"/>
-      <rect x="64" y="20" width="18" height="13" rx="3" fill="#F9B4D2"/>
-      <ellipse cx="54" cy="78" rx="48" ry="26" fill="#F9B4D2"/>
-      <path d="M 96 70 C 114 57 117 80 100 76" fill="#F9B4D2"/>
-      <path d="M 18 52 C 14 40 18 28 14 16" stroke="#F9B4D2" stroke-width="5" stroke-linecap="round" fill="none"/>
-      <circle cx="34" cy="74" r="4" fill="#CEFC3E"/>
-    </svg>
-  </div>
-
-  <!-- Kubernetes — dark green bg, medium green helm -->
-  <div class="glyph-panel" style="background:#1C3A20">
-    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="60" cy="60" r="52" fill="none" stroke="#5CCD74" stroke-width="9"/>
-      <circle cx="60" cy="60" r="14" fill="#5CCD74"/>
-      <line x1="60" y1="60" x2="60"  y2="8"   stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
-      <line x1="60" y1="60" x2="102" y2="26"  stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
-      <line x1="60" y1="60" x2="113" y2="72"  stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
-      <line x1="60" y1="60" x2="83"  y2="109" stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
-      <line x1="60" y1="60" x2="37"  y2="109" stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
-      <line x1="60" y1="60" x2="7"   y2="72"  stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
-      <line x1="60" y1="60" x2="18"  y2="26"  stroke="#5CCD74" stroke-width="7" stroke-linecap="round"/>
-    </svg>
-  </div>
-
-  <!-- Python — medium green bg, dark green snakes -->
-  <div class="glyph-panel" style="background:#5CCD74">
-    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      <path d="M 60 14 C 38 14 36 26 36 36 L 36 50 L 60 50 L 60 54 L 28 54 C 28 54 14 53 14 72 C 14 91 28 92 28 92 L 38 92 L 38 78 C 38 78 37 64 52 64 L 68 64 C 68 64 82 65 82 50 L 82 30 C 82 30 83 14 60 14 Z" fill="#1C3A20"/>
-      <circle cx="48" cy="28" r="5" fill="#5CCD74"/>
-      <path d="M 60 106 C 82 106 84 94 84 84 L 84 70 L 60 70 L 60 66 L 92 66 C 92 66 106 67 106 48 C 106 29 92 28 92 28 L 82 28 L 82 42 C 82 42 83 56 68 56 L 52 56 C 52 56 38 55 38 70 L 38 90 C 38 90 37 106 60 106 Z" fill="#1C3A20"/>
-      <circle cx="72" cy="92" r="5" fill="#5CCD74"/>
-    </svg>
-  </div>
-
-  <!-- Terraform — pink bg, dark green diamond -->
-  <div class="glyph-panel" style="background:#F9B4D2">
-    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="60,8 88,26 60,44 32,26" fill="#1C3A20"/>
-      <polygon points="28,34 56,52 56,94 28,76" fill="#1C3A20"/>
-      <polygon points="64,52 92,34 92,76 64,94" fill="#1C3A20"/>
-    </svg>
-  </div>
-
-</div>
-
-<section class="work" id="work">
-  <p class="work-label">Work</p>
-
-  <div class="work-item">
-    <p class="work-item-tag">Product · Design · Platform</p>
-    <h3 class="work-item-title">Partida</h3>
-    <p class="work-item-desc">Immigration tech built for families, not lawyers. Product, design, and platform engineering from zero.</p>
-
-    <div class="project">
-      <div class="project-body">
-
-        <div class="project-details">
-          <div class="project-section">
-            <h4 class="project-section-title">Product Impact</h4>
-            <ul class="project-bullets">
-              <li>15 families onboarded to beta</li>
-              <li>2 attorney partners providing feedback</li>
-              <li>Document tracking across 19 case types</li>
-            </ul>
-          </div>
-
-          <div class="project-section">
-            <h4 class="project-section-title">Platform Engineering</h4>
-            <ul class="project-bullets">
-              <li>12 deploys/week on Railway</li>
-              <li>FastAPI + SQLAlchemy async, PostgreSQL</li>
-              <li>Firebase Auth + GCP Cloud Storage (compliance-first)</li>
-              <li>HTMX + Jinja2 for progressive enhancement</li>
-            </ul>
-          </div>
-
-          <div class="project-section">
-            <h4 class="project-section-title">AI-Augmented Development</h4>
-            <ul class="project-bullets">
-              <li>Claude for architecture design &amp; code review</li>
-              <li>40% faster feature iteration with AI-assisted testing</li>
-              <li>Real-time schema migration planning</li>
-            </ul>
-          </div>
-
-          <div class="project-links">
-            <a href="https://partida.me/" target="_blank" rel="noopener" class="project-link-live">View Live ↗</a>
-            <a href="writing/partida-technical-breakdown.html" class="project-link-breakdown">Read Technical Breakdown →</a>
-          </div>
+  <section>
+    <div class="work-card">
+    <p class="section-label">Work</p>
+    <div class="work-list">
+      <div class="work-item">
+        <div class="work-logo work-logo-fill">
+          <img src="assets/home-depot-logo.png" alt="The Home Depot" />
         </div>
-
-        <div class="project-stack">
-          <p class="project-stack-title">Tech Stack</p>
-          <div class="project-stack-row">
-            <p class="project-stack-label">Backend</p>
-            <p class="project-stack-value">FastAPI, SQLAlchemy</p>
+        <div class="work-body">
+          <div class="work-text">
+            <p class="work-title">The Home Depot</p>
+            <p class="work-subtitle">Senior Software Engineer</p>
           </div>
-          <div class="project-stack-row">
-            <p class="project-stack-label">Database</p>
-            <p class="project-stack-value">PostgreSQL async</p>
-          </div>
-          <div class="project-stack-row">
-            <p class="project-stack-label">Frontend</p>
-            <p class="project-stack-value">HTMX, Jinja2</p>
-          </div>
-          <div class="project-stack-row">
-            <p class="project-stack-label">Auth</p>
-            <p class="project-stack-value">Firebase Auth</p>
-          </div>
-          <div class="project-stack-row">
-            <p class="project-stack-label">Hosting</p>
-            <p class="project-stack-value">Railway, PostgreSQL</p>
-          </div>
-          <div class="project-stack-row">
-            <p class="project-stack-label">Role</p>
-            <p class="project-stack-value">Solo founder, all layers</p>
-          </div>
+          <span class="work-dates">2025 — Present</span>
         </div>
-
+      </div>
+      <div class="work-item">
+        <div class="work-logo work-logo-fill">
+          <img src="assets/home-depot-logo.png" alt="The Home Depot" />
+        </div>
+        <div class="work-body">
+          <div class="work-text">
+            <p class="work-title">The Home Depot</p>
+            <p class="work-subtitle">Software Engineer I &amp; II</p>
+          </div>
+          <span class="work-dates">2022 — 2025</span>
+        </div>
+      </div>
+      <div class="work-item">
+        <div class="work-logo work-logo-fill">
+          <img src="assets/acoustic-ai-logo.jpeg" alt="Acoustic AI" />
+        </div>
+        <div class="work-body">
+          <div class="work-text">
+            <p class="work-title">Acoustic AI</p>
+            <p class="work-subtitle">Systems Engineer</p>
+          </div>
+          <span class="work-dates">2020</span>
+        </div>
+      </div>
+      <div class="work-item">
+        <div class="work-logo work-logo-img">
+          <img src="assets/shadow-soft-logo.png" alt="Shadow Soft" />
+        </div>
+        <div class="work-body">
+          <div class="work-text">
+            <p class="work-title">Shadow Soft</p>
+            <p class="work-subtitle">DevOps Intern</p>
+          </div>
+          <span class="work-dates">2019 — 2020</span>
+        </div>
       </div>
     </div>
-  </div>
-
-</section>
-
-<section class="writing">
-  <div class="writing-header">
-    <p class="writing-label">Writing</p>
-    <a href="writing/index.html" class="writing-all">All posts →</a>
-  </div>
-
-  <div class="writing-grid">
-
-    <a href="writing/llm-non-determinism.html" class="writing-item accent-red">
-      <div>
-        <h3 class="writing-item-title">LLM Non-Determinism is Useful. Until You Mistake it for Engineering Truth.</h3>
-        <p class="writing-item-snippet">The model explores. The engineer decides. And increasingly, the engineer has to decide whether the decision itself was made on solid ground.</p>
-      </div>
-      <div class="writing-item-footer">
-        <span class="writing-item-read">Read →</span>
-        <span class="writing-item-tag">Engineering</span>
-      </div>
+    <a href="assets/Austin-Edmonson-CV-EU.pdf" class="work-cv-button" target="_blank" rel="noopener">
+      Download CV
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="16"/><polyline points="6 10 12 16 18 10"/></svg>
     </a>
-
-    <a href="writing/cicd-same-image.html" class="writing-item accent-pea">
-      <div>
-        <h3 class="writing-item-title">We Stopped Trusting Deployments Until We Fixed This</h3>
-        <p class="writing-item-snippet">Nothing destroys trust in deployments faster than realizing staging and production were never actually running the same thing.</p>
-      </div>
-      <div class="writing-item-footer">
-        <span class="writing-item-read">Read →</span>
-        <span class="writing-item-tag">Platform</span>
-      </div>
-    </a>
-
-    <a href="writing/terraform-dishwasher.html" class="writing-item accent-gold">
-      <div>
-        <h3 class="writing-item-title">Terraform is Like a Dishwasher: Great for Daily Loads, Overkill for a Single Cup</h3>
-        <p class="writing-item-snippet">If you've heard the word "Terraform" thrown around and nodded along pretending to know what it means, you're not alone.</p>
-      </div>
-      <div class="writing-item-footer">
-        <span class="writing-item-read">Read →</span>
-        <span class="writing-item-tag">Platform</span>
-      </div>
-    </a>
-
-  </div>
-
-</section>
-
-<section class="oss">
-  <p class="oss-label">Open Source Contributions</p>
-
-  <a href="https://github.com/spotify/confidence-sdk-python/issues/114" target="_blank" rel="noopener" class="oss-row">
-    <span class="oss-repo"><img src="https://github.com/spotify.png?size=80" alt="confidence-sdk-python" /></span>
-    <div>
-      <p class="oss-title">Found shared mutable class-level context causing instance data leakage</p>
-      <p class="oss-desc">All <code>Confidence</code> instances shared the same class-level <code>context</code> dict — setting context on one silently contaminated all others. Identified the root cause, proposed moving initialization to <code>__init__</code>, and flagged a secondary risk with a shared <code>httpx.AsyncClient</code>.</p>
     </div>
-    <span class="oss-status">Closed ↗</span>
-  </a>
-
-  <a href="https://github.com/gocardless/gocardless-pro-python/issues/129" target="_blank" rel="noopener" class="oss-row">
-    <span class="oss-repo"><img src="https://github.com/gocardless.png?size=80" alt="gocardless-pro-python" /></span>
-    <div>
-      <p class="oss-title">Fixed rate_limit returning a dict instead of a RateLimit object</p>
-      <p class="oss-desc">The public <code>Client.rate_limit</code> property broke documented attribute access (<code>.limit</code>, <code>.remaining</code>, <code>.reset</code>). Identified the gap between the internal API layer and the public interface, wrote a failing test, and submitted the fix.</p>
-    </div>
-    <span class="oss-status">Closed ↗</span>
-  </a>
-
-  <a href="https://github.com/gocardless/gocardless-pro-python/issues/130" target="_blank" rel="noopener" class="oss-row">
-    <span class="oss-repo"><img src="https://github.com/gocardless.png?size=80" alt="gocardless-pro-python" /></span>
-    <div>
-      <p class="oss-title">Added direct unit tests for the Paginator class</p>
-      <p class="oss-desc">The <code>Paginator</code> class powers every <code>.all()</code> call in the library but had zero direct coverage. Added 7 isolated unit tests with <code>unittest.mock</code> covering multi-page traversal, cursor logic, parameter passing, empty responses, and mutation safety.</p>
-    </div>
-    <span class="oss-status">Closed ↗</span>
-  </a>
-
-</section>
-
+  </section>
+</main>
 
 <script>
-  const root = document.documentElement;
-  const toggle = document.getElementById('themeToggle');
-  const icon = document.getElementById('themeIcon');
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var html = document.documentElement;
 
-  const sunSVG = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
-  const moonSVG = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+    function isDark() {
+      var stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
 
-  function isDark() {
-    const stored = localStorage.getItem('theme');
-    if (stored) return stored === 'dark';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
+    html.classList.toggle('dark-mode', isDark());
 
-  function applyTheme(dark) {
-    root.setAttribute('data-theme', dark ? 'dark' : 'light');
-    icon.innerHTML = dark ? sunSVG : moonSVG;
-    toggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-  }
-
-  applyTheme(isDark());
-
-  toggle.addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') !== 'dark';
-    localStorage.setItem('theme', next ? 'dark' : 'light');
-    applyTheme(next);
-  });
+    toggle.addEventListener('click', function() {
+      var next = !html.classList.contains('dark-mode');
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      html.classList.toggle('dark-mode', next);
+    });
+  })();
 </script>
+
 </body>
 </html>

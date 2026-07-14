@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CI/CD Platform — Austin Edmonson</title>
+  <style>
+    :root {
+      --border: #E5E7EB;
+      --ink: #111318;
+      --muted: #6B7280;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #FFFFFF;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 200;
+    }
+
+    nav a:hover {
+      color: var(--ink);
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    html {
+      transition: filter 0.3s ease;
+    }
+
+    img {
+      transition: filter 0.3s ease;
+    }
+
+    html.dark-mode {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode img {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 48px 24px 120px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 16px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 32px;
+    }
+
+    .back-link:hover {
+      border-color: var(--ink);
+      color: #3EC6B0;
+    }
+
+    .case-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .case-illustration {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 32px;
+    }
+
+    section {
+      margin-top: 48px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .case-text {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.6;
+      margin: 0 0 8px;
+    }
+
+    .case-sublabel {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 20px 0 10px;
+    }
+
+    .case-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .case-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 16px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .case-list li::before {
+      content: "•";
+      color: #3EC6B0;
+      flex-shrink: 0;
+    }
+
+    .timeline {
+      position: relative;
+      margin-top: 8px;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 5px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #EC4899;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 0 1px var(--border);
+    }
+
+    .timeline-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 12px;
+    }
+
+    .impact-stat {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 3 9 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-divider"></div>
+    <a href="../index.html" class="brand-name">Austin Edmonson</a>
+  </div>
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../writing/index.html">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <a href="../index.html" class="back-link">←</a>
+  <h1 class="case-title">CI/CD Platform</h1>
+
+  <img src="../assets/cicd-every-team.png" alt="Every team built pipelines differently — TeamCity, Concourse, Jenkins, and GitHub Actions, with fragmented maintainability, inconsistent onboarding, and minimal visibility into production." class="case-illustration" />
+
+  <section>
+    <p class="section-label">Problem</p>
+    <p class="impact-stat" style="margin-bottom: 16px;">3,000+ engineers. 300,000+ repositories. No standard way to ship code.</p>
+    <p class="case-text">Every team built pipelines differently — TeamCity, Concourse, Jenkins, GitHub Actions.</p>
+    <p class="case-text">Maintainability and costs were fragmented across different teams.</p>
+    <p class="case-text">Developer onboarding to these tools was inconsistent.</p>
+    <p class="case-text">We had no idea, as a body, where the code going to production was scanned, tested, and through which means. Visibility was minimal.</p>
+  </section>
+
+  <section>
+    <p class="section-label">Discovery</p>
+    <p class="case-text">We interviewed engineering teams across the organization to understand how software was being built and deployed.</p>
+    <p class="case-text">We documented common workflows, identified shared tooling, and looked for opportunities to standardize the developer experience.</p>
+    <p class="case-text">We found that nearly every team followed the same core workflow:</p>
+    <ul class="case-list">
+      <li>Install dependencies</li>
+      <li>Build</li>
+      <li>Run unit tests</li>
+      <li>Run static analysis</li>
+      <li>Deploy</li>
+    </ul>
+    <p class="case-text" style="margin-top: 16px;">Identified the tools, POC'd each one, and evaluated which we wanted to tackle for consolidating to a single tool. <strong>GitHub Actions</strong> was a clear winner.</p>
+
+    <p class="timeline-title" style="margin-top: 32px;">Why GitHub Actions?</p>
+
+    <p class="case-sublabel">Pros</p>
+    <ul class="case-list">
+      <li>Everyone's code already lived in GitHub</li>
+      <li>Growing infrastructure and support for packages and workflows</li>
+      <li>Could use GitHub runners to run the code</li>
+      <li>Teams wouldn't need to leave GitHub</li>
+      <li>Secret management by repo</li>
+      <li>We were already paying for GitHub EMU, and Actions came included as part of it — made sense cost-wise in the long run</li>
+    </ul>
+
+    <p class="case-sublabel">Challenges</p>
+    <ul class="case-list">
+      <li>Immature enterprise feature set</li>
+      <li>Required custom reusable workflows</li>
+      <li>Runner infrastructure costs</li>
+      <li>API rate limits</li>
+      <li>Workflow architecture constraints</li>
+    </ul>
+
+  </section>
+
+  <section>
+    <div class="timeline">
+      <div class="timeline-item">
+        <p class="timeline-title">The First POC</p>
+        <p class="case-text">I partnered on the first end-to-end CI/CD proof of concept, proving GitHub Actions could satisfy our enterprise software delivery requirements.</p>
+        <p class="case-text">This included:</p>
+        <ul class="case-list">
+          <li>Source checkout</li>
+          <li>npm environment provisioning</li>
+          <li>Dependency installation</li>
+          <li>Unit testing</li>
+          <li>Security scanning</li>
+          <li>Docker image creation</li>
+          <li>Artifact publishing</li>
+          <li>Enterprise deployment</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <p class="timeline-title">What We Built</p>
+        <p class="case-text">I then switched my focus to making and maintaining the reusable components across the stack and own the runner infrastructure.</p>
+        <p class="case-text">Over the next few years, the proof of concept became the foundation of our internal CI/CD platform. This was a true team effort.</p>
+        <ul class="case-list" style="margin-top: 12px;">
+          <li>Full Onboarding Documentation</li>
+          <li>ARC runners</li>
+          <li>Reusable workflows</li>
+          <li>Meta pipeline</li>
+          <li>Unit test uploads</li>
+          <li>Security scanning</li>
+          <li>Artifact management</li>
+          <li>Standardized change request creation</li>
+          <li>Attestation tracking</li>
+        </ul>
+
+        <p class="case-text" style="margin-top: 16px;">All of it funnels through one deployment platform at the end, to a managed Kubernetes infrastructure.</p>
+
+        <p class="case-sublabel">Language support rollout order</p>
+        <ul class="case-list">
+          <li>1. npm/JS</li>
+          <li>2. Maven/Java</li>
+          <li>3. Python</li>
+          <li>4. Go</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Impact</p>
+    <p class="impact-stat">3,000+ engineers</p>
+    <p class="impact-stat">300,000+ repositories</p>
+  </section>
+
+  <section>
+    <p class="section-label">Lessons</p>
+
+    <p class="case-sublabel" style="margin-top: 0;">What I'd Change</p>
+    <p class="case-text">I would have built the reusable components before the meta pipeline, and limited the depth of reusable workflows so we didn't hit platform limits.</p>
+    <p class="case-text">The meta pipeline was cool — once you're on it, you fly. Teams didn't need to maintain security findings in downstream packages or update external packages and dependencies in their workflows themselves; the platform (us) handled it.</p>
+    <p class="case-text">But it's hard to onboard onto: users only get visibility into inputs at the top level, not into the depth of the whole pipeline underneath. Those inputs get mapped through a set of reusable workflows and actions we defined, and when you're dealing with actions and filesystems across runners, that's a real challenge — it made onboarding harder for teams.</p>
+    <p class="case-text">I would have added comprehensive documentation sooner than we did.</p>
+
+    <p class="case-sublabel">Tradeoffs</p>
+    <p class="case-text"><span style="text-decoration: underline;">Standardization vs. flexibility:</span> enforcing a single opinionated pipeline improved maintainability and consistency at scale, but reduced teams' ability to handle edge cases. Over time, this also made the meta-pipeline harder to onboard onto.</p>
+    <p class="case-text">For those scenarios, we encouraged teams to compose reusable components and run custom workflows in their own order rather than relying on the meta-pipeline.</p>
+    <p class="case-text">However, that rigidity increased support load and onboarding friction, as teams needed more hands-on guidance to fit within the framework. It also consumed engineering time that could have gone toward building features or addressing system-level issues. We often found ourselves reasoning about edge cases from a constrained, "paved road" perspective, with limited ability to accommodate deviations without undermining the model itself. We bent where we had to, yet stayed firm the other times — it was a process.</p>
+
+    <p class="case-text">Architecture...</p>
+  </section>
+</main>
+
+<script>
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var html = document.documentElement;
+
+    function isDark() {
+      var stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    html.classList.toggle('dark-mode', isDark());
+
+    toggle.addEventListener('click', function() {
+      var next = !html.classList.contains('dark-mode');
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      html.classList.toggle('dark-mode', next);
+    });
+  })();
+</script>
+
+</body>
+</html>
