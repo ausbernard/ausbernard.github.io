@@ -104,6 +104,58 @@
       height: 18px;
     }
 
+    .nav-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .nav-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .nav-toggle {
+        display: flex;
+      }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 24px 20px;
+        z-index: 20;
+      }
+
+      nav.nav-open {
+        display: flex;
+      }
+
+      nav a {
+        width: 100%;
+        padding: 12px 0;
+      }
+
+      nav .theme-toggle {
+        margin-top: 8px;
+      }
+    }
+
     html {
       transition: filter 0.3s ease;
     }
@@ -247,7 +299,11 @@
     <a href="../index.html" class="brand-name">Austin Edmonson</a>
   </div>
 
-  <nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+
+  <nav id="siteNav">
     <a href="../index.html">Home</a>
     <a href="../writing/index.html">Articles</a>
     <a href="../about.html">About</a>
@@ -338,6 +394,14 @@
   (function() {
     var toggle = document.getElementById('themeToggle');
     var html = document.documentElement;
+
+    var navToggle = document.getElementById('navToggle');
+    var siteNav = document.getElementById('siteNav');
+    if (navToggle && siteNav) {
+      navToggle.addEventListener('click', function() {
+        siteNav.classList.toggle('nav-open');
+      });
+    }
 
     function isDark() {
       var stored = localStorage.getItem('theme');

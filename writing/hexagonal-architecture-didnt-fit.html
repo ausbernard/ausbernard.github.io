@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LLMs and Non-Determinism in Engineering — Austin Edmonson</title>
+  <title>Why Hexagonal Architecture Didn't Fit My Enterprise Reality — Austin Edmonson</title>
   <style>
     :root {
       --bg: #FCFCFA;
@@ -358,41 +358,45 @@
 
 <main>
   <a href="index.html" class="post-back">←</a>
-  <h1 class="post-title">LLMs and Non-Determinism in Engineering</h1>
-  <p class="post-date">June 2026</p>
+  <h1 class="post-title">Why Hexagonal Architecture Didn't Fit My Enterprise Reality</h1>
+  <p class="post-date">July 2026</p>
 
-  <img src="../assets/llm-non-determinism-hero.jpg" alt="Abstract illustration of wavy blue and white bands with node points and connecting curves, evoking a data or vector field" class="post-hero" />
+  <img src="../assets/buy-vs-build-hero.jpg" alt="Grid of blurred, ghostlike figures walking past a translucent screen, each marked with a small dot, evoking repeated observation and pattern" class="post-hero" />
 
   <div class="post-body">
 
-    <p>Software engineers are used to things being repeatable. Same input, same output. That's how we know we can trust our tests, builds, and deployments. When something behaves differently twice in a row, we treat it as a bug and fix it.</p>
+    <h2>The moment that exposed the gap</h2>
+    <p>Interviewer: "So, can you tell me some common Software Patterns?"</p>
+    <p>I sat silent for 15 seconds. Not because I don't design systems—I do, every day, at a Fortune 50 company. But because when he offered one word—"Hexagonal"—I realized he was asking about a pattern that assumes one team owns all layers.</p>
+    <p>In my world, ten teams own ten layers. I don't build hexagons. I build organs in a larger organism. And the pressure I feel isn't about keeping layers clean in one codebase or an application—it's about keeping my layer stable while the rest of the organism keeps evolving without me.</p>
+    <p>I answered, "I don't know any." But what I meant was: "The vocabulary doesn't fit my reality."</p>
 
-    <p>LLMs don't work that way. The same prompt can give you different answers. Sometimes the difference is small. Sometimes it's not. This can feel uncomfortable because it goes against what we're used to.</p>
+    <h2>Two different kinds of architectural pressure</h2>
+    <p>Architectural design centers around one thing: can what you're building withstand pressure—both vertically and horizontally?</p>
+    <h3>Vertical Pressure</h3>
+    <p>Academic patterns describe a vertical stack. This assumes one team, one codebase, all layers. The pressure is: can we keep layers clean so changes don't ripple through the stack? Without a team accurately addressing this pressure, business logic bleeds everywhere. For instance, a discount rule lives in three places—the UI, the database trigger, and the API mapper. Marketing changes one, forgets the other two, and suddenly customers are being overcharged. That's the kind of failure that erodes trust in your system.</p>
+    <h3>Horizontal Pressure</h3>
+    <p>Enterprise reality is a horizontal organism. Ten teams, ten layers, one organism. The pressure is: can we keep our layer stable so upstream and downstream teams don't have to care about our vendor's tantrums? For instance, the vendor changes a field name overnight. Our API parser crashes. The domain team never receives data. Now nobody knows who owns the fix—the integration team, the domain team, or the vendor themselves. Every team owns a layer, and each must handle their own protection so the impact doesn't ripple to the core business.</p>
+    <p>The difference in one sentence: <strong>vertical pressure is about keeping the organism healthy. Horizontal pressure is about keeping your organ alive while the rest of the body keeps moving without you.</strong></p>
+    <p>That's the gap I felt in that interview. I'd been living in horizontal pressure my whole career, but the only words I had to describe his question were vertical.</p>
 
-    <p>But it's not automatically bad. That variability can be useful when you're exploring ideas or looking for new approaches. The problem is when you treat an LLM's output the same way you'd treat code you wrote yourself or reviewed carefully.</p>
+    <h2>Why the vocabulary doesn't fit</h2>
+    <p>Hexagonal. Clean Architecture. DDD. Microservices. These terms all describe vertical architectures. They don't have vocabulary for horizontal realities.</p><p>There's no word for: <em>"How do I absorb my vendor's chaos—like a Server IP Address change at 2am—so my upstream teams don't have to care?"</em></p><p>Or: <em>"How do I make my layer invisible yet malleable enough that downstream teams depending on our runner infrastructure for their workflows never even notice an Allow List change?"</em></p><p>The patterns aren't wrong. The question isn't wrong. They're just written for a different world—an academic world where one team owns all layers and one codebase holds all concerns.</p><p>But that's not the world of a Platform Infrastructure Engineer.</p>
 
-    <p>Before LLMs, we already learned from imperfect sources — documentation, forums, blogs, coworkers. LLMs are just another source, faster and broader. But there is a difference worth paying attention to: a human author has context, intent, and accountability. An LLM has none of that. It generates text based on patterns. It doesn't know what's true or what matters. That doesn't make it useless. It just means you have to treat it differently.</p>
+    <h2>What horizontal pressure actually looks like</h2>
+    <p>Let me paint you a picture.</p><p>It's 2:13am. My phone buzzes. Our ingestion pipeline is failing. The vendor—let's call them Vendor X—changed their Allow List IP range without notice. Our runner infrastructure can't reach their API. Downstream teams wake up to failed workflows. Nobody knows who owns the fix because the vendor didn't tell anyone.</p><p>I don't build business rules. I don't design domain models. I build <strong>armor</strong>.</p><p>My job is to absorb that vendor's chaos—schema drift, IP changes, rate limits, timeout spikes—so the domain team never even knows it happened. If I do my job right, their team wakes up to a successful deployment. If I fail, they, including us, wake up to a P1 incident and post-mortem a week before Black Friday Sales.</p><p>That's horizontal pressure. Not purity. <strong>Survival.</strong></p>
 
-    <hr />
+    <h2>So what do we call this?</h2>
+    <p>I don't have a tidy answer. I don't think there is one yet.</p><p>Maybe it's "boundary architecture." Maybe it's "integration architecture." Maybe it's just "infrastructure ingestion." But whatever we call it, it needs a name—because until we name it, we can't talk about it. And until we talk about it, we can't teach it.</p><p>Consider the classic question: <em>"Do we buy this vendor's tool, or do we build our own?"</em></p><p>In academic terms, that's a procurement decision. In horizontal reality, it's an <strong>architectural survival decision</strong>.</p><p>If we buy, we absorb the vendor's chaos—their IP changes, their schema drift, their rate limits, their downtime. If we build, we own the maintenance, the bugs, the on-call rotations, and the feature requests from downstream teams.</p><p>Either way, the pressure is the same: <em>Can my layer survive the decision I'm about to make?</em></p><p>The patterns we have don't give us vocabulary for this. They describe the shape of a system, but they don't describe the <em>stress</em> of living in one layer of a distributed organism—or the financial and operational weight of choosing which chaos to absorb.</p><p>We need vocabulary that acknowledges that most of us aren't building the whole hexagon. We're building one facet. And the pressure we feel isn't just about keeping the layers clean—it's about keeping <em>our</em> layer alive while the rest of the body keeps moving without us.</p>
 
-    <p><strong>Example:</strong> I was working on a Kubernetes deployment for a small cron job that writes to BigQuery. I needed to add a dry-run option. The LLM gave me YAML and code changes that looked fine at first glance. But it changed how some parameters were handled — strings became literals — and the deployment broke because it was looking for values that no longer existed.</p>
-
-    <p>That same week, the same model helped me simplify how we handle environment variables across deployments. We removed some messy custom logic and let Kubernetes do more of the work. It worked well.</p>
-
-    <p>Same tool. One fix, one new bug.</p>
-
-    <hr />
-
-    <p><strong>The takeaway:</strong></p>
-
-    <ul>
-      <li>Treat LLM output as a suggestion, not a final answer.</li>
-      <li>Syntax and formatting can be correct while the logic is wrong.</li>
-      <li>Tests and linters help, but they don't catch everything — especially when the change looks reasonable.</li>
-      <li>The engineer is still responsible for understanding what the code actually does and whether it fits the system.</li>
-    </ul>
-
-    <p>Use LLMs to generate ideas and surface possibilities. But when you move from thinking to shipping, apply the same careful review you would to any other change. The LLM suggests. You decide. And you verify.</p>
+    <h2>So what now?</h2>
+    <p>I still don't know if I answered that interviewer's question correctly. I assume I didn't cause well I didn't get the job.</p>
+    <p>I said, "I don't know any." And in a trivia sense, that was true. I couldn't recite the Hexagonal Architecture pattern. I couldn't diagram Clean Architecture layers from memory.</p>
+    <p>But I knew how to keep a vendor's IP change from becoming my company's P1 incident. I knew how to absorb chaos so the domain team never even knew it existed. I knew how to make my layer invisible—except when it failed.</p>
+    <p>That's not nothing. That's <strong>horizontal pressure</strong>. And it deserves a vocabulary.</p>
+    <p>Maybe you're in that same room someday. An interviewer asks you about patterns. You hesitate. But instead of silence, you say:</p>
+    <p><em>"I don't know Hexagonal. But I can tell you what pressure I actually feel every day—and how I keep my layer alive so the rest of the organism doesn't even know there was a problem."</em></p>
+    <p>And maybe that's the right answer after all.</p>
 
   </div>
 </main>
