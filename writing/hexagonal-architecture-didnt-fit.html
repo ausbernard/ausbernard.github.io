@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why Hexagonal Architecture Didn't Fit My Enterprise Reality — Austin Edmonson</title>
+  <style>
+    :root {
+      --bg: #FCFCFA;
+      --border: #E3DCC9;
+      --ink: #1A1A1A;
+      --muted: #7A7461;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 200;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--ink);
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .nav-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .nav-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .nav-toggle {
+        display: flex;
+      }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 24px 20px;
+        z-index: 20;
+      }
+
+      nav.nav-open {
+        display: flex;
+      }
+
+      nav a {
+        width: 100%;
+        padding: 12px 0;
+      }
+
+      nav .theme-toggle {
+        margin-top: 8px;
+      }
+    }
+
+    html {
+      transition: filter 0.3s ease;
+    }
+
+    img {
+      transition: filter 0.3s ease;
+    }
+
+    html.dark-mode {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode img {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 16px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 24px;
+    }
+
+    .post-back:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .post-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .post-date {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 16px 0 0;
+    }
+
+    .post-hero {
+      display: block;
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-top: 32px;
+    }
+
+    .post-body {
+      margin-top: 40px;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .post-body p { margin: 0 0 20px; }
+
+    .post-body h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 40px 0 14px;
+      line-height: 1.3;
+    }
+
+    .post-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 28px 0 10px;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em { font-style: italic; }
+
+    .post-body code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.88em;
+      background: rgba(26, 26, 26, 0.06);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      color: var(--ink);
+    }
+
+    .post-body pre {
+      background: rgba(26, 26, 26, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      overflow-x: auto;
+      margin: 0 0 20px;
+    }
+
+    .post-body pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.85em;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--border);
+      padding-left: 18px;
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol { margin: 0 0 20px 22px; }
+    .post-body li { margin-bottom: 8px; }
+
+    .post-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 36px 0;
+    }
+
+    footer {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 24px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 3 9 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-divider"></div>
+    <a href="../index.html" class="brand-name">Austin Edmonson</a>
+  </div>
+
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+
+  <nav id="siteNav">
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <a href="index.html" class="post-back">←</a>
+  <h1 class="post-title">Why Hexagonal Architecture Didn't Fit My Enterprise Reality</h1>
+  <p class="post-date">July 2026</p>
+
+  <img src="../assets/buy-vs-build-hero.jpg" alt="Grid of blurred, ghostlike figures walking past a translucent screen, each marked with a small dot, evoking repeated observation and pattern" class="post-hero" />
+
+  <div class="post-body">
+
+    <h2>The moment that exposed the gap</h2>
+    <p>Interviewer: "So, can you tell me some common Software Patterns?"</p>
+    <p>I sat silent for 15 seconds. Not because I don't design systems—I do, every day, at a Fortune 50 company. But because when he offered one word—"Hexagonal"—I realized he was asking about a pattern that assumes one team owns all layers.</p>
+    <p>In my world, ten teams own ten layers. I don't build hexagons. I build organs in a larger organism. And the pressure I feel isn't about keeping layers clean in one codebase or an application—it's about keeping my layer stable while the rest of the organism keeps evolving without me.</p>
+    <p>I answered, "I don't know any." But what I meant was: "The vocabulary doesn't fit my reality."</p>
+
+    <h2>Two different kinds of architectural pressure</h2>
+    <p>Architectural design centers around one thing: can what you're building withstand pressure—both vertically and horizontally?</p>
+    <h3>Vertical Pressure</h3>
+    <p>Academic patterns describe a vertical stack. This assumes one team, one codebase, all layers. The pressure is: can we keep layers clean so changes don't ripple through the stack? Without a team accurately addressing this pressure, business logic bleeds everywhere. For instance, a discount rule lives in three places—the UI, the database trigger, and the API mapper. Marketing changes one, forgets the other two, and suddenly customers are being overcharged. That's the kind of failure that erodes trust in your system.</p>
+    <h3>Horizontal Pressure</h3>
+    <p>Enterprise reality is a horizontal organism. Ten teams, ten layers, one organism. The pressure is: can we keep our layer stable so upstream and downstream teams don't have to care about our vendor's tantrums? For instance, the vendor changes a field name overnight. Our API parser crashes. The domain team never receives data. Now nobody knows who owns the fix—the integration team, the domain team, or the vendor themselves. Every team owns a layer, and each must handle their own protection so the impact doesn't ripple to the core business.</p>
+    <p>The difference in one sentence: <strong>vertical pressure is about keeping the organism healthy. Horizontal pressure is about keeping your organ alive while the rest of the body keeps moving without you.</strong></p>
+    <p>That's the gap I felt in that interview. I'd been living in horizontal pressure my whole career, but the only words I had to describe his question were vertical.</p>
+
+    <h2>Why the vocabulary doesn't fit</h2>
+    <p>Hexagonal. Clean Architecture. DDD. Microservices. These terms all describe vertical architectures. They don't have vocabulary for horizontal realities.</p><p>There's no word for: <em>"How do I absorb my vendor's chaos—like a Server IP Address change at 2am—so my upstream teams don't have to care?"</em></p><p>Or: <em>"How do I make my layer invisible yet malleable enough that downstream teams depending on our runner infrastructure for their workflows never even notice an Allow List change?"</em></p><p>The patterns aren't wrong. The question isn't wrong. They're just written for a different world—an academic world where one team owns all layers and one codebase holds all concerns.</p><p>But that's not the world of a Platform Infrastructure Engineer.</p>
+
+    <h2>What horizontal pressure actually looks like</h2>
+    <p>Let me paint you a picture.</p><p>It's 2:13am. My phone buzzes. Our ingestion pipeline is failing. The vendor—let's call them Vendor X—changed their Allow List IP range without notice. Our runner infrastructure can't reach their API. Downstream teams wake up to failed workflows. Nobody knows who owns the fix because the vendor didn't tell anyone.</p><p>I don't build business rules. I don't design domain models. I build <strong>armor</strong>.</p><p>My job is to absorb that vendor's chaos—schema drift, IP changes, rate limits, timeout spikes—so the domain team never even knows it happened. If I do my job right, their team wakes up to a successful deployment. If I fail, they, including us, wake up to a P1 incident and post-mortem a week before Black Friday Sales.</p><p>That's horizontal pressure. Not purity. <strong>Survival.</strong></p>
+
+    <h2>So what do we call this?</h2>
+    <p>I don't have a tidy answer. I don't think there is one yet.</p><p>Maybe it's "boundary architecture." Maybe it's "integration architecture." Maybe it's just "infrastructure ingestion." But whatever we call it, it needs a name—because until we name it, we can't talk about it. And until we talk about it, we can't teach it.</p><p>Consider the classic question: <em>"Do we buy this vendor's tool, or do we build our own?"</em></p><p>In academic terms, that's a procurement decision. In horizontal reality, it's an <strong>architectural survival decision</strong>.</p><p>If we buy, we absorb the vendor's chaos—their IP changes, their schema drift, their rate limits, their downtime. If we build, we own the maintenance, the bugs, the on-call rotations, and the feature requests from downstream teams.</p><p>Either way, the pressure is the same: <em>Can my layer survive the decision I'm about to make?</em></p><p>The patterns we have don't give us vocabulary for this. They describe the shape of a system, but they don't describe the <em>stress</em> of living in one layer of a distributed organism—or the financial and operational weight of choosing which chaos to absorb.</p><p>We need vocabulary that acknowledges that most of us aren't building the whole hexagon. We're building one facet. And the pressure we feel isn't just about keeping the layers clean—it's about keeping <em>our</em> layer alive while the rest of the body keeps moving without us.</p>
+
+    <h2>So what now?</h2>
+    <p>I still don't know if I answered that interviewer's question correctly. I assume I didn't cause well I didn't get the job.</p>
+    <p>I said, "I don't know any." And in a trivia sense, that was true. I couldn't recite the Hexagonal Architecture pattern. I couldn't diagram Clean Architecture layers from memory.</p>
+    <p>But I knew how to keep a vendor's IP change from becoming my company's P1 incident. I knew how to absorb chaos so the domain team never even knew it existed. I knew how to make my layer invisible—except when it failed.</p>
+    <p>That's not nothing. That's <strong>horizontal pressure</strong>. And it deserves a vocabulary.</p>
+    <p>Maybe you're in that same room someday. An interviewer asks you about patterns. You hesitate. But instead of silence, you say:</p>
+    <p><em>"I don't know Hexagonal. But I can tell you what pressure I actually feel every day—and how I keep my layer alive so the rest of the organism doesn't even know there was a problem."</em></p>
+    <p>And maybe that's the right answer after all.</p>
+
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 Austin Edmonson. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="../index.html">Home</a>
+    <a href="index.html">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var html = document.documentElement;
+
+    var navToggle = document.getElementById('navToggle');
+    var siteNav = document.getElementById('siteNav');
+    if (navToggle && siteNav) {
+      navToggle.addEventListener('click', function() {
+        siteNav.classList.toggle('nav-open');
+      });
+    }
+
+    function isDark() {
+      var stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    html.classList.toggle('dark-mode', isDark());
+
+    toggle.addEventListener('click', function() {
+      var next = !html.classList.contains('dark-mode');
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      html.classList.toggle('dark-mode', next);
+    });
+  })();
+</script>
+
+</body>
+</html>
