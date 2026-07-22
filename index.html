@@ -72,6 +72,12 @@
       gap: 28px;
     }
 
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
     nav a {
       color: var(--muted);
       text-decoration: none;
@@ -152,8 +158,8 @@
         padding: 12px 0;
       }
 
-      nav .theme-toggle {
-        margin-top: 8px;
+      .header-controls {
+        gap: 12px;
       }
     }
 
@@ -174,27 +180,65 @@
     }
 
     html.dark-mode .hero-avatar {
-      border: 3px solid #FFFFFF;
+      border: 4px solid #FFFFFF;
+    }
+
+    html.dark-mode .hero-portrait-ring {
+      opacity: 0.35;
     }
 
     main {
       max-width: 640px;
       margin: 0 auto;
-      padding: 48px 24px 120px;
+      padding: 0 24px 120px;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px 40px;
+    }
+
+    .hero-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 28px;
+    }
+
+    .hero-portrait-wrap {
+      position: relative;
+      width: 112px;
+      height: 112px;
+      margin: 0 auto;
+      order: -1;
+    }
+
+    .hero-portrait-ring {
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      background: var(--border);
+      opacity: 0.55;
+      z-index: 0;
     }
 
     .hero-avatar {
-      width: 64px;
-      height: 64px;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
       object-fit: cover;
       display: block;
-      margin: 0 0 20px;
     }
 
     .hero-name {
-      font-size: 40px;
+      font-size: clamp(2.25rem, 4vw + 1.4rem, 2.375rem);
       font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
       color: var(--ink);
       margin: 0;
     }
@@ -204,13 +248,57 @@
       font-weight: 400;
       color: var(--muted);
       line-height: 1.6;
-      margin: 20px 0 0;
+      max-width: 46ch;
+      margin: 16px 0 0;
     }
 
     .social-row {
       display: flex;
       gap: 12px;
-      margin-top: 24px;
+      margin-top: 28px;
+    }
+
+    @media (min-width: 860px) {
+      .hero {
+        padding: 72px 24px 64px;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        align-items: center;
+        gap: 64px;
+      }
+
+      .hero-portrait-wrap {
+        width: 300px;
+        height: 300px;
+        margin: 0;
+        order: 0;
+      }
+
+      .hero-name {
+        font-size: clamp(2.25rem, 2vw + 1.6rem, 2.5rem);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-portrait-wrap,
+      .hero-name,
+      .hero-subtext,
+      .hero-content .social-row {
+        animation: hero-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      .hero-portrait-wrap { animation-delay: 0s; }
+      .hero-name { animation-delay: 0.08s; }
+      .hero-subtext { animation-delay: 0.16s; }
+      .hero-content .social-row { animation-delay: 0.24s; }
+    }
+
+    @keyframes hero-rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .social-box {
@@ -226,8 +314,8 @@
     }
 
     .social-box:hover {
-      border-color: #3EC6B0;
-      color: #3EC6B0;
+      border-color: #EC4899;
+      color: #EC4899;
     }
 
     .social-box svg {
@@ -235,17 +323,8 @@
       height: 18px;
     }
 
-    section {
+    main section {
       margin-top: 56px;
-    }
-
-    .section-label {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      margin: 0 0 16px;
     }
 
     .impact-list {
@@ -297,6 +376,151 @@
       font-weight: 400;
       color: var(--muted);
       margin: 4px 0 0;
+    }
+
+    .impact-heading {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      color: var(--ink);
+      margin: 0 0 16px;
+    }
+
+    .impact-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .impact-card {
+      display: block;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .impact-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--ink);
+      box-shadow: 0 10px 24px rgba(26, 26, 26, 0.08);
+    }
+
+    .impact-card-featured {
+      background: rgba(236, 72, 153, 0.05);
+      border-color: rgba(236, 72, 153, 0.25);
+    }
+
+    .impact-card-featured:hover {
+      border-color: #EC4899;
+      box-shadow: 0 10px 24px rgba(236, 72, 153, 0.12);
+    }
+
+    .impact-stat-row {
+      display: flex;
+      gap: 28px;
+      margin: 0 0 18px;
+    }
+
+    .impact-stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .impact-stat-label {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      margin: 2px 0 0;
+    }
+
+    .impact-card-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .impact-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .impact-card-arrow {
+      color: #EC4899;
+      font-size: 16px;
+      flex-shrink: 0;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .impact-card:hover .impact-card-arrow {
+      transform: translateX(3px);
+    }
+
+    .impact-card-subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--muted);
+      margin: 4px 0 0;
+    }
+
+    .writing-list {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .writing-item {
+      display: block;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .writing-item-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .writing-item-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      color: var(--ink);
+      margin: 0;
+      transition: color 0.2s ease;
+    }
+
+    .writing-item:hover .writing-item-title {
+      color: #EC4899;
+    }
+
+    .writing-item-arrow {
+      color: #EC4899;
+      font-size: 16px;
+      flex-shrink: 0;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .writing-item:hover .writing-item-arrow {
+      transform: translateX(3px);
+    }
+
+    .writing-item-subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 60ch;
+      margin: 8px 0 0;
     }
 
     .work-card {
@@ -387,32 +611,43 @@
       min-width: 0;
     }
 
-    .work-header {
+    .work-company {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 8px;
+    }
+
+    .work-stints {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .work-stint {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
       gap: 12px;
     }
 
-    .work-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--ink);
-      margin: 0;
-    }
-
-    .work-subtitle {
+    .work-role {
       font-size: 14px;
       font-weight: 400;
       color: var(--muted);
-      margin: 3px 0 0;
+      margin: 0;
     }
 
     .work-dates {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
       white-space: nowrap;
       flex-shrink: 0;
+    }
+
+    .work-dates-current {
+      color: var(--ink);
+      font-weight: 600;
     }
 
   </style>
@@ -430,151 +665,172 @@
     <a href="index.html" class="brand-name">Austin Edmonson</a>
   </div>
 
-  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-  </button>
-
-  <nav id="siteNav">
-    <a href="index.html">Home</a>
+  <div class="header-controls">
+    <nav id="siteNav">
     <a href="writing/index.html">Articles</a>
     <a href="about.html">About</a>
     <a href="projects/index.html">Projects</a>
     <a href="uses.html">Uses</a>
+    </nav>
+
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
-  </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
 </header>
 
-<main>
-  <img src="assets/austin-headshot.jpeg" alt="Austin Edmonson" class="hero-avatar" />
-  <h1 class="hero-name">I build internal platforms that make thousands of engineers faster.</h1>
-  <p class="hero-subtext">Senior Platform Engineer focused on developer experience, CI/CD, Kubernetes, and AI-assisted software delivery.</p>
-  <p class="hero-subtext">I design systems that remove friction from the software development lifecycle so engineering teams can ship software faster, safer, and with more confidence.</p>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-portrait-wrap">
+      <div class="hero-portrait-ring" aria-hidden="true"></div>
+      <img src="assets/austin-headshot.jpeg" alt="Austin Edmonson" class="hero-avatar" />
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-name">I build internal platforms that make thousands of engineers faster.</h1>
+      <p class="hero-subtext">Senior Platform Engineer focused on developer experience, CI/CD, Kubernetes, and AI-assisted software delivery.</p>
 
-  <div class="social-row">
-    <a href="https://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="social-box">
-      <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
-    </a>
-    <a href="https://github.com/ausbernard" target="_blank" rel="noopener" class="social-box">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.1 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.02 1.75 2.68 1.25 3.34.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .3.2.66.79.55A10.51 10.51 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5Z"/></svg>
-    </a>
+      <div class="social-row">
+        <a href="https://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="social-box">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
+        </a>
+        <a href="https://github.com/ausbernard" target="_blank" rel="noopener" class="social-box">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.1 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.02 1.75 2.68 1.25 3.34.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .3.2.66.79.55A10.51 10.51 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5Z"/></svg>
+        </a>
+        <a href="mailto:austinbedmonson@gmail.com" class="social-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+        </a>
+      </div>
+    </div>
   </div>
+</section>
 
+<main>
   <section>
-    <p class="section-label">Engineering Impact</p>
-    <div class="impact-list">
-      <a href="work/cicd-platform.html" class="impact-item">
-        <span class="impact-arrow">→</span>
-        <span>
-          <p class="impact-title">CI/CD Platform</p>
-          <p class="impact-subtitle">Standardized software delivery for 3,000+ engineers across 300,000+ repositories.</p>
-        </span>
+    <h2 class="impact-heading">Engineering impact</h2>
+    <div class="impact-grid">
+      <a href="work/cicd-platform.html" class="impact-card impact-card-featured">
+        <div class="impact-stat-row">
+          <div>
+            <p class="impact-stat-number">5K+</p>
+            <p class="impact-stat-label">engineers</p>
+          </div>
+          <div>
+            <p class="impact-stat-number">52K+</p>
+            <p class="impact-stat-label">repositories</p>
+          </div>
+        </div>
+        <div class="impact-card-head">
+          <p class="impact-card-title">CI/CD Platform</p>
+          <span class="impact-card-arrow" aria-hidden="true">→</span>
+        </div>
+        <p class="impact-card-subtitle">Standardized software delivery across the organization.</p>
       </a>
-      <a href="work/github-actions-platform.html" class="impact-item">
-        <span class="impact-arrow">→</span>
-        <span>
-          <p class="impact-title">GitHub Actions Runner Platform</p>
-          <p class="impact-subtitle">Elastic Kubernetes runners powering enterprise builds</p>
-        </span>
+      <a href="work/github-actions-platform.html" class="impact-card">
+        <div class="impact-card-head">
+          <p class="impact-card-title">GitHub Actions Runner Platform</p>
+          <span class="impact-card-arrow" aria-hidden="true">→</span>
+        </div>
+        <p class="impact-card-subtitle">Elastic Kubernetes runners powering enterprise builds.</p>
       </a>
-      <a href="work/enterprise-ai-adoption.html" class="impact-item">
-        <span class="impact-arrow">→</span>
-        <span>
-          <p class="impact-title">Enterprise AI Adoption</p>
-          <p class="impact-subtitle">Leading organization-wide AI integration into the SDLC</p>
-        </span>
+      <a href="work/enterprise-ai-adoption.html" class="impact-card">
+        <div class="impact-card-head">
+          <p class="impact-card-title">Enterprise AI Adoption</p>
+          <span class="impact-card-arrow" aria-hidden="true">→</span>
+        </div>
+        <p class="impact-card-subtitle">Leading organization-wide AI integration into the SDLC.</p>
       </a>
-      <a href="work/ai-developer-workflows.html" class="impact-item">
-        <span class="impact-arrow">→</span>
-        <span>
-          <p class="impact-title">AI Developer Workflows</p>
-          <p class="impact-subtitle">Claude reviews, agentic automation, developer tooling</p>
-        </span>
+      <a href="work/ai-developer-workflows.html" class="impact-card">
+        <div class="impact-card-head">
+          <p class="impact-card-title">AI Developer Workflows</p>
+          <span class="impact-card-arrow" aria-hidden="true">→</span>
+        </div>
+        <p class="impact-card-subtitle">Claude reviews, agentic automation, developer tooling.</p>
       </a>
     </div>
   </section>
 
   <section>
-    <p class="section-label">Writing</p>
-    <div class="impact-list">
-      <a href="writing/hexagonal-architecture-didnt-fit.html" class="impact-item">
-        <span class="impact-arrow">→</span>
-        <span>
-          <p class="impact-title">Why Hexagonal Architecture Didn't Fit My Enterprise Reality</p>
-          <p class="impact-subtitle">Hexagonal, Clean, DDD—the vocabulary assumes one team owns every layer. But when ten teams own ten layers, the pressure you're actually managing is different. And nobody's named it yet.</p>
-        </span>
+    <h2 class="impact-heading">Writing</h2>
+    <div class="writing-list">
+      <a href="writing/hexagonal-architecture-didnt-fit.html" class="writing-item">
+        <div class="writing-item-head">
+          <p class="writing-item-title">Why Hexagonal Architecture Didn't Fit My Enterprise Reality</p>
+          <span class="writing-item-arrow" aria-hidden="true">→</span>
+        </div>
+        <p class="writing-item-subtitle">Hexagonal, Clean, DDD: the vocabulary assumes one team owns every layer. When ten teams own ten layers, the pressure is different, and nobody's named it yet.</p>
       </a>
-      <a href="writing/partida-technical-breakdown.html" class="impact-item">
-        <span class="impact-arrow">→</span>
-        <span>
-          <p class="impact-title">Building Partida: A Technical Breakdown</p>
-          <p class="impact-subtitle">Real bugs, real code, real numbers — the split Base import, the Alembic surprise, the enum-as-primary-key that broke at scale.</p>
-        </span>
+      <a href="writing/partida-technical-breakdown.html" class="writing-item">
+        <div class="writing-item-head">
+          <p class="writing-item-title">Building Partida: A Technical Breakdown</p>
+          <span class="writing-item-arrow" aria-hidden="true">→</span>
+        </div>
+        <p class="writing-item-subtitle">Real bugs, real code, real numbers: the split Base import, the Alembic surprise, the enum-as-primary-key that broke at scale.</p>
       </a>
-      <a href="writing/overengineering-operational-exhaustion.html" class="impact-item">
-        <span class="impact-arrow">→</span>
-        <span>
-          <p class="impact-title">We Were Overengineering Ourselves Into Operational Exhaustion</p>
-          <p class="impact-subtitle">What happens when a small team inherits infrastructure patterns built for a platform org three times its size.</p>
-        </span>
+      <a href="writing/overengineering-operational-exhaustion.html" class="writing-item">
+        <div class="writing-item-head">
+          <p class="writing-item-title">We Were Overengineering Ourselves Into Operational Exhaustion</p>
+          <span class="writing-item-arrow" aria-hidden="true">→</span>
+        </div>
+        <p class="writing-item-subtitle">What happens when a small team inherits infrastructure patterns built for a platform org three times its size.</p>
       </a>
     </div>
   </section>
 
   <section>
     <div class="work-card">
-    <p class="section-label">Work</p>
+    <h2 class="impact-heading">Work</h2>
     <div class="work-list">
       <div class="work-item">
         <div class="work-logo work-logo-fill">
           <img src="assets/home-depot-logo.png" alt="The Home Depot" />
         </div>
         <div class="work-body">
-            <div class="work-header">
-              <p class="work-title">The Home Depot</p>
-              <span class="work-dates">2025 — Present</span>
+          <p class="work-company">The Home Depot</p>
+          <div class="work-stints">
+            <div class="work-stint">
+              <p class="work-role">Senior Software Engineer</p>
+              <span class="work-dates work-dates-current">2025 - Present</span>
             </div>
-            <p class="work-subtitle">Senior Software Engineer</p>
+            <div class="work-stint">
+              <p class="work-role">Software Engineer I &amp; II</p>
+              <span class="work-dates">2022 - 2025</span>
+            </div>
           </div>
-      </div>
-      <div class="work-item">
-        <div class="work-logo work-logo-fill">
-          <img src="assets/home-depot-logo.png" alt="The Home Depot" />
         </div>
-        <div class="work-body">
-            <div class="work-header">
-              <p class="work-title">The Home Depot</p>
-              <span class="work-dates">2022 — 2025</span>
-            </div>
-            <p class="work-subtitle">Software Engineer I &amp; II</p>
-          </div>
       </div>
       <div class="work-item">
         <div class="work-logo work-logo-fill">
           <img src="assets/acoustic-ai-logo.jpeg" alt="Acoustic AI" />
         </div>
         <div class="work-body">
-            <div class="work-header">
-              <p class="work-title">Acoustic AI</p>
+          <p class="work-company">Acoustic AI</p>
+          <div class="work-stints">
+            <div class="work-stint">
+              <p class="work-role">Systems Engineer</p>
               <span class="work-dates">2020</span>
             </div>
-            <p class="work-subtitle">Systems Engineer</p>
           </div>
+        </div>
       </div>
       <div class="work-item">
         <div class="work-logo work-logo-img">
           <img src="assets/shadow-soft-logo.png" alt="Shadow Soft" />
         </div>
         <div class="work-body">
-            <div class="work-header">
-              <p class="work-title">Shadow Soft</p>
-              <span class="work-dates">2019 — 2020</span>
+          <p class="work-company">Shadow Soft</p>
+          <div class="work-stints">
+            <div class="work-stint">
+              <p class="work-role">DevOps Intern</p>
+              <span class="work-dates">2019 - 2020</span>
             </div>
-            <p class="work-subtitle">DevOps Intern</p>
           </div>
+        </div>
       </div>
     </div>
     <a href="assets/Austin-Edmonson-CV-EU.pdf" class="work-cv-button" target="_blank" rel="noopener">
@@ -604,12 +860,22 @@
       return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
-    html.classList.toggle('dark-mode', isDark());
+    var sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    var moonIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+    function updateIcon(dark) {
+      toggle.innerHTML = dark ? moonIcon : sunIcon;
+    }
+
+    var dark = isDark();
+    html.classList.toggle('dark-mode', dark);
+    updateIcon(dark);
 
     toggle.addEventListener('click', function() {
       var next = !html.classList.contains('dark-mode');
       localStorage.setItem('theme', next ? 'dark' : 'light');
       html.classList.toggle('dark-mode', next);
+      updateIcon(next);
     });
   })();
 </script>

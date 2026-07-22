@@ -72,6 +72,12 @@
       gap: 28px;
     }
 
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
     nav a {
       color: var(--muted);
       text-decoration: none;
@@ -79,9 +85,13 @@
       font-weight: 200;
     }
 
-    nav a:hover,
+    nav a:hover {
+      color: var(--ink);
+    }
+
     nav a.active {
       color: var(--ink);
+      font-weight: 600;
     }
 
     .theme-toggle {
@@ -153,8 +163,8 @@
         padding: 12px 0;
       }
 
-      nav .theme-toggle {
-        margin-top: 8px;
+      .header-controls {
+        gap: 12px;
       }
     }
 
@@ -199,28 +209,28 @@
       margin-top: 48px;
     }
 
-    .section-label {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
+    .projects-heading {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      color: var(--ink);
       margin: 0 0 16px;
     }
 
     .oss-list {
       display: flex;
       flex-direction: column;
+      gap: 6px;
     }
 
     .oss-row {
+      position: relative;
       display: flex;
       align-items: flex-start;
       gap: 16px;
-      padding: 24px 16px;
+      padding: 24px 40px 24px 16px;
       margin: 0 -16px;
       border-radius: 10px;
-      border-bottom: 1px solid var(--border);
       text-decoration: none;
       color: inherit;
       transition: background-color 0.2s ease;
@@ -230,8 +240,17 @@
       background: rgba(26, 26, 26, 0.05);
     }
 
-    .oss-row:last-child {
-      border-bottom: none;
+    .oss-external {
+      position: absolute;
+      top: 24px;
+      right: 16px;
+      color: var(--muted);
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+
+    .oss-row:hover .oss-external {
+      color: #EC4899;
     }
 
     .oss-repo-img {
@@ -341,22 +360,24 @@
     <a href="../index.html" class="brand-name">Austin Edmonson</a>
   </div>
 
-  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-  </button>
-
-  <nav id="siteNav">
-    <a href="../index.html">Home</a>
+  <div class="header-controls">
+    <nav id="siteNav">
     <a href="../writing/index.html">Articles</a>
     <a href="../about.html">About</a>
     <a href="index.html" class="active">Projects</a>
     <a href="../uses.html">Uses</a>
+    </nav>
+
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
-  </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
 </header>
 
 <main>
@@ -364,40 +385,43 @@
   <p class="page-subtext">Things I've built, plus open source contributions along the way.</p>
 
   <section>
-    <p class="section-label">Repos</p>
+    <h2 class="projects-heading">Repos</h2>
     <div class="oss-list">
       <a href="https://github.com/ausbernard/Vigia" target="_blank" rel="noopener" class="oss-row">
+        <span class="oss-external" aria-hidden="true">↗</span>
         <img src="../assets/vigia-cover.jpg" alt="Vigia" class="oss-repo-img" />
         <div class="oss-body">
           <p class="oss-title">Vigia</p>
-          <p class="oss-desc">A read-only service that proxies the Railway API, reshapes deployment data, and surfaces project health across a workspace in a clean dashboard — FastAPI backend, React + Vite frontend.</p>
+          <p class="oss-desc">A read-only service that proxies the Railway API, reshapes deployment data, and surfaces project health across a workspace in a clean dashboard. FastAPI backend, React + Vite frontend.</p>
           <div class="oss-meta">
             <span class="oss-repo-name">ausbernard/Vigia</span>
-            <span class="oss-status">FastAPI · React ↗</span>
+            <span class="oss-status">FastAPI · React</span>
           </div>
         </div>
       </a>
 
       <a href="https://github.com/ausbernard/python-ci-pavedroad" target="_blank" rel="noopener" class="oss-row">
+        <span class="oss-external" aria-hidden="true">↗</span>
         <img src="../assets/python-ci-pavedroad-cover.jpg" alt="python-ci-pavedroad" class="oss-repo-img" />
         <div class="oss-body">
           <p class="oss-title">python-ci-pavedroad</p>
-          <p class="oss-desc">A reusable, production-ready CI/CD pipeline template for Python projects — GitHub Actions, Docker, pytest, and ruff wired up so new services start with testing and deployment already solved.</p>
+          <p class="oss-desc">A reusable, production-ready CI/CD pipeline template for Python projects: GitHub Actions, Docker, pytest, and ruff wired up so new services start with testing and deployment already solved.</p>
           <div class="oss-meta">
             <span class="oss-repo-name">ausbernard/python-ci-pavedroad</span>
-            <span class="oss-status">Python · Docker ↗</span>
+            <span class="oss-status">Python · Docker</span>
           </div>
         </div>
       </a>
 
       <a href="https://github.com/ausbernard/Cairn" target="_blank" rel="noopener" class="oss-row">
+        <span class="oss-external" aria-hidden="true">↗</span>
         <img src="../assets/cairn-cover.jpg" alt="Cairn" class="oss-repo-img" />
         <div class="oss-body">
           <p class="oss-title">Cairn</p>
-          <p class="oss-desc">A Rust CLI for people with no free time — capture ideas, use Claude to break them into 45-minute sessions with clear done-when criteria, and get learning tasks scheduled automatically when you're stuck instead of grinding on a blocker.</p>
+          <p class="oss-desc">A Rust CLI for people with no free time. Capture ideas, use Claude to break them into 45-minute sessions with clear done-when criteria, and get learning tasks scheduled automatically when you're stuck instead of grinding on a blocker.</p>
           <div class="oss-meta">
             <span class="oss-repo-name">ausbernard/Cairn</span>
-            <span class="oss-status">Rust · SQLite ↗</span>
+            <span class="oss-status">Rust · SQLite</span>
           </div>
         </div>
       </a>
@@ -405,40 +429,43 @@
   </section>
 
   <section>
-    <p class="section-label">Open Source Contributions</p>
+    <h2 class="projects-heading">Open Source Contributions</h2>
     <div class="oss-list">
       <a href="https://github.com/spotify/confidence-sdk-python/issues/114" target="_blank" rel="noopener" class="oss-row">
+        <span class="oss-external" aria-hidden="true">↗</span>
       <img src="https://github.com/spotify.png?size=80" alt="spotify" class="oss-repo-img" />
       <div class="oss-body">
         <p class="oss-title">Found shared mutable class-level context causing instance data leakage</p>
-        <p class="oss-desc">All <code>Confidence</code> instances shared the same class-level <code>context</code> dict — setting context on one silently contaminated all others. Identified the root cause, proposed moving initialization to <code>__init__</code>, and flagged a secondary risk with a shared <code>httpx.AsyncClient</code>.</p>
+        <p class="oss-desc">All <code>Confidence</code> instances shared the same class-level <code>context</code> dict: setting context on one silently contaminated all others. Identified the root cause, proposed moving initialization to <code>__init__</code>, and flagged a secondary risk with a shared <code>httpx.AsyncClient</code>.</p>
         <div class="oss-meta">
           <span class="oss-repo-name">spotify/confidence-sdk-python</span>
-          <span class="oss-status">Closed ↗</span>
+          <span class="oss-status">Closed</span>
         </div>
       </div>
     </a>
 
     <a href="https://github.com/gocardless/gocardless-pro-python/issues/129" target="_blank" rel="noopener" class="oss-row">
+        <span class="oss-external" aria-hidden="true">↗</span>
       <img src="https://github.com/gocardless.png?size=80" alt="gocardless" class="oss-repo-img" />
       <div class="oss-body">
         <p class="oss-title">Fixed rate_limit returning a dict instead of a RateLimit object</p>
         <p class="oss-desc">The public <code>Client.rate_limit</code> property broke documented attribute access (<code>.limit</code>, <code>.remaining</code>, <code>.reset</code>). Identified the gap between the internal API layer and the public interface, wrote a failing test, and submitted the fix.</p>
         <div class="oss-meta">
           <span class="oss-repo-name">gocardless/gocardless-pro-python</span>
-          <span class="oss-status">Closed ↗</span>
+          <span class="oss-status">Closed</span>
         </div>
       </div>
     </a>
 
     <a href="https://github.com/gocardless/gocardless-pro-python/issues/130" target="_blank" rel="noopener" class="oss-row">
+        <span class="oss-external" aria-hidden="true">↗</span>
       <img src="https://github.com/gocardless.png?size=80" alt="gocardless" class="oss-repo-img" />
       <div class="oss-body">
         <p class="oss-title">Added direct unit tests for the Paginator class</p>
         <p class="oss-desc">The <code>Paginator</code> class powers every <code>.all()</code> call in the library but had zero direct coverage. Added 7 isolated unit tests with <code>unittest.mock</code> covering multi-page traversal, cursor logic, parameter passing, empty responses, and mutation safety.</p>
         <div class="oss-meta">
           <span class="oss-repo-name">gocardless/gocardless-pro-python</span>
-          <span class="oss-status">Closed ↗</span>
+          <span class="oss-status">Closed</span>
         </div>
       </div>
     </a>
@@ -476,12 +503,22 @@
       return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
-    html.classList.toggle('dark-mode', isDark());
+    var sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    var moonIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+    function updateIcon(dark) {
+      toggle.innerHTML = dark ? moonIcon : sunIcon;
+    }
+
+    var dark = isDark();
+    html.classList.toggle('dark-mode', dark);
+    updateIcon(dark);
 
     toggle.addEventListener('click', function() {
       var next = !html.classList.contains('dark-mode');
       localStorage.setItem('theme', next ? 'dark' : 'light');
       html.classList.toggle('dark-mode', next);
+      updateIcon(next);
     });
   })();
 </script>

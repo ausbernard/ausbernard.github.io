@@ -72,6 +72,12 @@
       gap: 28px;
     }
 
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
     nav a {
       color: var(--muted);
       text-decoration: none;
@@ -79,9 +85,13 @@
       font-weight: 200;
     }
 
-    nav a:hover,
+    nav a:hover {
+      color: var(--ink);
+    }
+
     nav a.active {
       color: var(--ink);
+      font-weight: 600;
     }
 
     .theme-toggle {
@@ -153,8 +163,8 @@
         padding: 12px 0;
       }
 
-      nav .theme-toggle {
-        margin-top: 8px;
+      .header-controls {
+        gap: 12px;
       }
     }
 
@@ -206,6 +216,7 @@
     .article-list {
       display: flex;
       flex-direction: column;
+      gap: 6px;
     }
 
     .article-item {
@@ -213,7 +224,6 @@
       padding: 24px 16px;
       margin: 0 -16px;
       border-radius: 10px;
-      border-bottom: 1px solid var(--border);
       text-decoration: none;
       color: inherit;
       transition: background-color 0.2s ease;
@@ -221,10 +231,6 @@
 
     .article-item:hover {
       background: rgba(26, 26, 26, 0.05);
-    }
-
-    .article-item:last-child {
-      border-bottom: none;
     }
 
     .article-date {
@@ -253,12 +259,11 @@
       top: 88px;
     }
 
-    .work-sidebar .section-label {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
+    .work-heading {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      color: var(--ink);
       margin: 0 0 16px;
     }
 
@@ -350,32 +355,43 @@
       min-width: 0;
     }
 
-    .work-header {
+    .work-company {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 8px;
+    }
+
+    .work-stints {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .work-stint {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
       gap: 12px;
     }
 
-    .work-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--ink);
-      margin: 0;
-    }
-
-    .work-subtitle {
+    .work-role {
       font-size: 14px;
       font-weight: 400;
       color: var(--muted);
-      margin: 3px 0 0;
+      margin: 0;
     }
 
     .work-dates {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
       white-space: nowrap;
       flex-shrink: 0;
+    }
+
+    .work-dates-current {
+      color: var(--ink);
+      font-weight: 600;
     }
 
     @media (max-width: 800px) {
@@ -435,22 +451,24 @@
     <a href="../index.html" class="brand-name">Austin Edmonson</a>
   </div>
 
-  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-  </button>
-
-  <nav id="siteNav">
-    <a href="../index.html">Home</a>
+  <div class="header-controls">
+    <nav id="siteNav">
     <a href="index.html" class="active">Articles</a>
     <a href="../about.html">About</a>
     <a href="../projects/index.html">Projects</a>
     <a href="../uses.html">Uses</a>
+    </nav>
+
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
-  </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
 </header>
 
 <main>
@@ -462,13 +480,13 @@
       <a href="hexagonal-architecture-didnt-fit.html" class="article-item">
         <p class="article-date">July 2026</p>
         <h2 class="article-title">Why Hexagonal Architecture Didn't Fit My Enterprise Reality</h2>
-        <p class="article-excerpt">Hexagonal, Clean, DDD—the vocabulary assumes one team owns every layer. But when ten teams own ten layers, the pressure you're actually managing is different. And nobody's named it yet.</p>
+        <p class="article-excerpt">Hexagonal, Clean, DDD: the vocabulary assumes one team owns every layer. When ten teams own ten layers, the pressure is different, and nobody's named it yet.</p>
       </a>
 
       <a href="partida-technical-breakdown.html" class="article-item">
         <p class="article-date">July 2026</p>
         <h2 class="article-title">Building Partida: A Technical Breakdown</h2>
-        <p class="article-excerpt">Real bugs, real code, real numbers — the split Base import, the Alembic surprise, the enum-as-primary-key that broke at scale.</p>
+        <p class="article-excerpt">Real bugs, real code, real numbers: the split Base import, the Alembic surprise, the enum-as-primary-key that broke at scale.</p>
       </a>
 
       <a href="overengineering-operational-exhaustion.html" class="article-item">
@@ -492,55 +510,53 @@
 
     <div class="work-sidebar">
       <div class="work-card">
-        <p class="section-label">Work</p>
+        <h2 class="work-heading">Work</h2>
         <div class="work-list">
           <div class="work-item">
             <div class="work-logo work-logo-fill">
               <img src="../assets/home-depot-logo.png" alt="The Home Depot" />
             </div>
             <div class="work-body">
-            <div class="work-header">
-              <p class="work-title">The Home Depot</p>
-              <span class="work-dates">2025 — Present</span>
+              <p class="work-company">The Home Depot</p>
+              <div class="work-stints">
+                <div class="work-stint">
+                  <p class="work-role">Senior Software Engineer</p>
+                  <span class="work-dates work-dates-current">2025 - Present</span>
+                </div>
+                <div class="work-stint">
+                  <p class="work-role">Software Engineer I &amp; II</p>
+                  <span class="work-dates">2022 - 2025</span>
+                </div>
+              </div>
             </div>
-            <p class="work-subtitle">Senior Software Engineer</p>
-          </div>
-          </div>
-          <div class="work-item">
-            <div class="work-logo work-logo-fill">
-              <img src="../assets/home-depot-logo.png" alt="The Home Depot" />
-            </div>
-            <div class="work-body">
-            <div class="work-header">
-              <p class="work-title">The Home Depot</p>
-              <span class="work-dates">2022 — 2025</span>
-            </div>
-            <p class="work-subtitle">Software Engineer I &amp; II</p>
-          </div>
           </div>
           <div class="work-item">
             <div class="work-logo work-logo-fill">
               <img src="../assets/acoustic-ai-logo.jpeg" alt="Acoustic AI" />
             </div>
             <div class="work-body">
-            <div class="work-header">
-              <p class="work-title">Acoustic AI</p>
-              <span class="work-dates">2020</span>
+              <p class="work-company">Acoustic AI</p>
+              <div class="work-stints">
+                <div class="work-stint">
+                  <p class="work-role">Systems Engineer</p>
+                  <span class="work-dates">2020</span>
+                </div>
+              </div>
             </div>
-            <p class="work-subtitle">Systems Engineer</p>
-          </div>
           </div>
           <div class="work-item">
             <div class="work-logo work-logo-img">
               <img src="../assets/shadow-soft-logo.png" alt="Shadow Soft" />
             </div>
             <div class="work-body">
-            <div class="work-header">
-              <p class="work-title">Shadow Soft</p>
-              <span class="work-dates">2019 — 2020</span>
+              <p class="work-company">Shadow Soft</p>
+              <div class="work-stints">
+                <div class="work-stint">
+                  <p class="work-role">DevOps Intern</p>
+                  <span class="work-dates">2019 - 2020</span>
+                </div>
+              </div>
             </div>
-            <p class="work-subtitle">DevOps Intern</p>
-          </div>
           </div>
         </div>
         <a href="../assets/Austin-Edmonson-CV-EU.pdf" class="work-cv-button" target="_blank" rel="noopener">
@@ -582,12 +598,22 @@
       return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
-    html.classList.toggle('dark-mode', isDark());
+    var sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    var moonIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+    function updateIcon(dark) {
+      toggle.innerHTML = dark ? moonIcon : sunIcon;
+    }
+
+    var dark = isDark();
+    html.classList.toggle('dark-mode', dark);
+    updateIcon(dark);
 
     toggle.addEventListener('click', function() {
       var next = !html.classList.contains('dark-mode');
       localStorage.setItem('theme', next ? 'dark' : 'light');
       html.classList.toggle('dark-mode', next);
+      updateIcon(next);
     });
   })();
 </script>
