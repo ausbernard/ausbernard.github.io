@@ -72,6 +72,12 @@
       gap: 28px;
     }
 
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
     nav a {
       color: var(--muted);
       text-decoration: none;
@@ -79,9 +85,13 @@
       font-weight: 200;
     }
 
-    nav a:hover,
+    nav a:hover {
+      color: var(--ink);
+    }
+
     nav a.active {
       color: var(--ink);
+      font-weight: 600;
     }
 
     .theme-toggle {
@@ -153,8 +163,8 @@
         padding: 12px 0;
       }
 
-      nav .theme-toggle {
-        margin-top: 8px;
+      .header-controls {
+        gap: 12px;
       }
     }
 
@@ -224,12 +234,11 @@
       margin-top: 56px;
     }
 
-    .section-label {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
+    .about-heading {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.005em;
+      color: var(--ink);
       margin: 0 0 16px;
     }
 
@@ -256,6 +265,7 @@
     .connect-list {
       display: flex;
       flex-direction: column;
+      gap: 4px;
     }
 
     .connect-list a {
@@ -265,16 +275,11 @@
       padding: 14px 10px;
       margin: 0 -10px;
       border-radius: 8px;
-      border-bottom: 1px solid var(--border);
       color: var(--ink);
       font-size: 16px;
       font-weight: 600;
       text-decoration: none;
       transition: background-color 0.2s ease;
-    }
-
-    .connect-list a:last-child {
-      border-bottom: none;
     }
 
     .connect-list a:hover {
@@ -387,22 +392,24 @@
     <a href="index.html" class="brand-name">Austin Edmonson</a>
   </div>
 
-  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-  </button>
-
-  <nav id="siteNav">
-    <a href="index.html">Home</a>
+  <div class="header-controls">
+    <nav id="siteNav">
     <a href="writing/index.html">Articles</a>
     <a href="about.html" class="active">About</a>
     <a href="projects/index.html">Projects</a>
     <a href="uses.html">Uses</a>
+    </nav>
+
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
       </svg>
     </button>
-  </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
 </header>
 
 <main>
@@ -410,10 +417,10 @@
     <h1 class="about-headline">I'm Austin. I build internal platforms that make thousands of engineers faster.</h1>
     <img src="assets/austin-headshot.jpeg" alt="Austin Edmonson" class="about-avatar" />
   </div>
-  <p class="about-bio">6+ years across DevOps, platform engineering, and software engineering. Self-taught but not self-made. I have benefitted from working with brilliant engineers and managers throughout my career - and learning alongside them. I collaborate across teams exceptionally well and I thrive in ambiguity and drive results. Started as a DevOps intern at Shadow Soft, moved into a Systems Engineer role at Acoustic AI, then joined The Home Depot, where I now own end-to-end CI/CD pipeline architecture for a 3,000+ developer organization. Alongside that, I'm the sole founder and developer of Partida, an immigration case management platform for families relocating to Portugal.</p>
+  <p class="about-bio">6+ years across DevOps, platform engineering, and software engineering. Self-taught but not self-made. I have benefitted from working with brilliant engineers and managers throughout my career - and learning alongside them. I collaborate across teams exceptionally well and I thrive in ambiguity and drive results. Started as a DevOps intern at Shadow Soft, moved into a Systems Engineer role at Acoustic AI, then joined The Home Depot, where I now own end-to-end CI/CD pipeline architecture for a 5,000+ developer organization. Alongside that, I'm the sole founder and developer of Partida, an immigration case management platform for families relocating to Portugal.</p>
 
   <section class="how-i-work">
-    <p class="section-label">How I Work</p>
+    <h2 class="about-heading">How I Work</h2>
     <ul class="philosophy-list">
       <li><strong>Self-taught, by necessity.</strong> I'm good at finding the right resource, making sense of it fast, and turning unclear problems into working systems.</li>
       <li><strong>AI as a multiplier, not a shortcut.</strong> Claude and Copilot compress the time it takes to get from ambiguity to clarity — the engineering judgment still has to be mine.</li>
@@ -423,7 +430,7 @@
   </section>
 
   <section class="connect">
-    <p class="section-label">Connect</p>
+    <h2 class="about-heading">Connect</h2>
     <div class="connect-list">
       <a href="https://linkedin.com/in/abedmonson" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="4.98" cy="3.5" r="2"/><rect x="3.5" y="8" width="2.97" height="13"/><path d="M9 8h3v1.8h.05c.42-.8 1.46-1.8 3-1.8 3.2 0 3.8 2.1 3.8 4.9V21H16v-7.5c0-1.8-.03-4-2.5-4-2.5 0-2.9 1.9-2.9 3.9V21H9V8z"/></svg>
@@ -471,12 +478,22 @@
       return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
-    html.classList.toggle('dark-mode', isDark());
+    var sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    var moonIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+    function updateIcon(dark) {
+      toggle.innerHTML = dark ? moonIcon : sunIcon;
+    }
+
+    var dark = isDark();
+    html.classList.toggle('dark-mode', dark);
+    updateIcon(dark);
 
     toggle.addEventListener('click', function() {
       var next = !html.classList.contains('dark-mode');
       localStorage.setItem('theme', next ? 'dark' : 'light');
       html.classList.toggle('dark-mode', next);
+      updateIcon(next);
     });
   })();
 </script>
