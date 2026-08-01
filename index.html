@@ -420,8 +420,13 @@
 
     .impact-stat-row {
       display: flex;
-      gap: 28px;
+      flex-wrap: wrap;
+      gap: 14px 28px;
       margin: 0 0 18px;
+    }
+
+    .impact-stat-row > div {
+      flex-shrink: 0;
     }
 
     .impact-stat-number {
@@ -430,6 +435,7 @@
       letter-spacing: -0.01em;
       color: var(--ink);
       margin: 0;
+      white-space: nowrap;
     }
 
     .impact-stat-label {
@@ -437,6 +443,7 @@
       font-weight: 400;
       color: var(--muted);
       margin: 2px 0 0;
+      white-space: nowrap;
     }
 
     .impact-card-head {
@@ -732,6 +739,16 @@
         <p class="impact-card-subtitle">Standardized software delivery across the organization.</p>
       </a>
       <a href="work/github-actions-platform.html" class="impact-card">
+        <div class="impact-stat-row">
+          <div>
+            <p class="impact-stat-number">600+</p>
+            <p class="impact-stat-label">peak concurrent runners</p>
+          </div>
+          <div>
+            <p class="impact-stat-number">24/7</p>
+            <p class="impact-stat-label">ephemeral autoscaling</p>
+          </div>
+        </div>
         <div class="impact-card-head">
           <p class="impact-card-title">GitHub Actions Runner Platform</p>
           <span class="impact-card-arrow" aria-hidden="true">→</span>
