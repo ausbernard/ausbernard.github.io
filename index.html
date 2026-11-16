@@ -420,8 +420,13 @@
 
     .impact-stat-row {
       display: flex;
-      gap: 28px;
+      flex-wrap: wrap;
+      gap: 14px 28px;
       margin: 0 0 18px;
+    }
+
+    .impact-stat-row > div {
+      flex-shrink: 0;
     }
 
     .impact-stat-number {
@@ -430,6 +435,7 @@
       letter-spacing: -0.01em;
       color: var(--ink);
       margin: 0;
+      white-space: nowrap;
     }
 
     .impact-stat-label {
@@ -437,6 +443,7 @@
       font-weight: 400;
       color: var(--muted);
       margin: 2px 0 0;
+      white-space: nowrap;
     }
 
     .impact-card-head {
@@ -583,12 +590,10 @@
       border: 1px solid var(--border);
     }
 
-    html.dark-mode .work-logo-img,
     html.dark-mode .work-logo-fill {
       filter: invert(1) hue-rotate(180deg);
     }
 
-    html.dark-mode .work-logo-img img,
     html.dark-mode .work-logo-fill img {
       filter: none;
     }
@@ -693,7 +698,7 @@
     </div>
     <div class="hero-content">
       <h1 class="hero-name">I build internal platforms that make thousands of engineers faster.</h1>
-      <p class="hero-subtext">Senior Platform Engineer focused on developer experience, CI/CD, Kubernetes, and AI-assisted software delivery.</p>
+      <p class="hero-subtext">Engineer focused on developer experience, CI/CD, Kubernetes, and AI-assisted software delivery.</p>
 
       <div class="social-row">
         <a href="https://linkedin.com/in/abedmonson" target="_blank" rel="noopener" class="social-box">
@@ -701,9 +706,6 @@
         </a>
         <a href="https://github.com/ausbernard" target="_blank" rel="noopener" class="social-box">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.1 3.29 9.4 7.86 10.93.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.02 1.75 2.68 1.25 3.34.95.1-.74.4-1.25.72-1.53-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.07.78 2.15 0 1.55-.01 2.8-.01 3.18 0 .3.2.66.79.55A10.51 10.51 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5Z"/></svg>
-        </a>
-        <a href="mailto:austinbedmonson@gmail.com" class="social-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
         </a>
       </div>
     </div>
@@ -732,25 +734,21 @@
         <p class="impact-card-subtitle">Standardized software delivery across the organization.</p>
       </a>
       <a href="work/github-actions-platform.html" class="impact-card">
+        <div class="impact-stat-row">
+          <div>
+            <p class="impact-stat-number">600+</p>
+            <p class="impact-stat-label">peak concurrent runners</p>
+          </div>
+          <div>
+            <p class="impact-stat-number">24/7</p>
+            <p class="impact-stat-label">ephemeral autoscaling</p>
+          </div>
+        </div>
         <div class="impact-card-head">
           <p class="impact-card-title">GitHub Actions Runner Platform</p>
           <span class="impact-card-arrow" aria-hidden="true">→</span>
         </div>
         <p class="impact-card-subtitle">Elastic Kubernetes runners powering enterprise builds.</p>
-      </a>
-      <a href="work/enterprise-ai-adoption.html" class="impact-card">
-        <div class="impact-card-head">
-          <p class="impact-card-title">Enterprise AI Adoption</p>
-          <span class="impact-card-arrow" aria-hidden="true">→</span>
-        </div>
-        <p class="impact-card-subtitle">Leading organization-wide AI integration into the SDLC.</p>
-      </a>
-      <a href="work/ai-developer-workflows.html" class="impact-card">
-        <div class="impact-card-head">
-          <p class="impact-card-title">AI Developer Workflows</p>
-          <span class="impact-card-arrow" aria-hidden="true">→</span>
-        </div>
-        <p class="impact-card-subtitle">Claude reviews, agentic automation, developer tooling.</p>
       </a>
     </div>
   </section>
@@ -758,6 +756,13 @@
   <section>
     <h2 class="impact-heading">Writing</h2>
     <div class="writing-list">
+      <a href="writing/four-months-interviewing.html" class="writing-item">
+        <div class="writing-item-head">
+          <p class="writing-item-title">I Had the Right Plan. I Ran Half of It.</p>
+          <span class="writing-item-arrow" aria-hidden="true">→</span>
+        </div>
+        <p class="writing-item-subtitle">Four take-homes, five technicals, forty rejections, one offer. I had the right study plan and ran half of it, in the wrong order.</p>
+      </a>
       <a href="writing/hexagonal-architecture-didnt-fit.html" class="writing-item">
         <div class="writing-item-head">
           <p class="writing-item-title">Why Hexagonal Architecture Didn't Fit My Enterprise Reality</p>
@@ -772,13 +777,6 @@
         </div>
         <p class="writing-item-subtitle">Real bugs, real code, real numbers: the split Base import, the Alembic surprise, the enum-as-primary-key that broke at scale.</p>
       </a>
-      <a href="writing/overengineering-operational-exhaustion.html" class="writing-item">
-        <div class="writing-item-head">
-          <p class="writing-item-title">We Were Overengineering Ourselves Into Operational Exhaustion</p>
-          <span class="writing-item-arrow" aria-hidden="true">→</span>
-        </div>
-        <p class="writing-item-subtitle">What happens when a small team inherits infrastructure patterns built for a platform org three times its size.</p>
-      </a>
     </div>
   </section>
 
@@ -786,6 +784,20 @@
     <div class="work-card">
     <h2 class="impact-heading">Work</h2>
     <div class="work-list">
+      <div class="work-item">
+        <div class="work-logo work-logo-img">
+          <img src="assets/cloudflare-logo.svg" alt="Cloudflare" />
+        </div>
+        <div class="work-body">
+          <p class="work-company">Cloudflare</p>
+          <div class="work-stints">
+            <div class="work-stint">
+              <p class="work-role">Systems Engineer III</p>
+              <span class="work-dates work-dates-current">2026 - Present</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="work-item">
         <div class="work-logo work-logo-fill">
           <img src="assets/home-depot-logo.png" alt="The Home Depot" />
@@ -795,7 +807,7 @@
           <div class="work-stints">
             <div class="work-stint">
               <p class="work-role">Senior Software Engineer</p>
-              <span class="work-dates work-dates-current">2025 - Present</span>
+              <span class="work-dates">2025 - 2026</span>
             </div>
             <div class="work-stint">
               <p class="work-role">Software Engineer I &amp; II</p>
