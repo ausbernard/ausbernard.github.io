@@ -4,12 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ausb</title>
+  <script>
+    try {
+      var t = localStorage.getItem('theme');
+      if (t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark-mode');
+      }
+    } catch (e) {}
+  </script>
   <style>
     :root {
       --bg: #FCFCFA;
       --border: #E3DCC9;
       --ink: #1A1A1A;
       --muted: #7A7461;
+      --tint-rgb: 26, 26, 26;
     }
 
     * { box-sizing: border-box; }
@@ -18,6 +27,7 @@
       margin: 0;
       padding: 0;
       background: var(--bg);
+      color: var(--ink);
       min-height: 100%;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
@@ -163,29 +173,28 @@
       }
     }
 
-    html {
-      transition: filter 0.3s ease;
-    }
-
-    img {
-      transition: filter 0.3s ease;
-    }
-
     html.dark-mode {
-      filter: invert(1) hue-rotate(180deg);
+      --bg: #0F0F0E;
+      --border: #2A2824;
+      --ink: #EDEBE6;
+      --muted: #A39E90;
+      --tint-rgb: 237, 235, 230;
+      color-scheme: dark;
     }
 
-    html.dark-mode img {
-      filter: invert(1) hue-rotate(180deg);
+    .brand-mark path {
+      stroke: var(--bg);
     }
 
-    html.dark-mode .hero-avatar {
-      border: 4px solid #FFFFFF;
+    html.theme-fading,
+    html.theme-fading *,
+    html.theme-fading *::before,
+    html.theme-fading *::after {
+      transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease,
+        box-shadow 0.35s ease, fill 0.35s ease, stroke 0.35s ease !important;
     }
 
-    html.dark-mode .hero-portrait-ring {
-      opacity: 0.35;
-    }
+
 
     main {
       max-width: 640px;
@@ -264,8 +273,9 @@
       }
 
       .hero-inner {
+        max-width: 880px;
         display: grid;
-        grid-template-columns: 1fr 320px;
+        grid-template-columns: 300px 1fr;
         align-items: center;
         gap: 64px;
       }
@@ -346,7 +356,7 @@
     }
 
     .impact-item:hover {
-      background: rgba(26, 26, 26, 0.05);
+      background: rgba(var(--tint-rgb), 0.05);
     }
 
     .impact-list a.impact-item {
@@ -405,7 +415,7 @@
     .impact-card:hover {
       transform: translateY(-2px);
       border-color: var(--ink);
-      box-shadow: 0 10px 24px rgba(26, 26, 26, 0.08);
+      box-shadow: 0 10px 24px rgba(var(--tint-rgb), 0.08);
     }
 
     .impact-card-featured {
@@ -419,14 +429,10 @@
     }
 
     .impact-stat-row {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, max-content));
       gap: 14px 28px;
       margin: 0 0 18px;
-    }
-
-    .impact-stat-row > div {
-      flex-shrink: 0;
     }
 
     .impact-stat-number {
@@ -443,7 +449,6 @@
       font-weight: 400;
       color: var(--muted);
       margin: 2px 0 0;
-      white-space: nowrap;
     }
 
     .impact-card-head {
@@ -550,7 +555,7 @@
       margin-top: 24px;
       padding: 14px;
       border-radius: 10px;
-      background: rgba(26, 26, 26, 0.05);
+      background: rgba(var(--tint-rgb), 0.05);
       color: var(--ink);
       font-size: 15px;
       font-weight: 600;
@@ -558,7 +563,7 @@
     }
 
     .work-cv-button:hover {
-      background: rgba(26, 26, 26, 0.09);
+      background: rgba(var(--tint-rgb), 0.09);
     }
 
     .work-cv-button svg {
@@ -590,13 +595,7 @@
       border: 1px solid var(--border);
     }
 
-    html.dark-mode .work-logo-fill {
-      filter: invert(1) hue-rotate(180deg);
-    }
 
-    html.dark-mode .work-logo-fill img {
-      filter: none;
-    }
 
     .work-logo-img img {
       width: 26px;
@@ -653,6 +652,13 @@
     .work-dates-current {
       color: var(--ink);
       font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      .work-stint {
+        flex-direction: column;
+        gap: 2px;
+      }
     }
 
   </style>
@@ -883,9 +889,16 @@
     html.classList.toggle('dark-mode', dark);
     updateIcon(dark);
 
+    var fadeTimer;
+
     toggle.addEventListener('click', function() {
       var next = !html.classList.contains('dark-mode');
       localStorage.setItem('theme', next ? 'dark' : 'light');
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        html.classList.add('theme-fading');
+        clearTimeout(fadeTimer);
+        fadeTimer = setTimeout(function() { html.classList.remove('theme-fading'); }, 400);
+      }
       html.classList.toggle('dark-mode', next);
       updateIcon(next);
     });
