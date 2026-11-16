@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I Had the Right Plan. I Ran Half of It. — Austin Edmonson</title>
+  <style>
+    :root {
+      --bg: #FCFCFA;
+      --border: #E3DCC9;
+      --ink: #1A1A1A;
+      --muted: #7A7461;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 200;
+    }
+
+    nav a:hover {
+      color: var(--ink);
+    }
+
+    nav a.active {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .nav-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .nav-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .nav-toggle {
+        display: flex;
+      }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 24px 20px;
+        z-index: 20;
+      }
+
+      nav.nav-open {
+        display: flex;
+      }
+
+      nav a {
+        width: 100%;
+        padding: 12px 0;
+      }
+
+      .header-controls {
+        gap: 12px;
+      }
+    }
+
+    html {
+      transition: filter 0.3s ease;
+    }
+
+    img {
+      transition: filter 0.3s ease;
+    }
+
+    html.dark-mode {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    html.dark-mode img {
+      filter: invert(1) hue-rotate(180deg);
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 16px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 24px;
+    }
+
+    .post-back:hover {
+      color: #EC4899;
+      border-color: #EC4899;
+    }
+
+    .post-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .post-date {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 16px 0 0;
+    }
+
+    .post-hero {
+      display: block;
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-top: 32px;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .post-title,
+      .post-date,
+      .post-hero {
+        animation: post-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      .post-title { animation-delay: 0s; }
+      .post-date { animation-delay: 0.08s; }
+      .post-hero { animation-delay: 0.16s; }
+    }
+
+    @keyframes post-rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .post-body {
+      margin-top: 40px;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .post-body p { margin: 0 0 20px; }
+
+    .post-body h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 40px 0 14px;
+      line-height: 1.3;
+    }
+
+    .post-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 28px 0 10px;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em { font-style: italic; }
+
+    .post-body code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.88em;
+      background: rgba(26, 26, 26, 0.06);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      color: var(--ink);
+    }
+
+    .post-body pre {
+      background: rgba(26, 26, 26, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      overflow-x: auto;
+      margin: 0 0 20px;
+    }
+
+    .post-body pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.85em;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--border);
+      padding-left: 18px;
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol { margin: 0 0 20px 22px; }
+    .post-body li { margin-bottom: 8px; }
+
+    .post-body hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 36px 0;
+    }
+
+    footer {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 24px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 3 9 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-divider"></div>
+    <a href="../index.html" class="brand-name">Austin Edmonson</a>
+  </div>
+
+  <div class="header-controls">
+    <nav id="siteNav">
+    <a href="index.html" class="active">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+    </nav>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <a href="index.html" class="post-back" aria-label="Back to articles">←</a>
+  <h1 class="post-title">I Had the Right Plan. I Ran Half of It.</h1>
+  <p class="post-date">October 2026</p>
+
+  <!-- TODO hero image. Suggested: something about distance, waiting, or transit rather than
+       a literal interview photo. Save to ../assets/ and uncomment:
+  <img src="../assets/four-months-hero.jpg" alt="" class="post-hero" />
+  -->
+
+  <div class="post-body">
+
+    <p>I hadn't interviewed in four years. I'm a platform engineer, I'm good at the job, and it still took four months and forty rejections to find the next one.</p>
+    <p>What follows is what those months actually looked like, and what I got wrong. The second part is longer.</p>
+
+    <h2>The numbers</h2>
+    <p>Four months of searching produced:</p>
+    <ul>
+      <li>4 take-home assignments</li>
+      <li>5 technical interviews</li>
+      <li>2 system design rounds</li>
+      <li>40 rejections</li>
+      <li>1 offer</li>
+    </ul>
+    <p>Eleven rounds that asked me to actually build or design something. Forty rejections. One job.</p>
+    <p>Nobody posts the rejection count. It's the one I wanted to see when I was thinking something was wrong with me.</p>
+
+    <h2>What changed between month one and month four</h2>
+    <p>I made a Trello board and started drilling fundamentals: Python, data structures and algorithms, system design. The board came from <a href="https://www.linkedin.com/pulse/500kyear-without-cs-degree-study-plan-got-me-offers-from-esco-obong-orqif/" target="_blank" rel="noopener">Esco Obong's study plan</a>: topics to learn, topics in progress, topics finished. I got better.</p>
+    <p>Then I'd sit down in an interview and blank on things I knew. I wasn't concise. I got flustered.</p>
+    <p>What I couldn't prepare for on my own was the clock. So I hired a tutor, and the whole job was to sit there and time me while I solved problems live in a plain terminal IDE. No autocorrect. No suggestions. No AI. As if I was interviewing.</p>
+    <p>Under that pressure the cracks showed up fast: where I couldn't say things out loud, and where the fundamentals I thought I had weren't there. We kept smoothing them over until I could handle most flavors of problem without coming apart.</p>
+    <p>After that I had AI generate variations of the same problems, easy through hard, and set the bar at finishing with fifteen minutes to spare. AI wrote the problems. It just wasn't in the room when I solved them.</p>
+    <p>The plan I had been following has two phases. Learn the concepts without a clock, then practice against one. I ran the first phase for months and walked into real interviews having never run the second. It also says to do three mock interviews before you interview for real. I did my first mock after I had already failed several loops.</p>
+    <p>I had the right plan. I ran half of it, in the wrong order.</p>
+
+    <!-- TODO chronology: did you find Esco's plan at the start and skip those steps, or find
+         it partway through and realise what you had missed? Both are honest, they are just
+         different sentences. Tell me which and I will fix the tense.
+         The last line is mine. Cut it or make it yours. -->
+
+    <h2>The loop that went worst</h2>
+    <p>All of them went badly. Each one taught me something, which is the generous way of saying none of them went well.</p>
+    <p>One was worse than the rest by a distance. It was a CodeSignal assessment. I had practiced the main CodeSignal problems on my own and was generally reaching level 4 by the end of my time. Once there was a real timer on it, I couldn't get out of level 2.</p>
+
+    <!-- MEAT: THE SCENE. This is the single highest-value thing missing from the post.
+         Ninety seconds of that assessment, in the present tense of the moment. Where were
+         you sitting. What did the timer say. What was the problem. What did you do when you
+         realised level 3 was not coming. What did you do in the ten minutes after you
+         submitted. No analysis, no lesson, just what happened.
+         Right now the reader is told the assessment went badly and never sees one second
+         of it. Your hexagonal post opens with "I sat silent for 15 seconds" and that scene
+         is why that post works. -->
+
+    <p>So I drilled the foundations harder, and in desperation I started memorizing, hoping it would balance the scales. The plan says, in as many words, not to do that. Understand why it's built the way it is, don't memorize the code. I did it anyway, because I was out of time. On the day of the assessment, that was a disaster.</p>
+
+    <!-- MEAT: the mechanism. Why did memorizing fail? One sentence on what it cost you when
+         the problem was not the one you had memorized. "It was a disaster" states the
+         outcome and hides the cause, which is the part another engineer can use. -->
+
+    <p>I had to practice timed.</p>
+
+    <h2>Using it every day is not knowing it</h2>
+    <p>At work you're never in a position where you can't ask for help, look something up, ask AI, or just take your time and think it through. You're certainly never doing it with a stranger watching your screen while you are, in effect, signing for your dinner.</p>
+    <p>The questions are there to probe how well you know something. How well <em>you</em> know it, not how well you can look it up or prompt for it.</p>
+    <p>It wasn't that I didn't know anything. It was that the level that got the job done was not the level needed to convince a company to pay you six figures to solve their problem.</p>
+    <p>I had written Kubernetes manifests and set custom Helm values for years. Then someone asked me how I would secure the Kubernetes API server. I had been working the surface of a tool I had never looked inside.</p>
+
+    <!-- MEAT, optional but strong: the gap was structural, not careless. Everything at THD
+         ran on managed Kubernetes, where the control plane is the provider's problem and you
+         often cannot touch apiserver flags even if you want to. You worked on a platform
+         built so you would never need the thing they asked about. That generalises: managed
+         services manufacture exactly these blind spots in competent people. -->
+
+    <h2>What forty rejections does to you</h2>
+    <p>It makes you want to give up.</p>
+    <p>I asked myself, seriously, whether I should find another profession.</p>
+
+    <!-- MEAT: this is the right admission and it is currently one beat. It needs two more,
+         and only you have them:
+         1. When did it get worst? Not a date, a moment. The rejection that landed hardest,
+            and what you were doing when you read it.
+         2. What got you back in the chair the next morning? That is the part a reader in
+            month three is actually looking for, and the post cannot end on the question
+            without answering it somewhere.
+         Keep the short paragraphs. They are doing the work. -->
+
+    <h2>What I'd tell myself in month one</h2>
+    <p>Those four years away from interviewing cost me more than I knew. The whole layout had changed and I walked in blind to it.</p>
+    <p>I was interviewing the way I interviewed as a junior, back when the industry rewarded aptitude. Knowing how to get to the answer counted for a lot. The requirements were Linux, git, some CI/CD, some API exposure, and willing to learn.</p>
+    <p>That's not the bar anymore. Now it's cloud, Kubernetes, GitOps, security, and infrastructure, and you're expected to know them from the foundation up.</p>
+    <p>Willing to learn got me in the door for years. It is not what gets you in the door now.</p>
+    <p>You have to grow. You have to do the uncomfortable thing and get in front of your peers and other engineers and practice interviewing out loud. There is no way around it. Start now.</p>
+    <p>And do not stop interviewing. Even when you are not looking. It is the only way to find out what the market is asking for and which skills it expects you to already have.</p>
+    <!-- MEAT still open, and the post needs it somewhere: you raise "should I find another
+         profession" two sections up and never answer it. The honest answer may just be
+         "I kept going", but the reader in their own month three needs to hear it said. -->
+
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 Austin Edmonson. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="../index.html">Home</a>
+    <a href="index.html">Articles</a>
+    <a href="../about.html">About</a>
+    <a href="../projects/index.html">Projects</a>
+    <a href="../uses.html">Uses</a>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var html = document.documentElement;
+
+    var navToggle = document.getElementById('navToggle');
+    var siteNav = document.getElementById('siteNav');
+    if (navToggle && siteNav) {
+      navToggle.addEventListener('click', function() {
+        siteNav.classList.toggle('nav-open');
+      });
+    }
+
+    function isDark() {
+      var stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    var sunIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    var moonIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+    function updateIcon(dark) {
+      toggle.innerHTML = dark ? moonIcon : sunIcon;
+    }
+
+    var dark = isDark();
+    html.classList.toggle('dark-mode', dark);
+    updateIcon(dark);
+
+    toggle.addEventListener('click', function() {
+      var next = !html.classList.contains('dark-mode');
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      html.classList.toggle('dark-mode', next);
+      updateIcon(next);
+    });
+  })();
+</script>
+
+</body>
+</html>
